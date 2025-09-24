@@ -9,10 +9,7 @@ jobs:
       - checkout
       - run: apt update
       - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xvfb
-      - run:
-          name: Configure CMake
-          command: cmake -B build
-      - run:
-          name: Build project
-          command: cmake --build build
-
+      - run: mkdir -p build
+      - run: cd build && cmake
+      - run: cd build && make install
+      - run: ./build/installed/bin/main
