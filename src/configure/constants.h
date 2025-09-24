@@ -1,0 +1,54 @@
+//
+// Created by joachimverleysen on 12/12/24.
+//
+
+#ifndef DOODLEJUMP_CONSTANTS_H
+#define DOODLEJUMP_CONSTANTS_H
+
+#include <string>
+
+namespace Config {
+namespace TextureFiles {
+inline const std::string background = "assets/background/bck@2x.png";
+    inline const std::string sprites_json = "assets/textures.json";
+}
+namespace Window {
+inline const unsigned int WIDTH = 620; // 620
+inline const unsigned int HEIGHT = 1000;
+
+} // namespace Window
+
+namespace Player {
+inline const float JUMP_FORCE = 120;
+inline const float MASS = 180;
+inline const float TERMINAL_VELOCITY = 400;
+inline const float HORIZONTAL_SPEED = 600.0f;
+} // namespace Player
+
+namespace Camera {
+inline const float top_margin = 300;
+inline const float scroll_distance = 300;
+inline const float min_scroll_speed = 100.0f;
+inline const float max_scroll_speed = 400.0f;
+} // namespace Camera
+
+namespace Platform {
+inline const float SPEED = 200;
+inline const float WIDTH = 100;
+inline const float HEIGHT = 30;
+inline const float MOVING_DISTANCE = 300;
+
+} // namespace Platform
+
+namespace Collision {
+inline const float min_x_distance = 20;
+inline const float max_y_distance = 30;
+} // namespace Collision
+
+} // namespace Config
+
+namespace CameraConfig {}
+
+// Collision offsets (technical)
+
+#endif // DOODLEJUMP_CONSTANTS_H
