@@ -42,7 +42,7 @@ public:
 
   void updateTexture();
 
-  virtual void render(sf::RenderWindow &window);
+  virtual void draw(sf::RenderWindow &window);
 
   void setPosition(Position &position);
 

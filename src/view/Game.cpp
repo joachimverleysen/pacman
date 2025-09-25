@@ -11,7 +11,7 @@ void Game::update() {
   window_.clear();
   window_.draw(background_sprite_);
   float delta_time = Stopwatch::getInstance()->getDeltaTime();
-  game_world_->update(delta_time);
+  world_->update(delta_time);
   window_.display();
 
   Stopwatch::getInstance()->capFramerate(100);
@@ -34,8 +34,8 @@ void Game::setup() {
   background_sprite_.setTexture(background_texture_);
   try {
     factory_ = std::make_unique<EntityFactory>(*this, window_);
-    game_world_ = std::make_shared<World>(*factory_);
-    controller_ = std::make_unique<GameController>(*game_world_);
+    world_ = std::make_shared<World>(*factory_);
+    controller_ = std::make_unique<GameController>(*world_);
     std::shared_ptr<EntityFactory> view_factory_ =
         std::make_shared<EntityFactory>(*this, window_);
   } catch (std::runtime_error &e) {
@@ -65,7 +65,7 @@ void Game::close() {
 }
 
 Game::State Game::getState() const {
-  if (!game_world_->getPlayer())
+  if (!world_->getPlayer())
     return State::GAME_OVER;
   return State::RUNNING;
 }

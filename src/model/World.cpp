@@ -29,22 +29,20 @@ void World::updateEntities(float delta_time) {
   // Update every entity
   for (auto &entity : entities_) {
     entity->update(delta_time);
-    entity->notifyObservers();
   }
 
   // Remove inactive entities
-  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
-                                 [](const std::shared_ptr<Entity> &entity) {
-                                   return !entity->isActive();
-                                 }),
-                  entities_.end());
+//  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
+//                                 [](const std::shared_ptr<Entity> &entity) {
+//                                   return !entity->isActive();
+//                                 }),
+//                  entities_.end());
 }
 
 void World::update(float delta_time) {
   if (!player_->isActive()) {
     return;
   }
-  notifyObservers();
   updateEntities(delta_time);
   checkCollisions();
   new_entities_.clear();

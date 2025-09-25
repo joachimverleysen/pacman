@@ -34,7 +34,7 @@ void EntityView::setPosition(Position &position) {
 void EntityView::update() {
   updatePosition();
   updateTexture();
-  render(window_);
+  draw(window_);
 }
 
 void EntityView::updatePosition() {
@@ -43,7 +43,7 @@ void EntityView::updatePosition() {
   setPosition(SFML_position);
 }
 
-void EntityView::render(sf::RenderWindow &window) { window.draw(sprite_); }
+void EntityView::draw(sf::RenderWindow &window) { window.draw(sprite_); }
 
 void EntityView::setTexture(const sf::Texture *texture) {
   sprite_.setTexture(*texture);
