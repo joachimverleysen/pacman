@@ -8,11 +8,12 @@
 #include "../../utils/Position.h"
 #include "../../utils/Utils.h"
 #include "../observer/Subject.h"
-#include "EntityState.h"
+#include "PacmanState.h"
 #include "EntityType.h"
 #include <SFML/System/Vector2.hpp>
 
 struct BoundingBox {
+  BoundingBox() = default;
   BoundingBox(float top, float bottom, float left, float right)
       : top(top), bottom(bottom), left(left), right(right) {}
 
@@ -39,17 +40,19 @@ protected:
   float height_{0};
   float scale_{1};
   bool is_active_{true};
-  EntityState state_{EntityState::IDLE};
+  PacmanState state_{PacmanState::IDLE};
 
 public:
-  Entity() = delete;
+  Entity() = default;
+
+  void setState(PacmanState state);
 
   Entity(float x, float y)
       : position_(Position{x, y}), spawn_box_(getBoundingBox()) {}
 
-  Entity(float x, float y, float width, float height, float scale)
-      : position_(Position{x, y}), width_(width * scale),
-        height_(height * scale), scale_(scale), spawn_box_(getBoundingBox()) {}
+  Entity(float width, float height, float scale)
+      : width_(width * scale), height_(height * scale), scale_(scale),
+        spawn_box_(getBoundingBox()) {}
   virtual ~Entity() = default;
 
 public:
@@ -60,7 +63,7 @@ public:
   virtual void onCollision(Entity *other) = 0;
   void move(const Utils::Direction &direction, float speed);
   virtual bool allowsSpawn(Entity *other) = 0;
-  [[nodiscard]] EntityState getCurrentState() const;
+  [[nodiscard]] PacmanState getCurrentState() const;
 
   virtual void activate() { is_active_ = true; };
   virtual void deactivate() { is_active_ = false; };

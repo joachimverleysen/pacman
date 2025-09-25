@@ -9,7 +9,7 @@ float Entity::getLeft() const { return position_.x; }
 
 float Entity::getRight() const { return position_.x + width_; }
 
-EntityState Entity::getCurrentState() const { return state_; }
+PacmanState Entity::getCurrentState() const { return state_; }
 
 float Entity::getScale() const { return scale_; }
 
@@ -45,3 +45,7 @@ float Entity::getCenterX() const { return (getLeft() + getRight()) / 2; }
 float Entity::getCenterY() const { return (getTop() + getBottom()) / 2; }
 
 const BoundingBox &Entity::getSpawn() const { return spawn_box_; }
+
+void Entity::setState(PacmanState state) {
+  state_ = state;
+}

@@ -10,16 +10,20 @@
 #include "../model/entity/Entity.h"
 #include "../utils/Position.h"
 
-namespace Visuals {
-    using TextureMap = std::map<EntityState, const sf::Texture*>;
+namespace Texture {
+    using TextureMap = std::map<PacmanState, const sf::Texture*>;
     enum class AnimationState {
         IDLE,
         LEFT,
         RIGHT
     };
 
-    Position world2SFML(const Position &position);
-    Position SFML2World(const Position &position);
 }
+
+namespace Camera {
+Position world2SFML(const Position &position);
+Position SFML2World(const Position &position);
+} // namespace Camera
+
 
 #endif //DOODLEJUMP_VISUALS_H

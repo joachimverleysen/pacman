@@ -4,6 +4,7 @@
 
 #include "World.h"
 #include "CollisionHandler.h"
+#include "../configure/constants.h"
 
 const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
   return entities_;
@@ -14,8 +15,8 @@ const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
 
 void World::createPlayer(float x, float y) {
   // todo : extract scale constant
-  float SCALE = 10;
-  player_ = factory_.createPlayer(x, y, SCALE);
+  player_ = factory_.createPlayer();
+  player_->setPosition({0, -500});
   entities_.push_back(player_);
   new_entities_.push_back(player_);
 }
@@ -33,7 +34,7 @@ void World::updateEntities(float delta_time) {
 
   // Remove inactive entities
   entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
-                                 [](const std::shared_ptr<Entity>& entity) {
+                                 [](const std::shared_ptr<Entity> &entity) {
                                    return !entity->isActive();
                                  }),
                   entities_.end());

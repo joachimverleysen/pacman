@@ -21,11 +21,11 @@ public:
 
 public:
 
-    static Visuals::TextureMap getTextureMap(const std::string &json_path, const std::string &type);
+    static Texture::TextureMap getTextureMap(const std::string &json_path, const std::string &type);
 
     static sf::IntRect parseIntRect(const json &arr);
 
-    static EntityState getEntityState(const std::string &);
+    static PacmanState getEntityState(const std::string &);
 };
 
 #endif //DOODLEJUMP_TEXTURE_PARSER_H

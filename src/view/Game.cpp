@@ -2,15 +2,17 @@
 #include "../configure/constants.h"
 #include <iostream>
 
-Game::Game(sf::RenderWindow &window, Renderer &renderer)
-    : window_(window), renderer_(renderer) {
+Game::Game(sf::RenderWindow &window)
+    : window_(window){
   setup();
 }
 
 void Game::update() {
-  renderer_.render();
+  window_.clear();
+  window_.draw(background_sprite_);
   float delta_time = Stopwatch::getInstance()->getDeltaTime();
   game_world_->update(delta_time);
+  window_.display();
 
   Stopwatch::getInstance()->capFramerate(100);
 }
@@ -24,13 +26,18 @@ void Game::run() {
 }
 
 void Game::setup() {
+  sf::Texture background_texture;
+  // Set file_background texture + sprite
+  if (!background_texture_.loadFromFile(Config::TextureFiles::background)) {
+    throw std::runtime_error("Invalid file_background path");
+  }
+  background_sprite_.setTexture(background_texture_);
   try {
-    factory_ = std::make_unique<EntityFactory>(*this);
+    factory_ = std::make_unique<EntityFactory>(*this, window_);
     game_world_ = std::make_shared<World>(*factory_);
     controller_ = std::make_unique<GameController>(*game_world_);
-    std::shared_ptr<EntityViewFactory> view_factory_ = std::make_shared<EntityViewFactory>(*game_world_);
-    game_world_->addObserver(view_factory_);
-    renderer_.setFactory(view_factory_);
+    std::shared_ptr<EntityFactory> view_factory_ =
+        std::make_shared<EntityFactory>(*this, window_);
   } catch (std::runtime_error &e) {
     std::cout << "Failed to initialize game: " << e.what() << std::endl;
     exit(1);

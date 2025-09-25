@@ -14,10 +14,9 @@ class Player : public Entity {
   float vertical_speed_{0};
 
 public:
-  Player(float x, float y, float speed) : Entity(x, y), speed_(speed) {}
+  Player() = default;
 
-  Player(float x, float y, float width, float height, float scale)
-      : Entity(x, y, width, height, scale) {}
+  Player(float width, float height, float scale);
 
   void move(Utils::Direction direction);
 

@@ -5,7 +5,7 @@
 #ifndef DOODLEJUMP_WORLD_H
 #define DOODLEJUMP_WORLD_H
 
-#include "../model/entity/EntityFactory.h"
+#include "../view/EntityFactory.h"
 #include "../view/EntityView.h"
 #include "entity/Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -27,7 +27,6 @@ public:
   getNewEntities() const;
 
 public:
-  World() = default;
   explicit World(EntityFactory &factory) : factory_(factory) {
     initialize();
     checkInitialization();

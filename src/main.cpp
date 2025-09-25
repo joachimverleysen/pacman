@@ -2,7 +2,6 @@
 #include "model/World.h"
 #include "model/entity/Player.h"
 #include "view/Game.h"
-#include "view/Renderer.h"
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 
@@ -13,8 +12,7 @@ int main() {
 
   // todo : background doesnt need separate member
 
-  Renderer renderer{window};
-  Game game{window, renderer};
+  Game game{window};
 
   while (window.isOpen()) {
     try {

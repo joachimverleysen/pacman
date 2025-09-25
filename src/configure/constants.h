@@ -23,6 +23,9 @@ inline const float JUMP_FORCE = 120;
 inline const float MASS = 180;
 inline const float TERMINAL_VELOCITY = 400;
 inline const float HORIZONTAL_SPEED = 600.0f;
+inline const float SCALE = 3;
+inline const float WIDTH = 40;
+inline const float HEIGHT = 40;
 } // namespace Player
 
 namespace Camera {

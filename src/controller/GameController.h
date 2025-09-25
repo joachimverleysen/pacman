@@ -12,6 +12,8 @@ class GameController {
     enum class Action {
         MOVE_LEFT,
         MOVE_RIGHT,
+        MOVE_UP,
+        MOVE_DOWN,
         NONE
     };
 

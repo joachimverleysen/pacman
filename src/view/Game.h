@@ -10,7 +10,6 @@
 #include "../model/World.h"
 #include "../model/observer/Observer.h"
 #include "EntityView.h"
-#include "Renderer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -29,13 +28,13 @@ private:
   std::shared_ptr<World> game_world_;
   std::unique_ptr<GameController> controller_;
   sf::RenderWindow &window_;
-
+  sf::Sprite background_sprite_;
+  sf::Texture background_texture_;
 private:
-  Renderer &renderer_;
 
 public:
-  Game(sf::RenderWindow &window,
-       Renderer &renderer);
+  Game(sf::RenderWindow &window
+       );
 
   void setup();
   void run();

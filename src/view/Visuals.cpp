@@ -3,11 +3,11 @@
 //
 #include "Visuals.h"
 
-Position Visuals::world2SFML(const Position &position) {
+Position Camera::world2SFML(const Position &position) {
     return {position.x, -position.y};
 }
 
-Position Visuals::SFML2World(const Position &position) {
+Position Camera::SFML2World(const Position &position) {
     return {position.x, -position.y};
 
 }

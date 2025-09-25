@@ -5,11 +5,9 @@
 #include "Player.h"
 #include <memory>
 
-
 class AbstractFactory {
 public:
-  virtual std::shared_ptr<Player> createPlayer(float x, float y,
-                                               float speed) = 0;
+  virtual std::shared_ptr<Player> createPlayer() = 0;
   virtual ~AbstractFactory() = default;
 };
 

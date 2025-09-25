@@ -8,16 +8,16 @@ sf::IntRect TextureParser::parseIntRect(const json &arr) {
   return sf::IntRect(arr[0], arr[1], arr[2], arr[3]);
 }
 
-Visuals::TextureMap TextureParser::getTextureMap(const std::string &json_path,
+Texture::TextureMap TextureParser::getTextureMap(const std::string &json_path,
                                                  const std::string &type) {
-  Visuals::TextureMap map;
+  Texture::TextureMap map;
   json json;
   loadJSONFile(json_path, json);
 
   for (auto &item : json[type].items()) {
     std::string animation_name = item.key();
-    EntityState state = getEntityState(animation_name);
-    if (state == EntityState::NONE)
+    PacmanState state = getEntityState(animation_name);
+    if (state == PacmanState::NONE)
       throw std::runtime_error("Unknown state in configuration file");
     auto area = parseIntRect(item.value()["area"]);
     auto texture = TextureManager::getTexture(
@@ -28,14 +28,18 @@ Visuals::TextureMap TextureParser::getTextureMap(const std::string &json_path,
 }
 
 // todo: why??
-EntityState TextureParser::getEntityState(const std::string &state_name) {
+PacmanState TextureParser::getEntityState(const std::string &state_name) {
   if (state_name == "idle")
-    return EntityState::IDLE;
+    return PacmanState::IDLE;
   if (state_name == "left")
-    return EntityState::LEFT;
+    return PacmanState::LEFT;
   if (state_name == "right")
-    return EntityState::RIGHT;
+    return PacmanState::RIGHT;
+  if (state_name == "up")
+    return PacmanState::UP;
+  if (state_name == "down")
+    return PacmanState::DOWN;
   if (state_name == "triggered")
-    return EntityState::TRIGGERED;
-  return EntityState::NONE;
+    return PacmanState::TRIGGERED;
+  return PacmanState::NONE;
 }
