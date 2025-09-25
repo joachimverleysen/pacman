@@ -10,9 +10,11 @@
 #include "../model/World.h"
 #include "../model/observer/Observer.h"
 #include "EntityView.h"
+#include "Renderer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <memory>
 
 struct Position;
 
@@ -24,17 +26,17 @@ public:
 
 private:
   State state_{State::RUNNING};
-  std::unique_ptr<EntityFactory> factory_;
+  std::shared_ptr<EntityFactory> factory_;
   std::shared_ptr<World> world_;
   std::unique_ptr<GameController> controller_;
   sf::RenderWindow &window_;
   sf::Sprite background_sprite_;
   sf::Texture background_texture_;
-private:
+  std::unique_ptr<Renderer> renderer_{nullptr};
 
+private:
 public:
-  Game(sf::RenderWindow &window
-       );
+  Game(sf::RenderWindow &window);
 
   void setup();
   void run();
@@ -48,6 +50,8 @@ public:
   void handleInput();
 
   void close();
+
+  void onEntitiesUpdate() override {};
 };
 
 #endif // DOODLEJUMP_GAME_H

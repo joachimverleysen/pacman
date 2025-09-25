@@ -5,7 +5,12 @@
 #include "Player.h"
 #include "../CollisionHandler.h"
 
-void Player::update(float delta_time) { notifyObservers(); }
+void Player::update(float delta_time) {
+
+  if (position_.x > 200)
+    deactivate();
+  notifyObservers();
+}
 
 void Player::onCollision(Entity *other) {}
 

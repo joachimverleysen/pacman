@@ -1,17 +1,17 @@
 #include "Game.h"
 #include "../configure/constants.h"
+#include "Renderer.h"
 #include <iostream>
+#include <memory>
 
-Game::Game(sf::RenderWindow &window)
-    : window_(window){
-  setup();
-}
+Game::Game(sf::RenderWindow &window) : window_(window) { setup(); }
 
 void Game::update() {
   window_.clear();
   window_.draw(background_sprite_);
   float delta_time = Stopwatch::getInstance()->getDeltaTime();
   world_->update(delta_time);
+  renderer_->render();
   window_.display();
 
   Stopwatch::getInstance()->capFramerate(100);
@@ -26,6 +26,8 @@ void Game::run() {
 }
 
 void Game::setup() {
+  auto sw = Stopwatch::getInstance();
+  float delta_time = sw->getDeltaTime();
   sf::Texture background_texture;
   // Set file_background texture + sprite
   if (!background_texture_.loadFromFile(Config::TextureFiles::background)) {
@@ -35,7 +37,9 @@ void Game::setup() {
   try {
     factory_ = std::make_unique<EntityFactory>(*this, window_);
     world_ = std::make_shared<World>(*factory_);
+    world_->initialize(delta_time);
     controller_ = std::make_unique<GameController>(*world_);
+    renderer_ = std::make_unique<Renderer>(window_, factory_);
     std::shared_ptr<EntityFactory> view_factory_ =
         std::make_shared<EntityFactory>(*this, window_);
   } catch (std::runtime_error &e) {

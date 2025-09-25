@@ -28,11 +28,9 @@ public:
 
 public:
   explicit World(EntityFactory &factory) : factory_(factory) {
-    initialize();
-    checkInitialization();
   };
 
-  void initialize();
+  void initialize(float delta_time);
 
   void checkInitialization() const;
 

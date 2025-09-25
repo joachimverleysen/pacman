@@ -3,8 +3,8 @@
 //
 
 #include "World.h"
-#include "CollisionHandler.h"
 #include "../configure/constants.h"
+#include "CollisionHandler.h"
 
 const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
   return entities_;
@@ -19,9 +19,14 @@ void World::createPlayer(float x, float y) {
   player_->setPosition({0, -500});
   entities_.push_back(player_);
   new_entities_.push_back(player_);
+  notifyObservers();
 }
 
-void World::initialize() { createPlayer(0, -500); }
+void World::initialize(float delta_time) {
+  createPlayer(0, -500);
+  updateEntities(delta_time);
+  checkInitialization();
+}
 
 Player *World::getPlayer() const { return player_.get(); }
 
@@ -32,18 +37,18 @@ void World::updateEntities(float delta_time) {
   }
 
   // Remove inactive entities
-//  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
-//                                 [](const std::shared_ptr<Entity> &entity) {
-//                                   return !entity->isActive();
-//                                 }),
-//                  entities_.end());
+  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
+                                 [](const std::shared_ptr<Entity> &entity) {
+                                   return !entity->isActive();
+                                 }),
+                  entities_.end());
 }
 
 void World::update(float delta_time) {
   if (!player_->isActive()) {
     return;
   }
-  updateEntities(delta_time);
+//  updateEntities(delta_time)
   checkCollisions();
   new_entities_.clear();
 }

@@ -5,12 +5,11 @@
 #ifndef DOODLEJUMP_OBSERVER_H
 #define DOODLEJUMP_OBSERVER_H
 
-
 class Observer {
 public:
-    virtual ~Observer() = default;
-    virtual void update() = 0;
+  virtual ~Observer() = default;
+  virtual void update() = 0;
+  virtual void onEntitiesUpdate() = 0;
 };
 
-
-#endif //DOODLEJUMP_OBSERVER_H
+#endif // DOODLEJUMP_OBSERVER_H

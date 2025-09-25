@@ -34,7 +34,6 @@ void EntityView::setPosition(Position &position) {
 void EntityView::update() {
   updatePosition();
   updateTexture();
-  draw(window_);
 }
 
 void EntityView::updatePosition() {

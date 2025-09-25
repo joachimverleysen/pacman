@@ -34,11 +34,13 @@ private:
 
 public:
   EntityView(std::weak_ptr<Entity> entity, Texture::TextureMap texture_map,
-             sf::RenderWindow& window);
+             sf::RenderWindow &window);
 
   ~EntityView() override;
 
   void update() override;
+
+  void onEntitiesUpdate() override {};
 
   void updateTexture();
 

@@ -12,9 +12,10 @@ set(SRC main main.cpp
         view/TextureParser.cpp
         model/entity/Entity.cpp
         model/Stopwatch.cpp
-		view/Visuals.cpp
+				view/Visuals.cpp
         model/CollisionHandler.cpp
         model/Random.cpp
+				view/Renderer.cpp
 )
 
 add_executable(main ${SRC})
