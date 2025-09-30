@@ -40,7 +40,6 @@ public:
 
   void update() override;
 
-  void onEntitiesUpdate() override {};
 
   void updateTexture();
 

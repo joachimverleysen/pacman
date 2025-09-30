@@ -6,7 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 #include <vector>
-class Renderer : public Observer {
+class Renderer {
   sf::RenderWindow &window_;
   std::weak_ptr<EntityFactory> factory_;
   std::vector<std::weak_ptr<EntityView>> views_;
@@ -18,8 +18,6 @@ public:
 public:
   void render();
 
-  void onEntitiesUpdate() override;
 
-  void update() override {};
 };
 #endif // !RENDERER_H

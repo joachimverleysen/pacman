@@ -49,3 +49,13 @@ const BoundingBox &Entity::getSpawn() const { return spawn_box_; }
 void Entity::setState(PacmanState state) {
   state_ = state;
 }
+
+void Entity::notifyDeactivate() {
+  for (auto& o : observers_)
+    o->onDeactivate();
+}
+
+void Entity::deactivate() {
+   is_active_ = false;
+   notifyDeactivate();
+}

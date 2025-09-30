@@ -51,7 +51,6 @@ public:
 
   void close();
 
-  void onEntitiesUpdate() override {};
 };
 
 #endif // DOODLEJUMP_GAME_H

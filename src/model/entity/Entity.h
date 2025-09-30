@@ -56,7 +56,7 @@ public:
   virtual ~Entity() = default;
 
 public:
-  virtual void update(float delta_time) = 0;
+  virtual void update() = 0;
 
   const BoundingBox &getSpawn() const;
 
@@ -66,7 +66,8 @@ public:
   [[nodiscard]] PacmanState getCurrentState() const;
 
   virtual void activate() { is_active_ = true; };
-  virtual void deactivate() { is_active_ = false; };
+  virtual void deactivate();
+  void notifyDeactivate();
   [[nodiscard]] bool isActive() const { return is_active_; }
 
 public:
