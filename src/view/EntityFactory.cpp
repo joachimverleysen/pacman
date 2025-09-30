@@ -3,10 +3,7 @@
 
 std::shared_ptr<Player> EntityFactory::createPlayer() {
   std::shared_ptr<Player> player = std::make_shared<Player>(
-    Config::Player::WIDTH,
-    Config::Player::HEIGHT,
-    Config::Player::SCALE
-    );
+      Config::Player::WIDTH, Config::Player::HEIGHT, Config::Player::SCALE);
   // todo: no hardcoded
   std::string type = "pacman";
   Texture::TextureMap texture_map =
@@ -15,5 +12,10 @@ std::shared_ptr<Player> EntityFactory::createPlayer() {
       player, texture_map, window_); // view is passed as a weak pointer here
 
   player->addObserver(view); // view is passed as shared pointer here
+  views_.push_back(view);
   return player;
+}
+
+const std::vector<std::weak_ptr<EntityView>> &EntityFactory::getViews() const {
+  return views_;
 }

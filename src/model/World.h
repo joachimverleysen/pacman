@@ -28,23 +28,23 @@ public:
 
 public:
   explicit World(EntityFactory &factory) : factory_(factory) {
-    initialize();
-    checkInitialization();
   };
 
   void initialize();
+
+  void updateAllEntities();
 
   void checkInitialization() const;
 
   [[nodiscard]] Player *getPlayer() const;
 
-  void update(float delta_time);
+  void update();
 
   void checkCollisions();
 
   void createPlayer(float x, float y);
 
-  void updateEntities(float delta_time);
+  void cleanupEntities();
 };
 
 #endif // DOODLEJUMP_WORLD_H

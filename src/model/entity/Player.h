@@ -20,7 +20,7 @@ public:
 
   void move(Utils::Direction direction);
 
-  void update(float delta_time) override;
+  void update() override;
 
   bool allowsSpawn(Entity *other) override;
 

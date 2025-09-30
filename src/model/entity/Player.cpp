@@ -4,8 +4,15 @@
 
 #include "Player.h"
 #include "../CollisionHandler.h"
+#include "../Stopwatch.h"
 
-void Player::update(float delta_time) { notifyObservers(); }
+void Player::update() {
+  if (position_.x > 200) {
+    std::cout << "deac" << std::endl;
+    deactivate();
+  }
+  notifyObservers();
+}
 
 void Player::onCollision(Entity *other) {}
 
@@ -22,7 +29,8 @@ void Player::move(Utils::Direction direction) {
   if (direction == Utils::Direction::DOWN) {
     position_.y -= speed_;
   }
-  notifyObservers();
+  float delta_time = Stopwatch::getInstance()->getDeltaTime();
+  update();
 }
 
 EntityType Player::getType() const { return EntityType::Player; }

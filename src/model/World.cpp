@@ -3,8 +3,9 @@
 //
 
 #include "World.h"
-#include "CollisionHandler.h"
 #include "../configure/constants.h"
+#include "CollisionHandler.h"
+#include "Stopwatch.h"
 
 const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
   return entities_;
@@ -18,32 +19,41 @@ void World::createPlayer(float x, float y) {
   player_ = factory_.createPlayer();
   player_->setPosition({0, -500});
   entities_.push_back(player_);
-  new_entities_.push_back(player_);
+//  new_entities_.push_back(player_);
+  notifyObservers();
 }
 
-void World::initialize() { createPlayer(0, -500); }
+void World::initialize() {
+  createPlayer(0, -500);
+  cleanupEntities();
+  checkInitialization();
+  player_->update();
+}
 
 Player *World::getPlayer() const { return player_.get(); }
 
-void World::updateEntities(float delta_time) {
-  // Update every entity
-  for (auto &entity : entities_) {
-    entity->update(delta_time);
-  }
+void World::cleanupEntities() {
+  for (auto& e : entities_) {
+    if (!e->isActive()) {
 
-  // Remove inactive entities
-//  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
-//                                 [](const std::shared_ptr<Entity> &entity) {
-//                                   return !entity->isActive();
-//                                 }),
-//                  entities_.end());
+    }
+  }
+  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
+                                 [this](const std::shared_ptr<Entity> &entity) {
+
+                                    // If any entity gets deactivated, notify observers
+                                    bool active = entity->isActive();
+                                    if (!active) notifyObservers();
+                                   return !entity->isActive();
+                                 }),
+                  entities_.end());
 }
 
-void World::update(float delta_time) {
+void World::update() {
   if (!player_->isActive()) {
     return;
   }
-  updateEntities(delta_time);
+  cleanupEntities();
   checkCollisions();
   new_entities_.clear();
 }
@@ -60,4 +70,10 @@ void World::checkCollisions() {
 void World::checkInitialization() const {
   if (!player_)
     throw std::runtime_error("Player not initialized");
+}
+
+void World::updateAllEntities() {
+  for (auto& e : entities_) {
+    e->update();
+  }
 }
