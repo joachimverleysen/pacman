@@ -4,10 +4,10 @@
 #ifndef DOODLEJUMP_ENTITYFACTORY_H
 #define DOODLEJUMP_ENTITYFACTORY_H
 
-#include "../model/entity/AbstractFactory.h"
-#include "../model/entity/Player.h"
-#include "../utils/JSONParser.h"
-#include "../utils/json.hpp"
+#include "../logic/entity/AbstractFactory.h"
+#include "../logic/entity/Player.h"
+#include "../logic/utils/JSONParser.h"
+#include "../logic/utils/json.hpp"
 #include "../view/EntityView.h"
 #include "../view/TextureParser.h"
 #include <SFML/Window/Window.hpp>

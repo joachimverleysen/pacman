@@ -1,10 +1,13 @@
 #include "Game.h"
 #include "../configure/constants.h"
 #include "Renderer.h"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <iostream>
 #include <memory>
 
-Game::Game(sf::RenderWindow &window) : window_(window) { setup(); }
+Game::Game()
+    : window_(sf::RenderWindow({Config::Window::WIDTH, Config::Window::HEIGHT},
+                               "Pacman", sf::Style::Close)) {setup();}
 
 void Game::update() {
   window_.clear();
@@ -17,11 +20,13 @@ void Game::update() {
 }
 
 void Game::run() {
-  if (getState() != State::RUNNING) {
-    close();
+  while (window_.isOpen()) {
+    if (getState() != State::RUNNING) {
+      close();
+    }
+    handleInput();
+    update();
   }
-  handleInput();
-  update();
 }
 
 void Game::setup() {
@@ -32,6 +37,7 @@ void Game::setup() {
   }
   background_sprite_.setTexture(background_texture_);
   try {
+
     factory_ = std::make_unique<EntityFactory>(*this, window_);
     world_ = std::make_shared<World>(*factory_);
     world_->initialize();

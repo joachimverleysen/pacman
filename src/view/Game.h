@@ -5,10 +5,10 @@
 #ifndef DOODLEJUMP_GAME_H
 #define DOODLEJUMP_GAME_H
 
-#include "../controller/GameController.h"
-#include "../model/Stopwatch.h"
-#include "../model/World.h"
-#include "../model/observer/Observer.h"
+#include "../logic/World.h"
+#include "../logic/controller/GameController.h"
+#include "../logic/observer/Observer.h"
+#include "../logic/utils/Stopwatch.h"
 #include "EntityView.h"
 #include "Renderer.h"
 #include <SFML/Graphics.hpp>
@@ -29,14 +29,14 @@ private:
   std::shared_ptr<EntityFactory> factory_;
   std::shared_ptr<World> world_;
   std::unique_ptr<GameController> controller_;
-  sf::RenderWindow &window_;
+  sf::RenderWindow window_;
   sf::Sprite background_sprite_;
   sf::Texture background_texture_;
   std::unique_ptr<Renderer> renderer_{nullptr};
 
 private:
 public:
-  Game(sf::RenderWindow &window);
+  Game();
 
   void setup();
   void run();
@@ -50,7 +50,6 @@ public:
   void handleInput();
 
   void close();
-
 };
 
 #endif // DOODLEJUMP_GAME_H

@@ -5,27 +5,27 @@
 #ifndef DOODLEJUMP_TEXTURE_PARSER_H
 #define DOODLEJUMP_TEXTURE_PARSER_H
 
-#include "../utils/json.hpp"
+#include "../logic/utils/JSONParser.h"
+#include "../logic/utils/json.hpp"
 #include "../view/EntityView.h"
 #include "EntityView.h"
-#include "../utils/JSONParser.h"
 
 using json = nlohmann::json;
 
-
 class TextureParser : public JSONParser {
 private:
-    json data_;
-public:
-    TextureParser() = default;
+  json data_;
 
 public:
+  TextureParser() = default;
 
-    static Texture::TextureMap getTextureMap(const std::string &json_path, const std::string &type);
+public:
+  static Texture::TextureMap getTextureMap(const std::string &json_path,
+                                           const std::string &type);
 
-    static sf::IntRect parseIntRect(const json &arr);
+  static sf::IntRect parseIntRect(const json &arr);
 
-    static PacmanState getEntityState(const std::string &);
+  static PacmanState getEntityState(const std::string &);
 };
 
-#endif //DOODLEJUMP_TEXTURE_PARSER_H
+#endif // DOODLEJUMP_TEXTURE_PARSER_H

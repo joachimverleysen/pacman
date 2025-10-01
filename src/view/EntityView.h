@@ -5,8 +5,8 @@
 #ifndef DOODLEJUMP_ENTITYVIEW_H
 #define DOODLEJUMP_ENTITYVIEW_H
 
-#include "../model/entity/Entity.h"
-#include "../model/observer/Observer.h"
+#include "../logic/entity/Entity.h"
+#include "../logic/observer/Observer.h"
 #include "TextureManager.h"
 #include "Visuals.h"
 #include <SFML/Graphics.hpp>
@@ -39,7 +39,6 @@ public:
   ~EntityView() override;
 
   void update() override;
-
 
   void updateTexture();
 
