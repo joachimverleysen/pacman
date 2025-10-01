@@ -6,5 +6,6 @@ add_library(view
 				Visuals.cpp
 				Renderer.cpp
 				TextureManager.h
+				Camera.cpp
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)

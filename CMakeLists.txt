@@ -28,7 +28,7 @@ target_compile_features(main PRIVATE cxx_std_17)
 install(TARGETS	main DESTINATION bin)
 
 IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  SET (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/installed" CACHE PATH "default install path" FORCE)
+  SET (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE PATH "default install path" FORCE)
 ENDIF()
 
 

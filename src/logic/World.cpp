@@ -17,14 +17,14 @@ const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
 void World::createPlayer(float x, float y) {
   // todo : extract scale constant
   player_ = factory_.createPlayer();
-  player_->setPosition({0, -500});
+  player_->setPosition({0, 0});
   entities_.push_back(player_);
   //  new_entities_.push_back(player_);
   notifyObservers();
 }
 
 void World::initialize() {
-  createPlayer(0, -500);
+  createPlayer(0, 0);
   cleanupEntities();
   checkInitialization();
   player_->update();

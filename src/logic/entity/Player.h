@@ -5,13 +5,13 @@
 #ifndef DOODLEJUMP_PLAYER_H
 #define DOODLEJUMP_PLAYER_H
 
+#include "../../configure/constants.h"
 #include "../utils/Utils.h"
 #include "Entity.h"
 #include "iostream"
 
 class Player : public Entity {
-  float speed_{10};
-  float vertical_speed_{0};
+  float speed_{Config::Player::SPEED * Config::Window::BASE_SCALE};
 
 public:
   Player() = default;

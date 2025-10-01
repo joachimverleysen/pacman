@@ -10,22 +10,21 @@
 namespace Config {
 namespace TextureFiles {
 inline const std::string background = "assets/background/bck@2x.png";
-    inline const std::string sprites_json = "assets/textures.json";
-}
+inline const std::string sprites_json = "assets/textures.json";
+} // namespace TextureFiles
+
 namespace Window {
+inline const float BASE_SCALE = 0.001;
 inline const unsigned int WIDTH = 620; // 620
-inline const unsigned int HEIGHT = 1000;
+inline const unsigned int HEIGHT = 700;
 
 } // namespace Window
 
 namespace Player {
-inline const float JUMP_FORCE = 120;
-inline const float MASS = 180;
-inline const float TERMINAL_VELOCITY = 400;
-inline const float HORIZONTAL_SPEED = 600.0f;
 inline const float SCALE = 3;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
+inline const float SPEED = 40;
 } // namespace Player
 
 namespace Camera {

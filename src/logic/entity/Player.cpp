@@ -7,7 +7,8 @@
 #include "../utils/Stopwatch.h"
 
 void Player::update() {
-  if (position_.x > 200) {
+  std::cout << position_.x << " " << position_.y << std::endl;
+  if (position_.x > 0.5) {
     std::cout << "deac" << std::endl;
     deactivate();
   }
@@ -29,6 +30,7 @@ void Player::move(Utils::Direction direction) {
   if (direction == Utils::Direction::DOWN) {
     position_.y -= speed_;
   }
+
   float delta_time = Stopwatch::getInstance()->getDeltaTime();
   update();
 }

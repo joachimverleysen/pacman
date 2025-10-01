@@ -4,7 +4,7 @@
 
 #include "EntityView.h"
 
-#include "../view/Visuals.h"
+#include "Camera.h"
 #include "Game.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>

@@ -16,9 +16,4 @@ enum class AnimationState { IDLE, LEFT, RIGHT };
 
 } // namespace Texture
 
-namespace Camera {
-Position world2SFML(const Position &position);
-Position SFML2World(const Position &position);
-} // namespace Camera
-
 #endif // DOODLEJUMP_VISUALS_H

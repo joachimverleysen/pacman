@@ -5,6 +5,7 @@
 #ifndef DOODLEJUMP_WORLD_H
 #define DOODLEJUMP_WORLD_H
 
+#include "../configure/constants.h"
 #include "../view/EntityFactory.h"
 #include "../view/EntityView.h"
 #include "entity/Player.h"
@@ -18,7 +19,6 @@ private:
   std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> new_entities_;
   EntityFactory &factory_;
-  float speed_{10};
 
 public:
   [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &getEntities() const;
