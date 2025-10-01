@@ -3,8 +3,8 @@
 //
 
 #include "Player.h"
-#include "../CollisionHandler.h"
-#include "../Stopwatch.h"
+#include "../utils/CollisionHandler.h"
+#include "../utils/Stopwatch.h"
 
 void Player::update() {
   if (position_.x > 200) {

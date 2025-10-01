@@ -4,8 +4,8 @@
 
 #include "World.h"
 #include "../configure/constants.h"
-#include "CollisionHandler.h"
-#include "Stopwatch.h"
+#include "utils/CollisionHandler.h"
+#include "utils/Stopwatch.h"
 
 const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
   return entities_;
@@ -19,7 +19,7 @@ void World::createPlayer(float x, float y) {
   player_ = factory_.createPlayer();
   player_->setPosition({0, -500});
   entities_.push_back(player_);
-//  new_entities_.push_back(player_);
+  //  new_entities_.push_back(player_);
   notifyObservers();
 }
 
@@ -33,17 +33,17 @@ void World::initialize() {
 Player *World::getPlayer() const { return player_.get(); }
 
 void World::cleanupEntities() {
-  for (auto& e : entities_) {
+  for (auto &e : entities_) {
     if (!e->isActive()) {
-
     }
   }
   entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
                                  [this](const std::shared_ptr<Entity> &entity) {
-
-                                    // If any entity gets deactivated, notify observers
-                                    bool active = entity->isActive();
-                                    if (!active) notifyObservers();
+                                   // If any entity gets deactivated, notify
+                                   // observers
+                                   bool active = entity->isActive();
+                                   if (!active)
+                                     notifyObservers();
                                    return !entity->isActive();
                                  }),
                   entities_.end());
@@ -73,7 +73,7 @@ void World::checkInitialization() const {
 }
 
 void World::updateAllEntities() {
-  for (auto& e : entities_) {
+  for (auto &e : entities_) {
     e->update();
   }
 }

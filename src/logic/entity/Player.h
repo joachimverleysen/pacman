@@ -5,7 +5,7 @@
 #ifndef DOODLEJUMP_PLAYER_H
 #define DOODLEJUMP_PLAYER_H
 
-#include "../../utils/Utils.h"
+#include "../utils/Utils.h"
 #include "Entity.h"
 #include "iostream"
 

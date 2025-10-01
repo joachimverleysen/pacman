@@ -5,9 +5,9 @@
 #ifndef DOODLEJUMP_ENTITY_H
 #define DOODLEJUMP_ENTITY_H
 
-#include "../../utils/Position.h"
-#include "../../utils/Utils.h"
 #include "../observer/Subject.h"
+#include "../utils/Position.h"
+#include "../utils/Utils.h"
 #include "EntityType.h"
 #include "PacmanState.h"
 
