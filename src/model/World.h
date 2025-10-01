@@ -8,7 +8,6 @@
 #include "../view/EntityFactory.h"
 #include "../view/EntityView.h"
 #include "entity/Player.h"
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 #include <string>
 
@@ -27,8 +26,7 @@ public:
   getNewEntities() const;
 
 public:
-  explicit World(EntityFactory &factory) : factory_(factory) {
-  };
+  explicit World(EntityFactory &factory) : factory_(factory) {};
 
   void initialize();
 

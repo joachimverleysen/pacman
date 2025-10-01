@@ -8,9 +8,8 @@
 #include "../../utils/Position.h"
 #include "../../utils/Utils.h"
 #include "../observer/Subject.h"
-#include "PacmanState.h"
 #include "EntityType.h"
-#include <SFML/System/Vector2.hpp>
+#include "PacmanState.h"
 
 struct BoundingBox {
   BoundingBox() = default;
