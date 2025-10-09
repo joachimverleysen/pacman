@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include <memory>
+#include <stdexcept>
 
 // Renderer is a friend of EntityFactory.
 
@@ -8,7 +9,8 @@ void Renderer::render() {
 
   for (auto &v : factory_.lock()->views_) {
     if (!v.lock()->isActive())
-      v.lock()->draw(window_);
+      throw std::logic_error("View list should not contain inactive views");
+    v.lock()->draw(window_);
   }
 }
 
