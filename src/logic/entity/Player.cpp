@@ -7,9 +7,8 @@
 #include "../utils/Stopwatch.h"
 
 void Player::update() {
-  std::cout << position_.x << " " << position_.y << std::endl;
+  // todo
   if (position_.x > 0.5) {
-    std::cout << "deac" << std::endl;
     deactivate();
   }
   notifyObservers();

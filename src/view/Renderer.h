@@ -18,6 +18,8 @@ public:
 public:
   void render();
 
+  void updateViews();
 
+  void removeView(std::weak_ptr<EntityView>);
 };
 #endif // !RENDERER_H

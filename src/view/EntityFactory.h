@@ -33,6 +33,8 @@ public:
   std::shared_ptr<Player> createPlayer() override;
 
   const std::vector<std::weak_ptr<EntityView>> &getViews() const;
+
+  friend class Renderer;
 };
 
 #endif // DOODLEJUMP_ENTITYFACTORY_H
