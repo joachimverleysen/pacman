@@ -15,19 +15,42 @@ const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
 }
 
 void World::createPlayer(float x, float y) {
-  // todo : extract scale constant
   player_ = factory_.createPlayer();
-  player_->setPosition({0, 0});
+  player_->setPosition({x, y});
+  entities_.push_back(player_);
+  //  new_entities_.push_back(player_);
+  notifyObservers();
+}
+
+void World::createPlayer(std::shared_ptr<MazeNode> node) {
+  auto maze = Maze::getInstance();
+  Position pos = maze->getWorldPosition(node->row_, node->column_);
+  player_ = factory_.createPlayer();
+  player_->node_ = node;
+  player_->setPosition(pos);
   entities_.push_back(player_);
   //  new_entities_.push_back(player_);
   notifyObservers();
 }
 
 void World::initialize() {
-  createPlayer(0, 0);
+  //  createPlayer(20, 0);
   cleanupEntities();
-  checkInitialization();
-  player_->update();
+  //  checkInitialization();
+  //  player_->update();
+
+  Position pos;
+  auto maze = Maze::getInstance();
+  for (auto &vec : maze->node_map_) {
+    for (auto &node : vec) {
+      if (node) {
+        init_node_ = node;
+        pos = maze->getWorldPosition(node->row_, node->column_);
+      }
+    }
+  }
+  createPlayer(init_node_);
+  updateAllEntities();
 }
 
 Player *World::getPlayer() const { return player_.get(); }

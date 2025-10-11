@@ -9,14 +9,23 @@
 #include "../utils/Utils.h"
 #include "Entity.h"
 #include "iostream"
+#include <future>
+
+class MazeNode;
+typedef std::shared_ptr<MazeNode> NodePtr;
 
 class Player : public Entity {
   float speed_{Config::Player::SPEED * Config::Window::BASE_SCALE};
 
 public:
+  NodePtr node_;
+
+public:
   Player() = default;
 
   Player(float width, float height, float scale);
+
+  Player(NodePtr node, float width, float height, float scale);
 
   void move(Utils::Direction direction);
 

@@ -9,5 +9,7 @@ add_library(logic
         utils/Stopwatch.cpp
         utils/CollisionHandler.cpp
         utils/Random.cpp
+				maze/MazeNode.h
+				maze/Maze.cpp
 )
 

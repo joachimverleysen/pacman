@@ -19,6 +19,8 @@ EntityView::EntityView(std::weak_ptr<Entity> entity,
   position_ = convertPosition(entity.lock()->getPosition());
   sprite_.setTexture(*current_texture_);
   sprite_.setScale(entity_.lock()->getScale(), entity_.lock()->getScale());
+  sf::FloatRect bounds = sprite_.getLocalBounds();
+  sprite_.setOrigin(bounds.width / 2.0f, bounds.height / 2.0f);
 }
 
 EntityView::~EntityView() {
@@ -42,7 +44,9 @@ void EntityView::updatePosition() {
   setPosition(SFML_position);
 }
 
-void EntityView::draw(sf::RenderWindow &window) { window.draw(sprite_); }
+void EntityView::draw(sf::RenderWindow &window) {
+
+  window.draw(sprite_); }
 
 void EntityView::setTexture(const sf::Texture *texture) {
   sprite_.setTexture(*texture);

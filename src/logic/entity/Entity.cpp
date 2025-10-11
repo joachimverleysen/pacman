@@ -1,13 +1,13 @@
 //
 #include "Entity.h"
 
-float Entity::getBottom() const { return position_.y - height_; }
+float Entity::getBottom() const { return position_.y - 0.5 * height_; }
 
-float Entity::getTop() const { return position_.y; }
+float Entity::getTop() const { return position_.y + 0.5 * height_; }
 
-float Entity::getLeft() const { return position_.x; }
+float Entity::getLeft() const { return position_.x - 0.5 * width_; }
 
-float Entity::getRight() const { return position_.x + width_; }
+float Entity::getRight() const { return position_.x + 0.5 * width_; }
 
 PacmanState Entity::getCurrentState() const { return state_; }
 
