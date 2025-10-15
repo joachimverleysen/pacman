@@ -7,26 +7,6 @@
 #include <iostream>
 using namespace std;
 
-void GameController::handleInput() {
-  auto action = getAction();
-  if (action == GameController::Action::MOVE_LEFT) {
-    game_world_.getPlayer()->move(Utils::Direction::LEFT);
-    game_world_.getPlayer()->setState(Entity::State::LEFT);
-  }
-  if (action == GameController::Action::MOVE_RIGHT) {
-    game_world_.getPlayer()->move(Utils::Direction::RIGHT);
-    game_world_.getPlayer()->setState(Entity::State::RIGHT);
-  }
-  if (action == GameController::Action::MOVE_UP) {
-    game_world_.getPlayer()->move(Utils::Direction::UP);
-    game_world_.getPlayer()->setState(Entity::State::UP);
-  }
-  if (action == GameController::Action::MOVE_DOWN) {
-    game_world_.getPlayer()->move(Utils::Direction::DOWN);
-    game_world_.getPlayer()->setState(Entity::State::DOWN);
-  }
-}
-
 void GameController::handleInput(const sf::Event &event) {
   auto action = getAction(event);
   if (action == GameController::Action::MOVE_LEFT) {

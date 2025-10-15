@@ -16,7 +16,6 @@ class GameController {
 public:
   explicit GameController(World &game_world) : game_world_(game_world) {};
 
-  void handleInput();
   void handleInput(const sf::Event &event);
 
   static Action getAction();
