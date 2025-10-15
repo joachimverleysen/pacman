@@ -4,6 +4,7 @@
 
 #include "EntityView.h"
 
+#include "../logic/entity/Entity.h"
 #include "Camera.h"
 #include "Game.h"
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -14,7 +15,7 @@ EntityView::EntityView(std::weak_ptr<Entity> entity,
                        Texture::TextureMap texture_map,
                        sf::RenderWindow &window)
     : texture_map_(texture_map), entity_(entity),
-      current_texture_(texture_map[PacmanState::IDLE]), window_(window) {
+      current_texture_(texture_map[Entity::State::IDLE]), window_(window) {
 
   position_ = convertPosition(entity.lock()->getPosition());
   sprite_.setTexture(*current_texture_);
@@ -44,9 +45,7 @@ void EntityView::updatePosition() {
   setPosition(SFML_position);
 }
 
-void EntityView::draw(sf::RenderWindow &window) {
-
-  window.draw(sprite_); }
+void EntityView::draw(sf::RenderWindow &window) { window.draw(sprite_); }
 
 void EntityView::setTexture(const sf::Texture *texture) {
   sprite_.setTexture(*texture);
@@ -59,7 +58,7 @@ Position EntityView::convertPosition(const Position &position) {
 const Position &EntityView::getPosition() const { return position_; }
 
 void EntityView::updateTexture() {
-  PacmanState state = entity_.lock()->getCurrentState();
+  Entity::State state = entity_.lock()->getCurrentState();
   const sf::Texture *texture_new = texture_map_[state];
   setTexture(texture_new);
 }

@@ -43,7 +43,7 @@ void Game::loadMaze(const std::string &filename) {
     std::vector<char> row{};
     row.reserve(line.size());
     for (char c : line) {
-      if (c == 32) // Space
+      if (c == 32) // Ignore Spaces
         continue;
       row.push_back(c);
     }

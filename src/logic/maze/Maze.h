@@ -5,6 +5,7 @@
 #include "MazeNode.h"
 
 typedef std::vector<std::vector<char>> Grid;
+
 class Maze {
 private:
   static Maze *instance_;

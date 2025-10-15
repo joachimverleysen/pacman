@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 Maze *Maze::instance_ = nullptr;
+
 void Maze::loadGrid(Grid &grid) {
   grid_ = grid;
   // Initialize node map

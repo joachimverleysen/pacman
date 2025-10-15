@@ -25,7 +25,7 @@ public:
 
   static sf::IntRect parseIntRect(const json &arr);
 
-  static PacmanState getEntityState(const std::string &);
+  static Entity::State getEntityState(const std::string &);
 };
 
 #endif // DOODLEJUMP_TEXTURE_PARSER_H

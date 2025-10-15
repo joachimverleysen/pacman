@@ -39,10 +39,12 @@ void World::initialize() {
   //  checkInitialization();
   //  player_->update();
 
+  // Initialize init node
+  // todo: how to determine init node?
   Position pos;
   auto maze = Maze::getInstance();
-  for (auto &vec : maze->node_map_) {
-    for (auto &node : vec) {
+  for (auto &row : maze->node_map_) {
+    for (auto &node : row) {
       if (node) {
         init_node_ = node;
         pos = maze->getWorldPosition(node->row_, node->column_);
