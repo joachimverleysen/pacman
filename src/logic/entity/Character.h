@@ -9,7 +9,7 @@ using Config::Player::SPEED;
 
 class Character : public Entity {
 protected:
-  float speed_{SPEED * 0.01f};
+  float speed_{SPEED};
   Direction direction_{Direction::LEFT};
   bool moving_{false};
 

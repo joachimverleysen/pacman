@@ -25,15 +25,8 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 50;
+inline const float SPEED = 500;
 } // namespace Player
-
-namespace Camera {
-inline const float top_margin = 300;
-inline const float scroll_distance = 300;
-inline const float min_scroll_speed = 100.0f;
-inline const float max_scroll_speed = 400.0f;
-} // namespace Camera
 
 namespace Platform {
 inline const float SPEED = 200;

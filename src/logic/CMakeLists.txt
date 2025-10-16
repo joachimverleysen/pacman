@@ -11,6 +11,7 @@ add_library(logic
         utils/CollisionHandler.cpp
         utils/Random.cpp
 				utils/Vector.cpp
+				utils/Camera.cpp
 				maze/MazeNode.cpp
 				maze/Maze.cpp
 )

@@ -1,7 +1,9 @@
 #include "Character.h"
+#include "../utils/Camera.h"
 #include "../utils/Stopwatch.h"
 #include "../utils/Vector.h"
 #include <cmath>
+#include <iostream>
 
 using namespace Config;
 
@@ -29,24 +31,26 @@ void Character::update() {
 void Character::move() {
   if (!moving_)
     return;
-  float aspect = static_cast<float>(Window::WIDTH) / Window::HEIGHT;
   float delta = Stopwatch::getInstance()->getDeltaTime();
-  // Use statistics to replace the magic number
-  delta = std::min(delta, 0.2f); // Limit delta to avoid 'jumping'
-  float speed = speed_ * delta * aspect;
+  // std::cout << delta << '\n';
+  // todo: Use statistics to replace the magic number
+  delta = std::min(delta, 0.104f); // Limit delta to avoid 'jumping'
+  float speed = speed_ * delta;
+  Position new_pos = Camera::world2Window(position_);
 
   if (direction_ == Direction::LEFT) {
-    position_.x -= speed;
+    new_pos.x -= speed;
   }
   if (direction_ == Direction::RIGHT) {
-    position_.x += speed;
+    new_pos.x += speed;
   }
   if (direction_ == Direction::UP) {
-    position_.y += speed;
+    new_pos.y -= speed;
   }
   if (direction_ == Direction::DOWN) {
-    position_.y -= speed;
+    new_pos.y += speed;
   }
+  position_ = Camera::window2World(new_pos);
 }
 
 bool Character::overshotTarget() const {

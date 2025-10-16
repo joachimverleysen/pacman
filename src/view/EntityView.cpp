@@ -1,7 +1,7 @@
 #include "EntityView.h"
 
 #include "../logic/entity/Entity.h"
-#include "Camera.h"
+#include "../logic/utils/Camera.h"
 #include "Game.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
@@ -32,12 +32,13 @@ void EntityView::setPosition(Position &position) {
 
 void EntityView::update() {
   updatePosition();
+  // std::printf("window pos: %f, %f\n", position_.x, position_.y);
   updateTexture();
 }
 
 void EntityView::updatePosition() {
   auto entity_position = entity_.lock()->getPosition();
-  auto SFML_position = Camera::world2SFML(entity_position);
+  auto SFML_position = Camera::world2Window(entity_position);
   setPosition(SFML_position);
 }
 
