@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 12/12/24.
-//
-
 #ifndef DOODLEJUMP_CONSTANTS_H
 #define DOODLEJUMP_CONSTANTS_H
 
@@ -29,7 +25,7 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 20;
+inline const float SPEED = 50;
 } // namespace Player
 
 namespace Camera {

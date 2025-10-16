@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #include "World.h"
 #include "../configure/constants.h"
 #include "utils/CollisionHandler.h"
@@ -43,7 +39,7 @@ void World::initialize() {
     for (auto &node : row) {
       if (node) {
         init_node_ = node;
-        pos = maze->getWorldPosition(node->row_, node->column_);
+        pos = node->getPosition();
       }
     }
   }

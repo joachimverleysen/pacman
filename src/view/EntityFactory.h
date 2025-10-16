@@ -1,6 +1,3 @@
-//
-// Created by joachimverleysen on 12/3/24.
-//
 #ifndef DOODLEJUMP_ENTITYFACTORY_H
 #define DOODLEJUMP_ENTITYFACTORY_H
 

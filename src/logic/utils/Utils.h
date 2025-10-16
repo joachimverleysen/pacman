@@ -1,6 +1,3 @@
-//
-// Created by joachimverleysen on 12/5/24.
-//
 #ifndef DOODLEJUMP_UTILS_H
 #define DOODLEJUMP_UTILS_H
 

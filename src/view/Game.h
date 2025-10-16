@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #ifndef DOODLEJUMP_GAME_H
 #define DOODLEJUMP_GAME_H
 

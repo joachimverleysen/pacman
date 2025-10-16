@@ -18,6 +18,8 @@ struct MazeNode {
   int column_;
   Neighbours neighbours_;
 
+  Position getPosition() const;
+
   MazeNode(int row, int column) : row_(row), column_(column) {}
 };
 #endif // !MAZE_NODE_H

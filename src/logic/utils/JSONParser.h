@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/27/24.
-//
-
 #ifndef DOODLEJUMP_JSONPARSER_H
 #define DOODLEJUMP_JSONPARSER_H
 

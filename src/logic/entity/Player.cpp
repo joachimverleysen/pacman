@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #include "Player.h"
 #include "../utils/CollisionHandler.h"
 #include "../utils/Vector.h"

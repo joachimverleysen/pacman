@@ -39,7 +39,7 @@ void Game::loadMaze(const std::string &filename) {
   std::string line;
   std::ifstream MazeFile(filename);
   while (std::getline(MazeFile, line)) {
-    std::cout << line << '\n';
+    // std::cout << line << '\n';
     std::vector<char> row{};
     row.reserve(line.size());
     for (char c : line) {

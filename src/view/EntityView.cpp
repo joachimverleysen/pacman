@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #include "EntityView.h"
 
 #include "../logic/entity/Entity.h"

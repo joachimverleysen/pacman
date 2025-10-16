@@ -1,6 +1,3 @@
-//
-// Created by joachimverleysen on 12/10/24.
-//
 #include "TextureParser.h"
 #include "TextureManager.h"
 
