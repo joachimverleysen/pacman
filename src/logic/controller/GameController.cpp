@@ -5,30 +5,52 @@
 #include "GameController.h"
 #include <SFML/Window/Event.hpp>
 #include <iostream>
+#include <optional>
 using namespace std;
+typedef GameController::Action Action;
 
+std::optional<Direction> getDirection(Action action) {
+  switch (action) {
+  case GameController::Action::MOVE_LEFT:
+    return Direction::LEFT;
+  case GameController::Action::MOVE_RIGHT:
+    return Direction::RIGHT;
+  case GameController::Action::MOVE_UP:
+    return Direction::UP;
+  case GameController::Action::MOVE_DOWN:
+    return Direction::DOWN;
+  case GameController::Action::NONE:
+    return std::nullopt;
+  }
+}
 void GameController::handleInput(const sf::Event &event) {
   auto action = getAction(event);
-  if (action == GameController::Action::MOVE_LEFT) {
-    game_world_.getPlayer()->setState(Entity::State::LEFT);
-    game_world_.getPlayer()->move(Utils::Direction::LEFT);
+  auto player = game_world_.getPlayer();
+  std::optional<Direction> direction = getDirection(action);
+  if (action == Action::NONE)
+    return;
+  if (!direction)
+    return;
+  if (player->moving_)
+    return;
+  player->direction_ = direction.value();
+  player->moving_ = true;
+  if (action == Action::MOVE_LEFT) {
+    player->setState(Entity::State::LEFT);
   }
-  if (action == GameController::Action::MOVE_RIGHT) {
-    game_world_.getPlayer()->setState(Entity::State::RIGHT);
-    game_world_.getPlayer()->move(Utils::Direction::RIGHT);
+  if (action == Action::MOVE_RIGHT) {
+    player->setState(Entity::State::RIGHT);
   }
-  if (action == GameController::Action::MOVE_UP) {
-    game_world_.getPlayer()->setState(Entity::State::UP);
-    game_world_.getPlayer()->move(Utils::Direction::UP);
+  if (action == Action::MOVE_UP) {
+    player->setState(Entity::State::UP);
   }
-  if (action == GameController::Action::MOVE_DOWN) {
-    game_world_.getPlayer()->setState(Entity::State::DOWN);
-    game_world_.getPlayer()->move(Utils::Direction::DOWN);
+  if (action == Action::MOVE_DOWN) {
+    player->setState(Entity::State::DOWN);
   }
 }
 
-GameController::Action GameController::getAction(const sf::Event &event) {
-  GameController::Action action;
+Action GameController::getAction(const sf::Event &event) {
+  Action action;
   switch (event.key.code) {
   case sf::Keyboard::Left:
     action = Action::MOVE_LEFT;
@@ -49,7 +71,7 @@ GameController::Action GameController::getAction(const sf::Event &event) {
   return action;
 }
 
-GameController::Action GameController::getAction() {
+Action GameController::getAction() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
     return Action::MOVE_LEFT;
   }

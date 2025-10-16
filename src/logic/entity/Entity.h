@@ -62,7 +62,7 @@ public:
   const BoundingBox &getSpawn() const;
 
   virtual void onCollision(Entity *other) = 0;
-  void move(const Utils::Direction &direction, float speed);
+  void move(const Direction &direction, float speed);
   virtual bool allowsSpawn(Entity *other) = 0;
   [[nodiscard]] State getCurrentState() const;
 

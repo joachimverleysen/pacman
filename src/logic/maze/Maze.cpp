@@ -43,13 +43,29 @@ void Maze::addNode(int row, int column) {
   node_map_[row][column] = node;
 }
 
-NodePtr Maze::findNeighbor(int row, int column, int d_row, int d_column) {
-  if (d_row != 0 and d_column != 0)
-    throw std::invalid_argument("Invalid combination of directional vectors");
-
+NodePtr Maze::findNeighbor(int row, int column, Direction direction) {
   if (at(row, column) != '+')
     throw std::invalid_argument("Invalid node position provided");
 
+  int d_row, d_column;
+  switch (direction) {
+  case Direction::LEFT:
+    d_row = 0;
+    d_column = -1;
+    break;
+  case Direction::RIGHT:
+    d_row = 0;
+    d_column = 1;
+    break;
+  case Direction::UP:
+    d_row = -1;
+    d_column = 0;
+    break;
+  case Direction::DOWN:
+    d_row = 1;
+    d_column = 0;
+    break;
+  }
   int i = row + d_row, j = column + d_column;
   while (at(i, j) != '0') {
     if (at(i, j) == 'X')
@@ -73,10 +89,10 @@ Neighbours Maze::findAllNeighbors(int row, int column) {
   if (!node)
     throw std::invalid_argument("Invalid node position provided");
   Neighbours neighbors;
-  neighbors.up = findNeighbor(row, column, 0, -1);
-  neighbors.down = findNeighbor(row, column, 0, 1);
-  neighbors.left = findNeighbor(row, column, -1, 0);
-  neighbors.right = findNeighbor(row, column, 1, 0);
+  neighbors.up = findNeighbor(row, column, Direction::UP);
+  neighbors.down = findNeighbor(row, column, Direction::DOWN);
+  neighbors.left = findNeighbor(row, column, Direction::LEFT);
+  neighbors.right = findNeighbor(row, column, Direction::RIGHT);
   return neighbors;
 }
 
@@ -91,6 +107,7 @@ NodePtr Maze::getNode(int row, int column) const {
 }
 
 Position Maze::getWorldPosition(int row, int column) const {
+  // World is bounded between -1 and +1, so width = 2
   float cell_width = 2.0 / getXunits();
   float cell_height = 2.0 / getYunits();
   float x_center = -1 + (cell_width / 2) + cell_width * column;

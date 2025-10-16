@@ -12,7 +12,8 @@ namespace Utils {
 using FilePath = std::string;
 
 // Direction
-enum class Direction { LEFT, RIGHT, UP, DOWN };
 } // namespace Utils
+
+enum class Direction { NONE, LEFT, RIGHT, UP, DOWN };
 
 #endif // DOODLEJUMP_UTILS_H

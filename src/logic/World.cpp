@@ -15,7 +15,7 @@ const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
 }
 
 void World::createPlayer(float x, float y) {
-  player_ = factory_.createPlayer();
+  // player_ = factory_.createPlayer();
   player_->setPosition({x, y});
   entities_.push_back(player_);
   //  new_entities_.push_back(player_);
@@ -23,11 +23,7 @@ void World::createPlayer(float x, float y) {
 }
 
 void World::createPlayer(std::shared_ptr<MazeNode> node) {
-  auto maze = Maze::getInstance();
-  Position pos = maze->getWorldPosition(node->row_, node->column_);
-  player_ = factory_.createPlayer();
-  player_->node_ = node;
-  player_->setPosition(pos);
+  player_ = factory_.createPlayer(node);
   entities_.push_back(player_);
   //  new_entities_.push_back(player_);
   notifyObservers();
@@ -80,6 +76,7 @@ void World::update() {
   }
   cleanupEntities();
   checkCollisions();
+  updateAllEntities();
   new_entities_.clear();
 }
 

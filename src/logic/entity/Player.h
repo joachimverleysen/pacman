@@ -11,25 +11,34 @@
 #include "iostream"
 #include <future>
 
+class GameController;
 class MazeNode;
 typedef std::shared_ptr<MazeNode> NodePtr;
 
 class Player : public Entity {
-  float speed_{Config::Player::SPEED * Config::Window::BASE_SCALE};
+  float speed_{Config::Player::SPEED * 0.01f};
+  Direction direction_{Direction::LEFT};
+  bool moving_{false};
 
 public:
-  NodePtr node_;
+  NodePtr current_node_;
+  NodePtr target_node_;
 
 public:
+  friend GameController;
   Player() = default;
 
   Player(float width, float height, float scale);
 
   Player(NodePtr node, float width, float height, float scale);
 
-  void move(Utils::Direction direction);
+  void move();
 
   void update() override;
+
+  void updateTargetNode();
+
+  bool overshotTarget() const;
 
   bool allowsSpawn(Entity *other) override;
 

@@ -30,7 +30,7 @@ public:
   explicit EntityFactory(Game &game, sf::RenderWindow &window)
       : game_(game), window_(window) {}
 
-  std::shared_ptr<Player> createPlayer() override;
+  std::shared_ptr<Player> createPlayer(NodePtr) override;
 
   const std::vector<std::weak_ptr<EntityView>> &getViews() const;
 

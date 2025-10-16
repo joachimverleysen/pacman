@@ -7,7 +7,7 @@
 
 class AbstractFactory {
 public:
-  virtual std::shared_ptr<Player> createPlayer() = 0;
+  virtual std::shared_ptr<Player> createPlayer(NodePtr) = 0;
   virtual ~AbstractFactory() = default;
 };
 

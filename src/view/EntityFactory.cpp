@@ -1,8 +1,8 @@
 #include "EntityFactory.h"
 #include "../configure/constants.h"
 
-std::shared_ptr<Player> EntityFactory::createPlayer() {
-  std::shared_ptr<Player> player = std::make_shared<Player>(
+std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
+  std::shared_ptr<Player> player = std::make_shared<Player>(node,
       Config::Player::WIDTH, Config::Player::HEIGHT, Config::Player::SCALE);
   // todo: no hardcoded
   std::string type = "pacman";

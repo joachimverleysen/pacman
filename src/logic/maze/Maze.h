@@ -33,9 +33,7 @@ public:
   unsigned int getYunits() const { return grid_.size(); }
   void addNode(int row, int column);
   Neighbours findAllNeighbors(int row, int column);
-  NodePtr
-  findNeighbor(int row, int column, int d_row,
-               int d_column); // d_row and d_column are directional vectors.
+  NodePtr findNeighbor(int row, int column, Direction direction);
 
   char at(int row, int column) const;
   NodePtr getNode(int row, int column) const;

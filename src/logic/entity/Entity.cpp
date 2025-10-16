@@ -29,14 +29,14 @@ BoundingBox Entity::getBoundingBox() const {
 
 void Entity::setBottom(float y) { position_.y = y + height_; }
 
-void Entity::move(const Utils::Direction &direction, float speed) {
-  if (direction == Utils::Direction::LEFT)
+void Entity::move(const Direction &direction, float speed) {
+  if (direction == Direction::LEFT)
     position_.x -= speed;
-  if (direction == Utils::Direction::RIGHT)
+  if (direction == Direction::RIGHT)
     position_.x += speed;
-  if (direction == Utils::Direction::UP)
+  if (direction == Direction::UP)
     position_.y += speed;
-  if (direction == Utils::Direction::DOWN)
+  if (direction == Direction::DOWN)
     position_.y -= speed;
 }
 

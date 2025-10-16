@@ -29,7 +29,7 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 40;
+inline const float SPEED = 20;
 } // namespace Player
 
 namespace Camera {
