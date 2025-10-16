@@ -35,6 +35,9 @@ void GameController::handleInput(const sf::Event &event) {
     return;
   player->direction_ = direction.value();
   player->moving_ = true;
+  auto target = player->target_node_;
+  if (target)
+    std::printf("target: row %d, col %d\n", target->row_, target->column_);
   if (action == Action::MOVE_LEFT) {
     player->setState(Entity::State::LEFT);
   }

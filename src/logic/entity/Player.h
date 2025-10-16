@@ -36,7 +36,7 @@ public:
 
   void update() override;
 
-  void updateTargetNode();
+  void updateNodes();
 
   bool overshotTarget() const;
 
@@ -45,6 +45,8 @@ public:
   void onCollision(Entity *other) override;
 
   EntityType getType() const override;
+
+  void updateTarget();
 };
 
 #endif // DOODLEJUMP_PLAYER_H

@@ -28,12 +28,15 @@ Player::Player(NodePtr node, float width, float height, float scale)
 void Player::update() {
   //  std::printf("wpos: %f %f", position_.x, position_.y);
   if (moving_)
+    updateTarget();
+    if (!target_node_)
+      moving_ = false;
     move();
   if (overshotTarget()) {
-//    updateTargetNode();
     Position pos = Maze::getInstance()->getWorldPosition(target_node_->row_,
                                                          target_node_->column_);
     setPosition(pos);
+    updateNodes();
     moving_ = false;
   }
   notifyObservers();
@@ -42,6 +45,7 @@ void Player::update() {
 void Player::onCollision(Entity *other) {}
 
 void Player::move() {
+  if (!moving_) return;
   float aspect = static_cast<float>(WIDTH) / HEIGHT;
   float speed = speed_ * Stopwatch::getInstance()->getDeltaTime() * aspect;
 
@@ -76,7 +80,15 @@ bool Player::overshotTarget() const {
 
   return node_2_self > node_2_target;
 }
-void Player::updateTargetNode() {
+
+void Player::updateTarget() {
+  auto maze = Maze::getInstance();
+  NodePtr new_target;
+  new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
+                                  direction_);
+  target_node_ = new_target;
+}
+void Player::updateNodes() {
   auto maze = Maze::getInstance();
   NodePtr new_target;
   new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
