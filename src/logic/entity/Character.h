@@ -12,25 +12,24 @@ protected:
   float speed_{SPEED};
   Direction direction_{Direction::LEFT};
   bool moving_{false};
-
-public:
   NodePtr current_node_;
   NodePtr target_node_;
 
-public:
-  Character(NodePtr node, float width, float height, float scale);
-  virtual ~Character() = default;
-
-public:
+protected:
   void move();
-
-  void update() override;
 
   void updateNodes();
 
   bool overshotTarget() const;
 
   void updateTarget();
+
+public:
+  Character(NodePtr node, float width, float height, float scale);
+  virtual ~Character() = default;
+
+public:
+  void update() override;
 
   void stop();
 
