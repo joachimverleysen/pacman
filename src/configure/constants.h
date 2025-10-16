@@ -16,8 +16,6 @@ inline const unsigned int Y_UNITS = 10;
 namespace Window {
 inline const float BASE_SCALE = 0.001;
 inline const unsigned int UNIT_LENGTH = 100;
-inline const unsigned int WIDTH = 620; // 620
-inline const unsigned int HEIGHT = 700;
 
 } // namespace Window
 
@@ -28,23 +26,10 @@ inline const float HEIGHT = 40;
 inline const float SPEED = 500;
 } // namespace Player
 
-namespace Platform {
-inline const float SPEED = 200;
-inline const float WIDTH = 100;
-inline const float HEIGHT = 30;
-inline const float MOVING_DISTANCE = 300;
-
-} // namespace Platform
-
 namespace Collision {
 inline const float min_x_distance = 20;
 inline const float max_y_distance = 30;
 } // namespace Collision
-
 } // namespace Config
-
-namespace CameraConfig {}
-
-// Collision offsets (technical)
 
 #endif // DOODLEJUMP_CONSTANTS_H
