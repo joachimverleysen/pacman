@@ -7,7 +7,7 @@
 
 #include "../../configure/constants.h"
 #include "../utils/Utils.h"
-#include "Entity.h"
+#include "Character.h"
 #include "iostream"
 #include <future>
 
@@ -15,38 +15,21 @@ class GameController;
 class MazeNode;
 typedef std::shared_ptr<MazeNode> NodePtr;
 
-class Player : public Entity {
-  float speed_{Config::Player::SPEED * 0.01f};
-  Direction direction_{Direction::LEFT};
-  bool moving_{false};
-
-public:
-  NodePtr current_node_;
-  NodePtr target_node_;
+class Player : public Character {
 
 public:
   friend GameController;
-  Player() = default;
+  Player() = delete;
 
   Player(float width, float height, float scale);
 
   Player(NodePtr node, float width, float height, float scale);
-
-  void move();
-
-  void update() override;
-
-  void updateNodes();
-
-  bool overshotTarget() const;
 
   bool allowsSpawn(Entity *other) override;
 
   void onCollision(Entity *other) override;
 
   EntityType getType() const override;
-
-  void updateTarget();
 };
 
 #endif // DOODLEJUMP_PLAYER_H

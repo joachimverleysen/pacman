@@ -34,7 +34,7 @@ void GameController::handleInput(const sf::Event &event) {
   if (player->moving_)
     return;
   player->direction_ = direction.value();
-  player->moving_ = true;
+  player->startMove();
   auto target = player->target_node_;
   if (target)
     std::printf("target: row %d, col %d\n", target->row_, target->column_);

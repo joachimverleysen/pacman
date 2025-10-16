@@ -1,6 +1,7 @@
 add_library(logic
         World.cpp
         entity/Player.cpp
+				entity/Character.cpp
         controller/GameController.cpp
         observer/Observer.cpp
         utils/JSONParser.cpp
