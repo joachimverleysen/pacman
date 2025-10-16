@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #ifndef DOODLEJUMP_ENTITY_H
 #define DOODLEJUMP_ENTITY_H
 
@@ -9,7 +5,6 @@
 #include "../utils/Position.h"
 #include "../utils/Utils.h"
 #include "EntityType.h"
-#include "PacmanState.h"
 
 struct BoundingBox {
   BoundingBox() = default;
@@ -31,6 +26,9 @@ struct BoundingBox {
 
 class Entity : public Subject {
 
+public:
+  enum class State { IDLE, LEFT, RIGHT, UP, DOWN, TRIGGERED, NONE };
+
 protected:
   EntityType type_{EntityType::None};
   Position position_{0, 0};
@@ -39,12 +37,12 @@ protected:
   float height_{0};
   float scale_{1};
   bool is_active_{true};
-  PacmanState state_{PacmanState::IDLE};
+  State state_{State::IDLE};
 
 public:
   Entity() = default;
 
-  void setState(PacmanState state);
+  void setState(State state);
 
   Entity(float x, float y)
       : position_(Position{x, y}), spawn_box_(getBoundingBox()) {}
@@ -60,9 +58,9 @@ public:
   const BoundingBox &getSpawn() const;
 
   virtual void onCollision(Entity *other) = 0;
-  void move(const Utils::Direction &direction, float speed);
+  void move(const Direction &direction, float speed);
   virtual bool allowsSpawn(Entity *other) = 0;
-  [[nodiscard]] PacmanState getCurrentState() const;
+  [[nodiscard]] State getCurrentState() const;
 
   virtual void activate() { is_active_ = true; };
   virtual void deactivate();

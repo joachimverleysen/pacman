@@ -1,12 +1,9 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #ifndef DOODLEJUMP_GAME_H
 #define DOODLEJUMP_GAME_H
 
 #include "../logic/World.h"
 #include "../logic/controller/GameController.h"
+#include "../logic/maze/Maze.h"
 #include "../logic/observer/Observer.h"
 #include "../logic/utils/Stopwatch.h"
 #include "EntityView.h"
@@ -33,6 +30,9 @@ private:
   sf::Sprite background_sprite_;
   sf::Texture background_texture_;
   std::unique_ptr<Renderer> renderer_{nullptr};
+
+private:
+  void loadMaze(const std::string &);
 
 private:
 public:

@@ -1,15 +1,15 @@
 //
 #include "Entity.h"
 
-float Entity::getBottom() const { return position_.y - height_; }
+float Entity::getBottom() const { return position_.y - 0.5 * height_; }
 
-float Entity::getTop() const { return position_.y; }
+float Entity::getTop() const { return position_.y + 0.5 * height_; }
 
-float Entity::getLeft() const { return position_.x; }
+float Entity::getLeft() const { return position_.x - 0.5 * width_; }
 
-float Entity::getRight() const { return position_.x + width_; }
+float Entity::getRight() const { return position_.x + 0.5 * width_; }
 
-PacmanState Entity::getCurrentState() const { return state_; }
+Entity::State Entity::getCurrentState() const { return state_; }
 
 float Entity::getScale() const { return scale_; }
 
@@ -29,14 +29,14 @@ BoundingBox Entity::getBoundingBox() const {
 
 void Entity::setBottom(float y) { position_.y = y + height_; }
 
-void Entity::move(const Utils::Direction &direction, float speed) {
-  if (direction == Utils::Direction::LEFT)
+void Entity::move(const Direction &direction, float speed) {
+  if (direction == Direction::LEFT)
     position_.x -= speed;
-  if (direction == Utils::Direction::RIGHT)
+  if (direction == Direction::RIGHT)
     position_.x += speed;
-  if (direction == Utils::Direction::UP)
+  if (direction == Direction::UP)
     position_.y += speed;
-  if (direction == Utils::Direction::DOWN)
+  if (direction == Direction::DOWN)
     position_.y -= speed;
 }
 
@@ -46,16 +46,14 @@ float Entity::getCenterY() const { return (getTop() + getBottom()) / 2; }
 
 const BoundingBox &Entity::getSpawn() const { return spawn_box_; }
 
-void Entity::setState(PacmanState state) {
-  state_ = state;
-}
+void Entity::setState(State state) { state_ = state; }
 
 void Entity::notifyDeactivate() {
-  for (auto& o : observers_)
+  for (auto &o : observers_)
     o->onDeactivate();
 }
 
 void Entity::deactivate() {
-   is_active_ = false;
-   notifyDeactivate();
+  is_active_ = false;
+  notifyDeactivate();
 }

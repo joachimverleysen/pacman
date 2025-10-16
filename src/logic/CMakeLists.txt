@@ -1,6 +1,7 @@
 add_library(logic
         World.cpp
         entity/Player.cpp
+				entity/Character.cpp
         controller/GameController.cpp
         observer/Observer.cpp
         utils/JSONParser.cpp
@@ -9,5 +10,9 @@ add_library(logic
         utils/Stopwatch.cpp
         utils/CollisionHandler.cpp
         utils/Random.cpp
+				utils/Vector.cpp
+				utils/Camera.cpp
+				maze/MazeNode.cpp
+				maze/Maze.cpp
 )
 

@@ -1,26 +1,25 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #ifndef DOODLEJUMP_PLAYER_H
 #define DOODLEJUMP_PLAYER_H
 
 #include "../../configure/constants.h"
 #include "../utils/Utils.h"
-#include "Entity.h"
+#include "Character.h"
 #include "iostream"
+#include <future>
 
-class Player : public Entity {
-  float speed_{Config::Player::SPEED * Config::Window::BASE_SCALE};
+class GameController;
+class MazeNode;
+typedef std::shared_ptr<MazeNode> NodePtr;
+
+class Player : public Character {
 
 public:
-  Player() = default;
+  friend GameController;
+  Player() = delete;
 
   Player(float width, float height, float scale);
 
-  void move(Utils::Direction direction);
-
-  void update() override;
+  Player(NodePtr node, float width, float height, float scale);
 
   bool allowsSpawn(Entity *other) override;
 

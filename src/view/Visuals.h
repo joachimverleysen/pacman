@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 12/11/24.
-//
-
 #ifndef DOODLEJUMP_VISUALS_H
 #define DOODLEJUMP_VISUALS_H
 
@@ -11,7 +7,7 @@
 #include <map>
 
 namespace Texture {
-using TextureMap = std::map<PacmanState, const sf::Texture *>;
+using TextureMap = std::map<Entity::State, const sf::Texture *>;
 enum class AnimationState { IDLE, LEFT, RIGHT };
 
 } // namespace Texture

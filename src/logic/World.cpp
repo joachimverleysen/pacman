@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #include "World.h"
 #include "../configure/constants.h"
 #include "utils/CollisionHandler.h"
@@ -15,19 +11,40 @@ const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
 }
 
 void World::createPlayer(float x, float y) {
-  // todo : extract scale constant
-  player_ = factory_.createPlayer();
-  player_->setPosition({0, 0});
+  // player_ = factory_.createPlayer();
+  player_->setPosition({x, y});
+  entities_.push_back(player_);
+  //  new_entities_.push_back(player_);
+  notifyObservers();
+}
+
+void World::createPlayer(std::shared_ptr<MazeNode> node) {
+  player_ = factory_.createPlayer(node);
   entities_.push_back(player_);
   //  new_entities_.push_back(player_);
   notifyObservers();
 }
 
 void World::initialize() {
-  createPlayer(0, 0);
+  //  createPlayer(20, 0);
   cleanupEntities();
-  checkInitialization();
-  player_->update();
+  //  checkInitialization();
+  //  player_->update();
+
+  // Initialize init node
+  // todo: how to determine init node?
+  Position pos;
+  auto maze = Maze::getInstance();
+  for (auto &row : maze->node_map_) {
+    for (auto &node : row) {
+      if (node) {
+        init_node_ = node;
+        pos = node->getPosition();
+      }
+    }
+  }
+  createPlayer(init_node_);
+  updateAllEntities();
 }
 
 Player *World::getPlayer() const { return player_.get(); }
@@ -55,6 +72,7 @@ void World::update() {
   }
   cleanupEntities();
   checkCollisions();
+  updateAllEntities();
   new_entities_.clear();
 }
 

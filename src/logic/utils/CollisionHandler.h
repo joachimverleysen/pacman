@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 12/25/24.
-//
-
 #ifndef DOODLEJUMP_COLLISIONHANDLER_H
 #define DOODLEJUMP_COLLISIONHANDLER_H
 

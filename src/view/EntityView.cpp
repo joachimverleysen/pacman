@@ -1,10 +1,7 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #include "EntityView.h"
 
-#include "Camera.h"
+#include "../logic/entity/Entity.h"
+#include "../logic/utils/Camera.h"
 #include "Game.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
@@ -14,11 +11,13 @@ EntityView::EntityView(std::weak_ptr<Entity> entity,
                        Texture::TextureMap texture_map,
                        sf::RenderWindow &window)
     : texture_map_(texture_map), entity_(entity),
-      current_texture_(texture_map[PacmanState::IDLE]), window_(window) {
+      current_texture_(texture_map[Entity::State::IDLE]), window_(window) {
 
   position_ = convertPosition(entity.lock()->getPosition());
   sprite_.setTexture(*current_texture_);
   sprite_.setScale(entity_.lock()->getScale(), entity_.lock()->getScale());
+  sf::FloatRect bounds = sprite_.getLocalBounds();
+  sprite_.setOrigin(bounds.width / 2.0f, bounds.height / 2.0f);
 }
 
 EntityView::~EntityView() {
@@ -33,12 +32,13 @@ void EntityView::setPosition(Position &position) {
 
 void EntityView::update() {
   updatePosition();
+  // std::printf("window pos: %f, %f\n", position_.x, position_.y);
   updateTexture();
 }
 
 void EntityView::updatePosition() {
   auto entity_position = entity_.lock()->getPosition();
-  auto SFML_position = Camera::world2SFML(entity_position);
+  auto SFML_position = Camera::world2Window(entity_position);
   setPosition(SFML_position);
 }
 
@@ -55,7 +55,7 @@ Position EntityView::convertPosition(const Position &position) {
 const Position &EntityView::getPosition() const { return position_; }
 
 void EntityView::updateTexture() {
-  PacmanState state = entity_.lock()->getCurrentState();
+  Entity::State state = entity_.lock()->getCurrentState();
   const sf::Texture *texture_new = texture_map_[state];
   setTexture(texture_new);
 }

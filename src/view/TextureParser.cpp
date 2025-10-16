@@ -1,6 +1,3 @@
-//
-// Created by joachimverleysen on 12/10/24.
-//
 #include "TextureParser.h"
 #include "TextureManager.h"
 
@@ -16,8 +13,8 @@ Texture::TextureMap TextureParser::getTextureMap(const std::string &json_path,
 
   for (auto &item : json[type].items()) {
     std::string animation_name = item.key();
-    PacmanState state = getEntityState(animation_name);
-    if (state == PacmanState::NONE)
+    Entity::State state = getEntityState(animation_name);
+    if (state == Entity::State::NONE)
       throw std::runtime_error("Unknown state in configuration file");
     auto area = parseIntRect(item.value()["area"]);
     auto texture = TextureManager::getTexture(
@@ -28,18 +25,18 @@ Texture::TextureMap TextureParser::getTextureMap(const std::string &json_path,
 }
 
 // todo: why??
-PacmanState TextureParser::getEntityState(const std::string &state_name) {
+Entity::State TextureParser::getEntityState(const std::string &state_name) {
   if (state_name == "idle")
-    return PacmanState::IDLE;
+    return Entity::State::IDLE;
   if (state_name == "left")
-    return PacmanState::LEFT;
+    return Entity::State::LEFT;
   if (state_name == "right")
-    return PacmanState::RIGHT;
+    return Entity::State::RIGHT;
   if (state_name == "up")
-    return PacmanState::UP;
+    return Entity::State::UP;
   if (state_name == "down")
-    return PacmanState::DOWN;
+    return Entity::State::DOWN;
   if (state_name == "triggered")
-    return PacmanState::TRIGGERED;
-  return PacmanState::NONE;
+    return Entity::State::TRIGGERED;
+  return Entity::State::NONE;
 }

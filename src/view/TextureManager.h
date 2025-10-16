@@ -1,7 +1,3 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
 #ifndef DOODLEJUMP_TEXTUREMANAGER_H
 #define DOODLEJUMP_TEXTUREMANAGER_H
 

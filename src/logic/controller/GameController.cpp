@@ -1,45 +1,87 @@
-//
-// Created by joachimverleysen on 11/26/24.
-//
-
-#include <iostream>
 #include "GameController.h"
+#include <SFML/Window/Event.hpp>
+#include <optional>
 using namespace std;
+typedef GameController::Action Action;
 
-void GameController::handleInput() {
-    auto action = getAction();
-    if (action == GameController::Action::MOVE_LEFT) {
-        game_world_.getPlayer()->move(Utils::Direction::LEFT);
-        game_world_.getPlayer()->setState(PacmanState::LEFT);
+std::optional<Direction> getDirection(Action action) {
+  switch (action) {
+  case GameController::Action::MOVE_LEFT:
+    return Direction::LEFT;
+  case GameController::Action::MOVE_RIGHT:
+    return Direction::RIGHT;
+  case GameController::Action::MOVE_UP:
+    return Direction::UP;
+  case GameController::Action::MOVE_DOWN:
+    return Direction::DOWN;
+  case GameController::Action::NONE:
+    return std::nullopt;
+  }
+}
+void GameController::handleInput(const sf::Event &event) {
+  auto action = getAction(event);
+  auto player = game_world_.getPlayer();
+  std::optional<Direction> direction = getDirection(action);
+  if (action == Action::NONE)
+    return;
+  if (!direction)
+    return;
+  if (player->moving_)
+    return;
+  player->direction_ = direction.value();
+  player->startMove();
+  auto target = player->target_node_;
+  if (target)
+    // std::printf("target: row %d, col %d\n", target->row_, target->column_);
+    if (action == Action::MOVE_LEFT) {
+      player->setState(Entity::State::LEFT);
     }
-    if (action == GameController::Action::MOVE_RIGHT) {
-        game_world_.getPlayer()->move(Utils::Direction::RIGHT);
-        game_world_.getPlayer()->setState(PacmanState::RIGHT);
-    }
-    if (action == GameController::Action::MOVE_UP) {
-        game_world_.getPlayer()->move(Utils::Direction::UP);
-        game_world_.getPlayer()->setState(PacmanState::UP);
-    }
-    if (action == GameController::Action::MOVE_DOWN) {
-        game_world_.getPlayer()->move(Utils::Direction::DOWN);
-        game_world_.getPlayer()->setState(PacmanState::DOWN);
-    }
+  if (action == Action::MOVE_RIGHT) {
+    player->setState(Entity::State::RIGHT);
+  }
+  if (action == Action::MOVE_UP) {
+    player->setState(Entity::State::UP);
+  }
+  if (action == Action::MOVE_DOWN) {
+    player->setState(Entity::State::DOWN);
+  }
 }
 
-GameController::Action GameController::getAction() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        return Action::MOVE_LEFT;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        return Action::MOVE_RIGHT;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        return Action::MOVE_UP;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        return Action::MOVE_DOWN;
-    }
-
-    return Action::NONE;
+Action GameController::getAction(const sf::Event &event) {
+  Action action;
+  switch (event.key.code) {
+  case sf::Keyboard::Left:
+    action = Action::MOVE_LEFT;
+    break;
+  case sf::Keyboard::Right:
+    action = Action::MOVE_RIGHT;
+    break;
+  case sf::Keyboard::Up:
+    action = Action::MOVE_UP;
+    break;
+  case sf::Keyboard::Down:
+    action = Action::MOVE_DOWN;
+    break;
+  default:
+    action = Action::NONE;
+    break;
+  }
+  return action;
 }
 
+Action GameController::getAction() {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    return Action::MOVE_LEFT;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    return Action::MOVE_RIGHT;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    return Action::MOVE_UP;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    return Action::MOVE_DOWN;
+  }
+
+  return Action::NONE;
+}
