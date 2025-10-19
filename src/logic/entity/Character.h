@@ -25,7 +25,7 @@ protected:
   void updateTarget();
 
 public:
-  Character(NodePtr node, float width, float height, float scale);
+  Character(NodePtr node, float width, float height);
   virtual ~Character() = default;
 
 public:

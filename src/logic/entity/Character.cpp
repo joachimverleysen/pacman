@@ -7,8 +7,8 @@
 
 using namespace Config;
 
-Character::Character(NodePtr node, float width, float height, float scale)
-    : Entity(width, height, scale), current_node_(node) {
+Character::Character(NodePtr node, float width, float height)
+    : Entity(width, height), current_node_(node) {
   auto maze = Maze::getInstance();
   target_node_ = maze->findNeighbor(current_node_->row_, current_node_->column_,
                                     direction_);
