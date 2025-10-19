@@ -1,10 +1,10 @@
+#ifndef SPRITE_DRAWABLE_H
 #include "../logic/utils/Position.h"
 #include "DrawableInterface.h"
 #include "Visuals.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
-#ifndef SPRITE_DRAWABLE_H
 
 class SpriteDrawable : public DrawableInterface {
   sf::Sprite sprite_;

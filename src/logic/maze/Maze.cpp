@@ -1,4 +1,5 @@
 #include "Maze.h"
+#include "../../configure/constants.h"
 #include "MazeNode.h"
 #include <iostream>
 #include <memory>
@@ -37,13 +38,13 @@ void Maze::loadGrid(Grid &grid) {
   }
 }
 
-void Maze::addNode(int row, int column) {
+void Maze::addNode(unsigned int row, unsigned int column) {
   // std::cout << "adding at " << row << " " << column << '\n';
   NodePtr node = std::make_shared<MazeNode>(row, column);
   node_map_[row][column] = node;
 }
 
-NodePtr Maze::findNeighbor(int row, int column, Direction direction) {
+NodePtr Maze::findNeighbor(unsigned int row, unsigned int column, Direction direction) {
   if (at(row, column) != '+')
     throw std::invalid_argument("Invalid node position provided");
 
@@ -66,25 +67,37 @@ NodePtr Maze::findNeighbor(int row, int column, Direction direction) {
     d_column = 0;
     break;
   }
-  int i = row + d_row, j = column + d_column;
-  while (at(i, j) != '0') {
-    if (at(i, j) == 'X')
+  unsigned int i = row + d_row, j = column + d_column;
+  if (!inGridRange(i, j))
+    return nullptr;
+  char c = at(i, j);
+  while (c != '0') {
+    if (c == 'X' or c == 'W')
       return nullptr;
-    else if (at(i, j) == '.') {
+    else if (c == '.') {
       i += d_row;
       j += d_column;
-    } else if (at(i, j) == '+') {
+    } else if (c == '+') {
       auto node = getNode(i, j);
       if (!node)
         throw std::logic_error(
             "A node was expected in the node map but not found.");
       return node;
     }
+    else {
+      std::printf("row %i col %i\n", row, column) ;
+      throw std::invalid_argument("Unexpected character in maze");
+    }
+    c = at(i, j);
   }
   return nullptr;
 }
 
-Neighbours Maze::findAllNeighbors(int row, int column) {
+bool Maze::inGridRange(unsigned int row, unsigned int column) const {
+  return 0 <= row and row < getYunits() and 0 <= column and column < getXunits();
+}
+
+Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {
   auto node = node_map_[row][column];
   if (!node)
     throw std::invalid_argument("Invalid node position provided");
@@ -96,17 +109,17 @@ Neighbours Maze::findAllNeighbors(int row, int column) {
   return neighbors;
 }
 
-char Maze::at(int row, int column) const {
+char Maze::at(unsigned int row, unsigned int column) const {
   if (0 <= row and row < getYunits() and 0 <= column and column < getXunits())
     return grid_[row][column];
   return '0';
 }
 
-NodePtr Maze::getNode(int row, int column) const {
+NodePtr Maze::getNode(unsigned int row, unsigned int column) const {
   return node_map_[row][column];
 }
 
-Position Maze::getWorldPosition(int row, int column) const {
+Position Maze::getWorldPosition(unsigned int row, unsigned int column) const {
   // World is bounded between -1 and +1, so width = 2
   float cell_width = 2.0 / getXunits();
   float cell_height = 2.0 / getYunits();
@@ -114,3 +127,7 @@ Position Maze::getWorldPosition(int row, int column) const {
   float y_center = 1 - (cell_height / 2) - cell_height * row;
   return Position{x_center, y_center};
 }
+
+float Maze::getCellHeight() const { return 2.0 / getYunits();}
+
+float Maze::getCellWidth() const { return 2.0 / getXunits(); }

@@ -25,6 +25,20 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   notifyObservers();
 }
 
+void World::makeWall() {
+  auto grid = Maze::getInstance()->grid_;
+  for (unsigned int row=0; row < grid.size(); row++) {
+    for (unsigned int column=0;column < grid[row].size(); column ++) {
+      if (grid[row][column] == 'W')
+        placeWall(row, column);
+    }
+  }
+}
+void World::placeWall(unsigned int row, unsigned int column) {
+  auto wall = factory_.createWall(row, column);
+  entities_.push_back(wall);
+  notifyObservers();
+}
 void World::initialize() {
   //  createPlayer(20, 0);
   cleanupEntities();
@@ -43,6 +57,7 @@ void World::initialize() {
       }
     }
   }
+  makeWall();
   createPlayer(init_node_);
   updateAllEntities();
 }

@@ -10,12 +10,10 @@ inline const std::string sprites_json = "assets/textures.json";
 } // namespace TextureFiles
 
 namespace Arena {
-inline const unsigned int X_UNITS = 20;
-inline const unsigned int Y_UNITS = 10;
 } // namespace Arena
 namespace Window {
 inline const float BASE_SCALE = 0.001;
-inline const unsigned int UNIT_LENGTH = 100;
+inline const unsigned int UNIT_LENGTH = 50;
 
 } // namespace Window
 

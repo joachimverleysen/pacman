@@ -3,7 +3,7 @@ add_library(view
 				EntityView.cpp
 				DrawableInterface.h
 				SpriteDrawable.cpp
-				ShapeDrawable.h
+				ShapeDrawable.cpp
 				EntityFactory.cpp
         TextureParser.cpp
 				Visuals.cpp

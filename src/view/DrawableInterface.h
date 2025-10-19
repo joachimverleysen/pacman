@@ -1,8 +1,9 @@
+#ifndef DRAWABLE_INTERFACE_H
+#define DRAWABLE_INTERFACE_H
 #include "../logic/entity/Entity.h"
 #include "../logic/utils/Position.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
-#ifndef DRAWABLE_INTERFACE_H
 
 class DrawableInterface {
 protected:

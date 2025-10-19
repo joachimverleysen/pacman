@@ -28,7 +28,7 @@ private:
 
 public:
   EntityView(std::weak_ptr<Entity> entity,
-             std::unique_ptr<SpriteDrawable> drawable);
+             std::unique_ptr<DrawableInterface> drawable);
 
   ~EntityView() override;
 

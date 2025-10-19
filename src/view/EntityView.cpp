@@ -7,7 +7,7 @@
 #include <memory>
 
 EntityView::EntityView(std::weak_ptr<Entity> entity,
-                       std::unique_ptr<SpriteDrawable> drawable)
+                       std::unique_ptr<DrawableInterface> drawable)
     : entity_(entity), drawable_(std::move(drawable)) {}
 EntityView::~EntityView() {
   //    std::cout << "view destruct \n";
