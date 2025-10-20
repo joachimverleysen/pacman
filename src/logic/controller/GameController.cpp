@@ -26,19 +26,15 @@ void GameController::handleInput(const sf::Event &event) {
   std::optional<Direction> direction = getDirection(action);
   if (action == Action::NONE or !direction)
     return;
-  if (Utils::getReverseDirection(direction.value()) == player->direction_) {
+
+  // If player does not have target, find one.
+  if (player->updateTarget(direction.value())) {
+    player->startMove();
+  }
+  if (Utils::getReverseDirection(direction.value()) == player->getTargetDirection()) {
     player->reverseDirection();
   }
-player->setDirection(direction.value());
-  if (player->moving_)
-    return;
-//  player->updateDirection(direction.value());
-  player->startMove();
-  player->update();
-  auto target = player->target_node_;
-  if (target)
-    // std::printf("target: row %d, col %d\n", target->row_, target->column_);
-    player->updateDirection(direction.value());
+
 }
 
 Action GameController::getAction(const sf::Event &event) {

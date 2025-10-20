@@ -22,7 +22,7 @@ protected:
 
   bool overshotTarget() const;
 
-  void updateTarget();
+  bool updateTarget(Direction direction);
 
   void updateDirection(Direction direction);
 
@@ -42,6 +42,12 @@ public:
   Direction getTargetDirection() const;
 
   void setDirection(Direction direction);
+
+  bool getNewTarget(Direction direction) const;
+
+  void takeTarget();
+
+  void setTarget(NodePtr target);
 };
 
 #endif // !CHARACTER_H
