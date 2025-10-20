@@ -101,25 +101,29 @@ bool Character::updateTarget(Direction direction) {
   if (!target_node_) {
     setTarget(maze->findNeighbor(current_node_->row_,
                                       current_node_->column_, direction));
-    if (target_node_)
+    if (target_node_) {
       updateDirection(direction);
-
-    return true;
+      return true;
+    }
+    else if (!target_node_) {
+      return false;
+    }
   }
   NodePtr new_target =
       maze->findNeighbor(target_node_->row_, target_node_->column_, direction);
   if (!new_target)
     return false;
   if (new_target && new_target == current_node_)
+    reverseDirection();
+  if (new_target && new_target == target_node_)
     return false;
-  std::cout << "target " << new_target->row_ << " " << new_target->column_
-            << '\n';
+  if (direction == direction_)
+    return false;
+
   // only update direction, wait for pacman to reach previous target
   setDirection(direction);
   return true;
-  std::cout << "no target\n";
-  stop();
-  return false;
+
 }
 void Character::updateNodes() {
   auto maze = Maze::getInstance();

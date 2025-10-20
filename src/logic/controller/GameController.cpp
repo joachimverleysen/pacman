@@ -31,9 +31,10 @@ void GameController::handleInput(const sf::Event &event) {
   if (player->updateTarget(direction.value())) {
     player->startMove();
   }
-  if (Utils::getReverseDirection(direction.value()) == player->getTargetDirection()) {
-    player->reverseDirection();
-  }
+  else return;
+//  if (Utils::getReverseDirection(direction.value()) == player->getTargetDirection()) {
+//    player->reverseDirection();
+//  }
 
 }
 
