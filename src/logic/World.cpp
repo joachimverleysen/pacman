@@ -27,8 +27,8 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 
 void World::makeWall() {
   auto grid = Maze::getInstance()->grid_;
-  for (unsigned int row=0; row < grid.size(); row++) {
-    for (unsigned int column=0;column < grid[row].size(); column ++) {
+  for (unsigned int row = 0; row < grid.size(); row++) {
+    for (unsigned int column = 0; column < grid[row].size(); column++) {
       if (grid[row][column] == 'W')
         placeWall(row, column);
     }
@@ -87,7 +87,7 @@ void World::update() {
   }
   cleanupEntities();
   checkCollisions();
-  updateAllEntities();
+  player_->update();
   new_entities_.clear();
 }
 

@@ -24,7 +24,7 @@ protected:
 
   void updateTarget();
 
-  void setDirection(Direction direction);
+  void updateDirection(Direction direction);
 
 public:
   Character(NodePtr node, float width, float height);
@@ -38,6 +38,10 @@ public:
   void startMove();
 
   void reverseDirection();
+
+  Direction getTargetDirection() const;
+
+  void setDirection(Direction direction);
 };
 
 #endif // !CHARACTER_H

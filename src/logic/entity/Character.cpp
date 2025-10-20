@@ -23,11 +23,25 @@ void Character::update() {
   if (overshotTarget()) {
     setPosition(target_node_->getPosition());
     updateNodes();
-    stop();
+    updateTarget();
   }
   notifyObservers();
 }
 
+Direction Character::getTargetDirection() const {
+  if (target_node_->row_ == current_node_->row_) {
+    if (target_node_->column_> current_node_->column_)
+      return Direction::RIGHT;
+    return Direction::LEFT;
+  }
+  if (target_node_->column_ == current_node_->column_) {
+    if (target_node_->row_ > current_node_->row_)
+      return Direction::DOWN;
+    return Direction::UP;
+  }
+  throw std::logic_error("current node and target node are not on the same line");
+
+}
 void Character::move() {
   if (!moving_)
     return;
@@ -38,16 +52,17 @@ void Character::move() {
   float speed = speed_ * delta;
   Position new_pos = Camera::world2Window(position_);
 
-  if (direction_ == Direction::LEFT) {
+  Direction direction = getTargetDirection();
+  if (direction == Direction::LEFT) {
     new_pos.x -= speed;
   }
-  if (direction_ == Direction::RIGHT) {
+  if (direction == Direction::RIGHT) {
     new_pos.x += speed;
   }
-  if (direction_ == Direction::UP) {
+  if (direction == Direction::UP) {
     new_pos.y -= speed;
   }
-  if (direction_ == Direction::DOWN) {
+  if (direction == Direction::DOWN) {
     new_pos.y += speed;
   }
   position_ = Camera::window2World(new_pos);
@@ -73,8 +88,15 @@ void Character::updateTarget() {
   NodePtr new_target;
   new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
                                   direction_);
-  if (new_target)
+  if (new_target) {
+    std::cout << "target " << new_target->row_ << " " << new_target->column_ << '\n';
     target_node_ = new_target;
+  }
+  else {
+
+    std::cout << "no target\n";
+    stop();
+  }
 }
 void Character::updateNodes() {
   auto maze = Maze::getInstance();
@@ -83,9 +105,7 @@ void Character::updateNodes() {
                                   direction_);
   if (target_node_)
     current_node_ = target_node_;
-  if (new_target) {
-    target_node_ = new_target;
-  }
+  target_node_ = new_target;
 }
 
 void Character::stop() { moving_ = false; }
@@ -94,13 +114,18 @@ void Character::startMove() {
   moving_ = true;
 }
 void Character::reverseDirection() {
+  if (!target_node_)
+    target_node_ = current_node_;
   current_node_ = target_node_;
-  setDirection(Utils::getReverseDirection(direction_));
+  updateDirection(Utils::getReverseDirection(direction_));
   updateTarget();
 }
 
 void Character::setDirection(Direction direction) {
   direction_ = direction;
+}
+void Character::updateDirection(Direction direction) {
+  setDirection(direction);
   auto state = state_;
 
   switch (direction) {

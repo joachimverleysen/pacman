@@ -72,7 +72,7 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column, Direction dire
     return nullptr;
   char c = at(i, j);
   while (c != '0') {
-    if (c == 'X' or c == 'W')
+    if (c != '.' and c != '+')
       return nullptr;
     else if (c == '.') {
       i += d_row;
@@ -83,10 +83,6 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column, Direction dire
         throw std::logic_error(
             "A node was expected in the node map but not found.");
       return node;
-    }
-    else {
-      std::printf("row %i col %i\n", row, column) ;
-      throw std::invalid_argument("Unexpected character in maze");
     }
     c = at(i, j);
   }

@@ -13,7 +13,7 @@ namespace Arena {
 } // namespace Arena
 namespace Window {
 inline const float BASE_SCALE = 0.001;
-inline const unsigned int UNIT_LENGTH = 50;
+inline const unsigned int UNIT_LENGTH = 35;
 
 } // namespace Window
 
@@ -21,7 +21,7 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 200;
+inline const float SPEED = 100;
 } // namespace Player
 
 namespace Collision {
