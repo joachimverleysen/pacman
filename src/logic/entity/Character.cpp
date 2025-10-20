@@ -11,8 +11,7 @@ using namespace Config;
 Character::Character(NodePtr node, float width, float height)
     : Entity(width, height), current_node_(node) {
   auto maze = Maze::getInstance();
-  target_node_ = maze->findNeighbor(current_node_->row_, current_node_->column_,
-                                    direction_);
+  target_node_ = nullptr;
   setPosition(current_node_->getPosition());
 }
 
@@ -136,6 +135,8 @@ void Character::stop() {
   moving_ = false; }
 void Character::startMove() { moving_ = true; }
 void Character::reverseDirection() {
+  if (direction_ != getTargetDirection())
+    return;
   auto temp = target_node_;
   target_node_ = current_node_;
   current_node_ = temp;
@@ -159,6 +160,7 @@ bool Character::getNewTarget(Direction direction) const {
   return true;
 }
 void Character::updateDirection(Direction direction) {
+  std::cout << "call updateDirection()\n";
   setDirection(direction);
   auto state = state_;
 

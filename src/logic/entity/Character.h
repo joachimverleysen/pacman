@@ -11,6 +11,7 @@ class Character : public Entity {
 protected:
   float speed_{SPEED};
   Direction direction_{Direction::LEFT};
+  Direction next_direction_{Direction::LEFT};
   bool moving_{false};
   NodePtr current_node_;
   NodePtr target_node_;
