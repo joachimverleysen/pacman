@@ -54,7 +54,7 @@ void Game::loadMaze(const std::string &filename) {
 
 void Game::setup() {
   auto maze = Maze::getInstance();
-  loadMaze("input/maze2.txt");
+  loadMaze("input/maze.txt");
 
   unsigned int UL = Config::Window::UNIT_LENGTH;
   window_.create({maze->getXunits() * UL, maze->getYunits() * UL}, "Pacman",

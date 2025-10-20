@@ -18,8 +18,6 @@ protected:
 protected:
   void move();
 
-  void updateNodes();
-
   bool overshotTarget() const;
 
   bool updateTarget(Direction direction);
@@ -28,7 +26,7 @@ protected:
 
 public:
   Character(NodePtr node, float width, float height);
-  virtual ~Character() = default;
+  ~Character() override = default;
 
 public:
   void update() override;
@@ -39,11 +37,9 @@ public:
 
   void reverseDirection();
 
-  Direction getTargetDirection() const;
+  [[nodiscard]] Direction getTargetDirection() const;
 
   void setDirection(Direction direction);
-
-  bool getNewTarget(Direction direction) const;
 
   void takeTarget();
 
