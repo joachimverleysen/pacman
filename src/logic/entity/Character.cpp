@@ -73,7 +73,8 @@ void Character::updateTarget() {
   NodePtr new_target;
   new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
                                   direction_);
-  target_node_ = new_target;
+  if (new_target)
+    target_node_ = new_target;
 }
 void Character::updateNodes() {
   auto maze = Maze::getInstance();
@@ -91,4 +92,33 @@ void Character::stop() { moving_ = false; }
 void Character::startMove() {
   updateTarget();
   moving_ = true;
+}
+void Character::reverseDirection() {
+  current_node_ = target_node_;
+  setDirection(Utils::getReverseDirection(direction_));
+  updateTarget();
+}
+
+void Character::setDirection(Direction direction) {
+  direction_ = direction;
+  auto state = state_;
+
+  switch (direction) {
+  case Direction::NONE:
+    break;
+  case Direction::LEFT:
+    state = Entity::State::LEFT;
+    break;
+  case Direction::RIGHT:
+    state = Entity::State::RIGHT;
+    break;
+  case Direction::UP:
+    state = Entity::State::UP;
+    break;
+  case Direction::DOWN:
+    state = Entity::State::DOWN;
+    break;
+  }
+  setState(state);
+  notifyObservers();
 }

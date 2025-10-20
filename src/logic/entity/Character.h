@@ -24,6 +24,8 @@ protected:
 
   void updateTarget();
 
+  void setDirection(Direction direction);
+
 public:
   Character(NodePtr node, float width, float height);
   virtual ~Character() = default;
@@ -35,7 +37,7 @@ public:
 
   void startMove();
 
-private:
+  void reverseDirection();
 };
 
 #endif // !CHARACTER_H
