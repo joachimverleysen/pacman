@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-using Config::Arena::X_UNITS;
-using Config::Arena::Y_UNITS;
 
 class World : public Subject {
 
@@ -51,6 +49,10 @@ public:
   void createPlayer(std::shared_ptr<MazeNode> node);
 
   void cleanupEntities();
+
+  void placeWall(unsigned int row, unsigned int column);
+
+  void makeWall();
 };
 
 #endif // DOODLEJUMP_WORLD_H

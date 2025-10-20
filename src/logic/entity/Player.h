@@ -17,9 +17,9 @@ public:
   friend GameController;
   Player() = delete;
 
-  Player(float width, float height, float scale);
+  Player(float width, float height);
 
-  Player(NodePtr node, float width, float height, float scale);
+  Player(NodePtr node, float width, float height);
 
   bool allowsSpawn(Entity *other) override;
 

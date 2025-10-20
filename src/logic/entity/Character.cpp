@@ -4,14 +4,14 @@
 #include "../utils/Vector.h"
 #include <cmath>
 #include <iostream>
+#include <stdexcept>
+#include <utility>
 
 using namespace Config;
 
-Character::Character(NodePtr node, float width, float height, float scale)
-    : Entity(width, height, scale), current_node_(node) {
-  auto maze = Maze::getInstance();
-  target_node_ = maze->findNeighbor(current_node_->row_, current_node_->column_,
-                                    direction_);
+Character::Character(NodePtr node, float width, float height)
+    : Entity(width, height), current_node_(std::move(node)) {
+  target_node_ = nullptr;
   setPosition(current_node_->getPosition());
 }
 
@@ -21,13 +21,26 @@ void Character::update() {
   else
     move();
   if (overshotTarget()) {
-    setPosition(target_node_->getPosition());
-    updateNodes();
-    stop();
+    takeTarget();
+    updateTarget(direction_);
   }
   notifyObservers();
 }
 
+Direction Character::getTargetDirection() const {
+  if (target_node_->row_ == current_node_->row_) {
+    if (target_node_->column_ > current_node_->column_)
+      return Direction::RIGHT;
+    return Direction::LEFT;
+  }
+  if (target_node_->column_ == current_node_->column_) {
+    if (target_node_->row_ > current_node_->row_)
+      return Direction::DOWN;
+    return Direction::UP;
+  }
+  throw std::logic_error(
+      "current node and target node are not on the same line");
+}
 void Character::move() {
   if (!moving_)
     return;
@@ -37,17 +50,23 @@ void Character::move() {
   delta = std::min(delta, 0.104f); // Limit delta to avoid 'jumping'
   float speed = speed_ * delta;
   Position new_pos = Camera::world2Window(position_);
+  Direction direction;
+  try {
+    direction = getTargetDirection();
 
-  if (direction_ == Direction::LEFT) {
+  } catch (std::logic_error &e) {
+    std::cout << e.what() << std::endl;
+  }
+  if (direction == Direction::LEFT) {
     new_pos.x -= speed;
   }
-  if (direction_ == Direction::RIGHT) {
+  if (direction == Direction::RIGHT) {
     new_pos.x += speed;
   }
-  if (direction_ == Direction::UP) {
+  if (direction == Direction::UP) {
     new_pos.y -= speed;
   }
-  if (direction_ == Direction::DOWN) {
+  if (direction == Direction::DOWN) {
     new_pos.y += speed;
   }
   position_ = Camera::window2World(new_pos);
@@ -68,27 +87,81 @@ bool Character::overshotTarget() const {
   return node_2_self > node_2_target;
 }
 
-void Character::updateTarget() {
-  auto maze = Maze::getInstance();
-  NodePtr new_target;
-  new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
-                                  direction_);
-  target_node_ = new_target;
-}
-void Character::updateNodes() {
-  auto maze = Maze::getInstance();
-  NodePtr new_target;
-  new_target = maze->findNeighbor(current_node_->row_, current_node_->column_,
-                                  direction_);
-  if (target_node_)
-    current_node_ = target_node_;
-  if (new_target) {
-    target_node_ = new_target;
-  }
+void Character::takeTarget() {
+  current_node_ = target_node_;
+  target_node_ = nullptr;
+  setPosition(current_node_->getPosition());
 }
 
-void Character::stop() { moving_ = false; }
-void Character::startMove() {
-  updateTarget();
-  moving_ = true;
+void Character::setTarget(NodePtr target) {
+  target_node_ = std::move(target);
+}
+bool Character::updateTarget(Direction direction) {
+  auto maze = Maze::getInstance();
+  if (!target_node_) {
+    setTarget(maze->findNeighbor(current_node_->row_,
+                                      current_node_->column_, direction));
+    if (target_node_) {
+      updateDirection(direction);
+      return true;
+    }
+    else if (!target_node_) {
+      return false;
+    }
+  }
+  NodePtr new_target =
+      maze->findNeighbor(target_node_->row_, target_node_->column_, direction);
+  if (!new_target)
+    return false;
+  if (new_target && new_target == current_node_)
+    reverseDirection();
+  if (new_target && new_target == target_node_)
+    return false;
+  if (direction == direction_)
+    return false;
+
+  // only update direction, wait for pacman to reach previous target
+  setDirection(direction);
+  return true;
+}
+
+void Character::stop() {
+  moving_ = false; }
+void Character::startMove() { moving_ = true; }
+void Character::reverseDirection() {
+  if (direction_ != getTargetDirection())
+    setDirection(getTargetDirection());
+  auto temp = target_node_;
+  target_node_ = current_node_;
+  current_node_ = temp;
+  updateDirection(Utils::getReverseDirection(direction_));
+}
+
+void Character::setDirection(Direction direction) {
+ std::cout << "direction changed\n" ;
+  direction_ = direction; }
+
+void Character::updateDirection(Direction direction) {
+  std::cout << "call updateDirection()\n";
+  setDirection(direction);
+  auto state = state_;
+
+  switch (direction) {
+  case Direction::NONE:
+    break;
+  case Direction::LEFT:
+    state = Entity::State::LEFT;
+    break;
+  case Direction::RIGHT:
+    state = Entity::State::RIGHT;
+    break;
+  case Direction::UP:
+    state = Entity::State::UP;
+    break;
+  case Direction::DOWN:
+    state = Entity::State::DOWN;
+    break;
+  }
+  setState(state);
+  notifyObservers();
 }

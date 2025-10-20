@@ -18,33 +18,24 @@ std::optional<Direction> getDirection(Action action) {
     return std::nullopt;
   }
 }
+
 void GameController::handleInput(const sf::Event &event) {
+  // todo: disable friend class, use setters and getters instead.
   auto action = getAction(event);
   auto player = game_world_.getPlayer();
   std::optional<Direction> direction = getDirection(action);
-  if (action == Action::NONE)
+  if (action == Action::NONE or !direction)
     return;
-  if (!direction)
-    return;
-  if (player->moving_)
-    return;
-  player->direction_ = direction.value();
-  player->startMove();
-  auto target = player->target_node_;
-  if (target)
-    // std::printf("target: row %d, col %d\n", target->row_, target->column_);
-    if (action == Action::MOVE_LEFT) {
-      player->setState(Entity::State::LEFT);
-    }
-  if (action == Action::MOVE_RIGHT) {
-    player->setState(Entity::State::RIGHT);
+
+  // If player does not have target, find one.
+  if (player->updateTarget(direction.value())) {
+    player->startMove();
   }
-  if (action == Action::MOVE_UP) {
-    player->setState(Entity::State::UP);
-  }
-  if (action == Action::MOVE_DOWN) {
-    player->setState(Entity::State::DOWN);
-  }
+  else return;
+//  if (Utils::getReverseDirection(direction.value()) == player->getTargetDirection()) {
+//    player->reverseDirection();
+//  }
+
 }
 
 Action GameController::getAction(const sf::Event &event) {

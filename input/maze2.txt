@@ -1,6 +1,5 @@
-+...........+
-...X..XXXXXX.
-...+..XXXXXX.
-......XXXXXX.
-......XXXXXX.
-+...........+
++..+.........+
+WWW.WWWWWWWWWW
+WWW+WWWWWWWWWW
+WWW.WWWWWWWWWW
++..+WWWWWWWWWW

@@ -11,8 +11,6 @@ private:
   static Maze *instance_;
   Maze() {};
 
-  Grid grid_;
-
 public:
   Maze(const Maze &) = delete;
   Maze &operator=(const Maze &) = delete;
@@ -25,20 +23,24 @@ public:
   }
 
 public:
+  Grid grid_;
   std::vector<std::vector<NodePtr>> node_map_;
 
 public:
   void loadGrid(Grid &grid);
   unsigned int getXunits() const { return grid_[0].size(); }
   unsigned int getYunits() const { return grid_.size(); }
-  void addNode(int row, int column);
-  Neighbours findAllNeighbors(int row, int column);
-  NodePtr findNeighbor(int row, int column, Direction direction);
+  float getCellWidth() const;
+  float getCellHeight() const;
+  void addNode(unsigned int row, unsigned int column);
+  Neighbours findAllNeighbors(unsigned int row, unsigned int column);
+  NodePtr findNeighbor(unsigned int row, unsigned int column, Direction direction);
 
-  char at(int row, int column) const;
-  NodePtr getNode(int row, int column) const;
+  char at(unsigned int row, unsigned int column) const;
+  NodePtr getNode(unsigned int row, unsigned int column) const;
 
-  Position getWorldPosition(int row,
-                            int column) const; // Returns center of the 'square'
+  Position getWorldPosition(unsigned int row,
+                            unsigned int column) const; // Returns center of the 'square'
+  bool inGridRange(unsigned int row, unsigned int column) const;
 };
 #endif // !MAZE_H

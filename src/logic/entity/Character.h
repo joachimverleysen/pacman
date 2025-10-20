@@ -12,31 +12,38 @@ protected:
   float speed_{SPEED};
   Direction direction_{Direction::LEFT};
   bool moving_{false};
-
-public:
   NodePtr current_node_;
   NodePtr target_node_;
 
-public:
-  Character(NodePtr node, float width, float height, float scale);
-  virtual ~Character() = default;
-
-public:
+protected:
   void move();
-
-  void update() override;
-
-  void updateNodes();
 
   bool overshotTarget() const;
 
-  void updateTarget();
+  bool updateTarget(Direction direction);
+
+  void updateDirection(Direction direction);
+
+public:
+  Character(NodePtr node, float width, float height);
+  ~Character() override = default;
+
+public:
+  void update() override;
 
   void stop();
 
   void startMove();
 
-private:
+  void reverseDirection();
+
+  [[nodiscard]] Direction getTargetDirection() const;
+
+  void setDirection(Direction direction);
+
+  void takeTarget();
+
+  void setTarget(NodePtr target);
 };
 
 #endif // !CHARACTER_H

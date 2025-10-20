@@ -3,6 +3,7 @@
 
 #include "../logic/entity/Entity.h"
 #include "../logic/observer/Observer.h"
+#include "SpriteDrawable.h"
 #include "TextureManager.h"
 #include "Visuals.h"
 #include <SFML/Graphics.hpp>
@@ -14,37 +15,28 @@
 
 using FilePath = std::string;
 
+class DrawableInterface;
 class EntityView : public Observer {
-  const sf::Texture *current_texture_;
-  Texture::TextureMap texture_map_;
+  std::unique_ptr<DrawableInterface> drawable_;
   std::weak_ptr<Entity> entity_;
-  sf::Sprite sprite_;
-  sf::RenderWindow &window_;
   Position position_{};
 
 public:
   const Position &getPosition() const;
 
 private:
-  static Position convertPosition(const Position &position);
 
 public:
-  EntityView(std::weak_ptr<Entity> entity, Texture::TextureMap texture_map,
-             sf::RenderWindow &window);
+  EntityView(std::weak_ptr<Entity> entity,
+             std::unique_ptr<DrawableInterface> drawable);
 
   ~EntityView() override;
 
   void update() override;
 
-  void updateTexture();
-
   virtual void draw(sf::RenderWindow &window);
 
   void setPosition(Position &position);
-
-  void setTexture(const sf::Texture *texture);
-
-  std::shared_ptr<Entity> getEntity() const;
 
   void updatePosition();
 };
