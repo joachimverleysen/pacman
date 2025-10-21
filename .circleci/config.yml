@@ -4,7 +4,7 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: ubuntu-2404 
+      - image: ubuntu-2404:current
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_PASSWORD
