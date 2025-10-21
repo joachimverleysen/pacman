@@ -10,7 +10,7 @@ jobs:
           password: $DOCKER_HUB_PASSWORD
     steps:
       - checkout
-      - run: apt update
+      - run: sudo apt update
       - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xorg-dev
       - run: mkdir -p build
       - run: cd build && cmake ..
