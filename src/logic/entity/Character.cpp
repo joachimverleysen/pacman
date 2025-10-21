@@ -41,6 +41,7 @@ Direction Character::getTargetDirection() const {
   throw std::logic_error(
       "current node and target node are not on the same line");
 }
+
 void Character::move() {
   if (!moving_)
     return;
@@ -93,19 +94,21 @@ void Character::takeTarget() {
   setPosition(current_node_->getPosition());
 }
 
-void Character::setTarget(NodePtr target) {
-  target_node_ = std::move(target);
-}
+void Character::setTarget(NodePtr target) { target_node_ = std::move(target); }
+
 bool Character::updateTarget(Direction direction) {
+  // Returns true if the target changed.
+
   auto maze = Maze::getInstance();
+
+  // First, try finding a target
   if (!target_node_) {
-    setTarget(maze->findNeighbor(current_node_->row_,
-                                      current_node_->column_, direction));
+    setTarget(maze->findNeighbor(current_node_->row_, current_node_->column_,
+                                 direction));
     if (target_node_) {
       updateDirection(direction);
       return true;
-    }
-    else if (!target_node_) {
+    } else if (!target_node_) {
       return false;
     }
   }
@@ -116,30 +119,29 @@ bool Character::updateTarget(Direction direction) {
   if (new_target && new_target == current_node_)
     reverseDirection();
   if (new_target && new_target == target_node_)
-    return false;
+    return false; // Target didn't change
   if (direction == direction_)
+    // To avoid unnecessary update calls if direction didn't change
     return false;
 
-  // only update direction, wait for pacman to reach previous target
+  // only set (the next) direction, wait for pacman to reach previous target
   setDirection(direction);
   return true;
 }
 
-void Character::stop() {
-  moving_ = false; }
+void Character::stop() { moving_ = false; }
 void Character::startMove() { moving_ = true; }
 void Character::reverseDirection() {
   if (direction_ != getTargetDirection())
     setDirection(getTargetDirection());
-  auto temp = target_node_;
-  target_node_ = current_node_;
-  current_node_ = temp;
+  swap(target_node_, current_node_);
   updateDirection(Utils::getReverseDirection(direction_));
 }
 
 void Character::setDirection(Direction direction) {
- std::cout << "direction changed\n" ;
-  direction_ = direction; }
+  std::cout << "direction changed\n";
+  direction_ = direction;
+}
 
 void Character::updateDirection(Direction direction) {
   std::cout << "call updateDirection()\n";

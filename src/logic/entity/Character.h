@@ -20,7 +20,6 @@ protected:
 
   bool overshotTarget() const;
 
-  bool updateTarget(Direction direction);
 
   void updateDirection(Direction direction);
 
@@ -29,6 +28,8 @@ public:
   ~Character() override = default;
 
 public:
+  bool updateTarget(Direction direction);
+
   void update() override;
 
   void stop();

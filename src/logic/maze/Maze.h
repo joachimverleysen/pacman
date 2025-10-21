@@ -25,6 +25,7 @@ public:
 public:
   Grid grid_;
   std::vector<std::vector<NodePtr>> node_map_;
+  NodePtr start_node_;
 
 public:
   void loadGrid(Grid &grid);
@@ -32,15 +33,17 @@ public:
   unsigned int getYunits() const { return grid_.size(); }
   float getCellWidth() const;
   float getCellHeight() const;
-  void addNode(unsigned int row, unsigned int column);
+  NodePtr addNode(unsigned int row, unsigned int column);
   Neighbours findAllNeighbors(unsigned int row, unsigned int column);
-  NodePtr findNeighbor(unsigned int row, unsigned int column, Direction direction);
+  NodePtr findNeighbor(unsigned int row, unsigned int column,
+                       Direction direction) const;
 
   char at(unsigned int row, unsigned int column) const;
   NodePtr getNode(unsigned int row, unsigned int column) const;
 
-  Position getWorldPosition(unsigned int row,
-                            unsigned int column) const; // Returns center of the 'square'
+  Position
+  getWorldPosition(unsigned int row,
+                   unsigned int column) const; // Returns center of the 'square'
   bool inGridRange(unsigned int row, unsigned int column) const;
 };
 #endif // !MAZE_H

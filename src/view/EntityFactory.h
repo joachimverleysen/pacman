@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_ENTITYFACTORY_H
-#define DOODLEJUMP_ENTITYFACTORY_H
+#ifndef ENTITY_FACTORY_H
+#define ENTITY_FACTORY_H
 
 #include "../logic/entity/AbstractFactory.h"
 #include "../logic/entity/Player.h"
@@ -35,4 +35,4 @@ public:
   friend class Renderer;
 };
 
-#endif // DOODLEJUMP_ENTITYFACTORY_H
+#endif // ENTITY_FACTORY_H

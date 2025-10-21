@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_ABSTRACTFACTORY_H
-#define DOODLEJUMP_ABSTRACTFACTORY_H
+#ifndef ABSTRACT_FACTORY_H
+#define ABSTRACT_FACTORY_H
 
 #include "Entity.h"
 #include "Player.h"
@@ -13,4 +13,4 @@ public:
   virtual ~AbstractFactory() = default;
 };
 
-#endif // DOODLEJUMP_ABSTRACTFACTORY_H
+#endif // ABSTRACT_FACTORY_H

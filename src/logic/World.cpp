@@ -1,27 +1,17 @@
 #include "World.h"
+
+#include <utility>
 #include "../configure/constants.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
 
-const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
+[[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
   return entities_;
-}
-const std::vector<std::shared_ptr<Entity>> &World::getNewEntities() const {
-  return new_entities_;
-}
-
-void World::createPlayer(float x, float y) {
-  // player_ = factory_.createPlayer();
-  player_->setPosition({x, y});
-  entities_.push_back(player_);
-  //  new_entities_.push_back(player_);
-  notifyObservers();
 }
 
 void World::createPlayer(std::shared_ptr<MazeNode> node) {
-  player_ = factory_.createPlayer(node);
+  player_ = factory_.createPlayer(std::move(node));
   entities_.push_back(player_);
-  //  new_entities_.push_back(player_);
   notifyObservers();
 }
 
@@ -40,25 +30,11 @@ void World::placeWall(unsigned int row, unsigned int column) {
   notifyObservers();
 }
 void World::initialize() {
-  //  createPlayer(20, 0);
   cleanupEntities();
-  //  checkInitialization();
-  //  player_->update();
 
-  // Initialize init node
-  // todo: how to determine init node?
-  Position pos;
-  auto maze = Maze::getInstance();
-  for (auto &row : maze->node_map_) {
-    for (auto &node : row) {
-      if (node) {
-        init_node_ = node;
-        pos = node->getPosition();
-      }
-    }
-  }
   makeWall();
-  createPlayer(init_node_);
+  createPlayer(Maze::getInstance()->start_node_);
+  player_->update();
   updateAllEntities();
 }
 
@@ -88,7 +64,6 @@ void World::update() {
   cleanupEntities();
   checkCollisions();
   player_->update();
-  new_entities_.clear();
 }
 
 void World::checkCollisions() {
@@ -98,11 +73,6 @@ void World::checkCollisions() {
 
     CollisionHandler::onCollision(entity.get(), player_.get());
   }
-}
-
-void World::checkInitialization() const {
-  if (!player_)
-    throw std::runtime_error("Player not initialized");
 }
 
 void World::updateAllEntities() {

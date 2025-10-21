@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_ENTITY_H
-#define DOODLEJUMP_ENTITY_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "../observer/Subject.h"
 #include "../utils/Position.h"
@@ -100,4 +100,4 @@ public:
   float getCenterY() const;
 };
 
-#endif // DOODLEJUMP_ENTITY_H
+#endif // ENTITY_H

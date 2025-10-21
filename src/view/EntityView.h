@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_ENTITYVIEW_H
-#define DOODLEJUMP_ENTITYVIEW_H
+#ifndef ENTITYVIEW_H
+#define ENTITYVIEW_H
 
 #include "../logic/entity/Entity.h"
 #include "../logic/observer/Observer.h"
@@ -41,4 +41,4 @@ public:
   void updatePosition();
 };
 
-#endif // DOODLEJUMP_ENTITYVIEW_H
+#endif // ENTITYVIEW_H

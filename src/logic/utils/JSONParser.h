@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_JSONPARSER_H
-#define DOODLEJUMP_JSONPARSER_H
+#ifndef JSONPARSER_H
+#define JSONPARSER_H
 
 #include "../../view/EntityView.h"
 #include "json.hpp"
@@ -19,4 +19,4 @@ public:
   static bool loadJSONFile(const std::string &filename, json &json_out);
 };
 
-#endif // DOODLEJUMP_JSONPARSER_H
+#endif // JSONPARSER_H

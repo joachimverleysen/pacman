@@ -39,7 +39,6 @@ void Game::loadMaze(const std::string &filename) {
   std::string line;
   std::ifstream MazeFile(filename);
   while (std::getline(MazeFile, line)) {
-    // std::cout << line << '\n';
     std::vector<char> row{};
     row.reserve(line.size());
     for (char c : line) {
@@ -54,18 +53,16 @@ void Game::loadMaze(const std::string &filename) {
 
 void Game::setup() {
   auto maze = Maze::getInstance();
-  loadMaze("input/maze.txt");
+  loadMaze(Config::MazeFile);
 
   unsigned int UL = Config::Window::UNIT_LENGTH;
   window_.create({maze->getXunits() * UL, maze->getYunits() * UL}, "Pacman",
                  sf::Style::Close);
 
-  // Set file_background texture + sprite
   sf::Texture background_texture;
   if (!background_texture_.loadFromFile(Config::TextureFiles::background)) {
-    throw std::runtime_error("Invalid file_background path");
+    throw std::runtime_error("Failed loading background texture from file");
   }
-  // background_sprite_.setTexture(background_texture_);
   try {
 
     factory_ = std::make_unique<EntityFactory>(*this, window_);

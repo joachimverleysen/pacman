@@ -1,12 +1,12 @@
-#ifndef DOODLEJUMP_UTILS_H
-#define DOODLEJUMP_UTILS_H
+#ifndef PACMAN_UTILS_H
+#define PACMAN_UTILS_H
 
 // Type defs
 #include <string>
 class Entity;
 enum class Direction { NONE, LEFT, RIGHT, UP, DOWN };
+
 namespace Utils {
-using FilePath = std::string;
 
 // Direction
 inline Direction getReverseDirection(Direction direction) {
@@ -24,4 +24,4 @@ inline Direction getReverseDirection(Direction direction) {
   }
 } // namespace Utils
 }
-#endif // DOODLEJUMP_UTILS_H
+#endif // PACMAN_UTILS_H

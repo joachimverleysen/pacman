@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_TEXTUREMANAGER_H
-#define DOODLEJUMP_TEXTUREMANAGER_H
+#ifndef TEXTUREMANAGER_H
+#define TEXTUREMANAGER_H
 
 #include <SFML/Graphics/Texture.hpp>
 #include <map>
@@ -37,4 +37,4 @@ public:
   }
 };
 
-#endif // DOODLEJUMP_TEXTUREMANAGER_H
+#endif // TEXTUREMANAGER_H
