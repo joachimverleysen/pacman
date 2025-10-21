@@ -10,6 +10,13 @@ jobs:
           password: $DOCKER_HUB_PASSWORD
     steps:
       - checkout
+
+      # Install dependencies
+      - run: |
+        sudo apt-get update -y
+        sudo apt-get install -y \
+          build-essential cmake git libsfml-dev \
+          libx11-dev libxrandr-dev libxcursor-dev libxi-dev libxext-dev libudev-dev
       - run: sudo apt update
       - run: cmake --version
       - run: mkdir -p build
