@@ -4,17 +4,13 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: ubuntu:24.04
+      - image: cimg/base
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_PASSWORD
     steps:
       - checkout
       - run: apt update
-      - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git
-      - run: |
-          wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh
-          bash cmake-3.28.3-linux-x86_64.sh --skip-license --prefix=/usr/local
       - run: cmake --version
       - run: mkdir -p build
       - run: cd build && cmake ..
