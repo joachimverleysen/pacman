@@ -4,15 +4,14 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: cimg/base:2025.10 
+      - image: ubuntu:22.04
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_PASSWORD
     steps:
       - checkout
-
-      - run: sudo apt update
-      - run: cmake --version
+      - run: apt update
+      - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xorg-dev
       - run: mkdir -p build
       - run: cd build && cmake ..
       - run: cd build && make
