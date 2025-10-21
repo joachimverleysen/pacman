@@ -10,7 +10,7 @@ jobs:
           password: $DOCKER_HUB_PASSWORD
     steps:
       - checkout
-      - run: apt update
+      - run: sudo apt update
       - run: cmake --version
       - run: mkdir -p build
       - run: cd build && cmake ..
