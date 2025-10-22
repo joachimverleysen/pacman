@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_VISUALS_H
-#define DOODLEJUMP_VISUALS_H
+#ifndef VISUALS_H
+#define VISUALS_H
 
 #include "../logic/entity/Entity.h"
 #include "../logic/utils/Position.h"
@@ -12,4 +12,4 @@ enum class AnimationState { IDLE, LEFT, RIGHT };
 
 } // namespace Texture
 
-#endif // DOODLEJUMP_VISUALS_H
+#endif // VISUALS_H

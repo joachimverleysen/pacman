@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_STOPWATCH_H
-#define DOODLEJUMP_STOPWATCH_H
+#ifndef STOPWATCH_H
+#define STOPWATCH_H
 
 #include <chrono>
 #include <thread>
@@ -27,4 +27,4 @@ private:
   std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
 };
 
-#endif // DOODLEJUMP_STOPWATCH_H
+#endif // STOPWATCH_H

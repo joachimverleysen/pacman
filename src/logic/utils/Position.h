@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_POSITION_H
-#define DOODLEJUMP_POSITION_H
+#ifndef POSITION_H
+#define POSITION_H
 
 struct Position {
   float x, y;
@@ -13,4 +13,4 @@ struct Position {
     return {x - other.x, y - other.y};
   }
 };
-#endif // DOODLEJUMP_POSITION_H
+#endif // POSITION_H

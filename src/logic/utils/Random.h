@@ -1,8 +1,8 @@
+#ifndef RANDOM_H
+#define RANDOM_H
 #include "chrono"
 #include "random"
 #include "stdexcept"
-#ifndef DOODLEJUMP_RANDOM_H
-#define DOODLEJUMP_RANDOM_H
 
 class Random {
   std::mt19937 generator;
@@ -23,4 +23,4 @@ public:
   int makeWeightedDecision(const std::vector<float> &weights);
 };
 
-#endif // DOODLEJUMP_RANDOM_H
+#endif // RANDOM_H

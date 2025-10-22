@@ -1,18 +1,16 @@
-#ifndef DOODLEJUMP_CONSTANTS_H
-#define DOODLEJUMP_CONSTANTS_H
+#ifndef PACMAN_CONSTANTS_H
+#define PACMAN_CONSTANTS_H
 
 #include <string>
 
 namespace Config {
+inline const std::string MazeFile = "input/maze.txt";
 namespace TextureFiles {
 inline const std::string background = "assets/background/bck@2x.png";
 inline const std::string sprites_json = "assets/textures.json";
 } // namespace TextureFiles
 
-namespace Arena {
-} // namespace Arena
 namespace Window {
-inline const float BASE_SCALE = 0.001;
 inline const unsigned int UNIT_LENGTH = 35;
 
 } // namespace Window
@@ -21,13 +19,9 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 100;
+inline const float SPEED = 200;
 } // namespace Player
 
-namespace Collision {
-inline const float min_x_distance = 20;
-inline const float max_y_distance = 30;
-} // namespace Collision
 } // namespace Config
 
-#endif // DOODLEJUMP_CONSTANTS_H
+#endif // PACMAN_CONSTANTS_H

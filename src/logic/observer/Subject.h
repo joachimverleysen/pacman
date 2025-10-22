@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_SUBJECT_H
-#define DOODLEJUMP_SUBJECT_H
+#ifndef SUBJECT_H
+#define SUBJECT_H
 
 #include "Observer.h"
 #include <algorithm>
@@ -14,11 +14,11 @@ protected:
 public:
   virtual ~Subject() { observers_.clear(); }
 
-  void addObserver(std::shared_ptr<Observer> observer) {
+  void addObserver(const std::shared_ptr<Observer>& observer) {
     observers_.push_back(observer);
   }
 
-  void removeObserver(std::shared_ptr<Observer> observer) {
+  [[maybe_unused]] void removeObserver(const std::shared_ptr<Observer>& observer) {
     assert(observer != nullptr);
     observers_.erase(
         std::remove(observers_.begin(), observers_.end(), observer),
@@ -26,10 +26,10 @@ public:
   }
 
   void notifyObservers() {
-    for (auto observer : observers_) {
+    for (const auto& observer : observers_) {
       observer->update();
     }
   }
 };
 
-#endif // DOODLEJUMP_SUBJECT_H
+#endif // SUBJECT_H

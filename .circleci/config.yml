@@ -4,7 +4,7 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: ubuntu:22.04
+      - image: ubuntu:24.04
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_PASSWORD
@@ -12,6 +12,7 @@ jobs:
       - checkout
       - run: apt update
       - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git
+      - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype-dev libopenal-dev
       - run: mkdir -p build
       - run: cd build && cmake ..
       - run: cd build && make

@@ -4,6 +4,7 @@
 using namespace std;
 typedef GameController::Action Action;
 
+// Helper function
 std::optional<Direction> getDirection(Action action) {
   switch (action) {
   case GameController::Action::MOVE_LEFT:
@@ -20,9 +21,9 @@ std::optional<Direction> getDirection(Action action) {
 }
 
 void GameController::handleInput(const sf::Event &event) {
-  // todo: disable friend class, use setters and getters instead.
+  // todo: disable player friend class, use setters and getters instead.
   auto action = getAction(event);
-  auto player = game_world_.getPlayer();
+  auto player = game_world_.player_;
   std::optional<Direction> direction = getDirection(action);
   if (action == Action::NONE or !direction)
     return;
@@ -30,12 +31,8 @@ void GameController::handleInput(const sf::Event &event) {
   // If player does not have target, find one.
   if (player->updateTarget(direction.value())) {
     player->startMove();
-  }
-  else return;
-//  if (Utils::getReverseDirection(direction.value()) == player->getTargetDirection()) {
-//    player->reverseDirection();
-//  }
-
+  } else
+    return;
 }
 
 Action GameController::getAction(const sf::Event &event) {
@@ -60,7 +57,7 @@ Action GameController::getAction(const sf::Event &event) {
   return action;
 }
 
-Action GameController::getAction() {
+[[maybe_unused]] Action GameController::getAction() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
     return Action::MOVE_LEFT;
   }

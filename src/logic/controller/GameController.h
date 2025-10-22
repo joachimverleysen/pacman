@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_GAMECONTROLLER_H
-#define DOODLEJUMP_GAMECONTROLLER_H
+#ifndef GAMECONTROLLER_H
+#define GAMECONTROLLER_H
 
 #include "../World.h"
 #include <SFML/Window/Event.hpp>
@@ -16,8 +16,9 @@ public:
 
   void handleInput(const sf::Event &event);
 
-  static Action getAction();
+  [[maybe_unused]] static Action getAction();
+
   static Action getAction(const sf::Event &event);
 };
 
-#endif // DOODLEJUMP_GAMECONTROLLER_H
+#endif // GAMECONTROLLER_H

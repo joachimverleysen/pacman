@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_GAME_H
-#define DOODLEJUMP_GAME_H
+#ifndef GAME_H
+#define GAME_H
 
 #include "../logic/World.h"
 #include "../logic/controller/GameController.h"
@@ -32,7 +32,7 @@ private:
   std::unique_ptr<Renderer> renderer_{nullptr};
 
 private:
-  void loadMaze(const std::string &);
+  static void loadMaze(const std::string &);
 
 private:
 public:
@@ -52,4 +52,4 @@ public:
   void close();
 };
 
-#endif // DOODLEJUMP_GAME_H
+#endif // GAME_H

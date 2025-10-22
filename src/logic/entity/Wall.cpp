@@ -15,6 +15,6 @@ Position Wall::getPosition() const {
 }
 
 void Wall::update() {
-  notifyObservers();
+//  notifyObservers();
 }
 EntityType Wall::getType() const { return EntityType::Wall; }

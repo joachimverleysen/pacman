@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_TEXTURE_PARSER_H
-#define DOODLEJUMP_TEXTURE_PARSER_H
+#ifndef TEXTURE_PARSER_H
+#define TEXTURE_PARSER_H
 
 #include "../logic/utils/JSONParser.h"
 #include "../logic/utils/json.hpp"
@@ -24,4 +24,4 @@ public:
   static Entity::State getEntityState(const std::string &);
 };
 
-#endif // DOODLEJUMP_TEXTURE_PARSER_H
+#endif // TEXTURE_PARSER_H

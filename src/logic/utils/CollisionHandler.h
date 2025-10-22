@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_COLLISIONHANDLER_H
-#define DOODLEJUMP_COLLISIONHANDLER_H
+#ifndef COLLISION_HANDLER_H
+#define COLLISION_HANDLER_H
 
 #include "../entity/Entity.h"
 
@@ -14,4 +14,4 @@ public:
   static bool onCollision(Entity *first, Entity *second);
 };
 
-#endif // DOODLEJUMP_COLLISIONHANDLER_H
+#endif // COLLISION_HANDLER_H

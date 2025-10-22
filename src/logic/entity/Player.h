@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_PLAYER_H
-#define DOODLEJUMP_PLAYER_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include "../../configure/constants.h"
 #include "../utils/Utils.h"
@@ -14,10 +14,7 @@ typedef std::shared_ptr<MazeNode> NodePtr;
 class Player : public Character {
 
 public:
-  friend GameController;
   Player() = delete;
-
-  Player(float width, float height);
 
   Player(NodePtr node, float width, float height);
 
@@ -25,7 +22,7 @@ public:
 
   void onCollision(Entity *other) override;
 
-  EntityType getType() const override;
+  [[nodiscard]] EntityType getType() const override;
 };
 
-#endif // DOODLEJUMP_PLAYER_H
+#endif // PLAYER_H

@@ -1,5 +1,5 @@
-#ifndef DOODLEJUMP_OBSERVER_H
-#define DOODLEJUMP_OBSERVER_H
+#ifndef OBSERVER_H
+#define OBSERVER_H
 
 class Observer {
   bool active_{true};
@@ -11,4 +11,4 @@ public:
   [[nodiscard]] bool isActive() const { return active_; };
 };
 
-#endif // DOODLEJUMP_OBSERVER_H
+#endif // OBSERVER_H
