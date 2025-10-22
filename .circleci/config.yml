@@ -13,6 +13,4 @@ jobs:
       - run: sudo apt update
       - run: sudo DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xorg-dev
       - run: sudo mkdir -p build
-      - run: cd build && cmake ..
-      - run: cd build && make
-      - run: cd build && make install
+      - run: sudo bash -c "cd build && cmake .. && make && make install"
