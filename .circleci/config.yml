@@ -11,6 +11,8 @@ jobs:
     steps:
       - checkout
       - run: sudo apt update
-      - run: sudo DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xorg-dev libudev-dev
+      - run: sudo DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git xorg-dev \
+      libx11-dev libxrandr-dev libxcursor-dev libxi-dev libxext-dev \
+      libudev-dev libopenal-dev
       - run: sudo mkdir -p build
       - run: sudo bash -c "cd build && cmake .. && make && make install"
