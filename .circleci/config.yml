@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run: apt update
       - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y gcc g++ libsfml-dev cmake git
-      - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype-dev
+      - run: DEBIAN_FRONTEND=noninteractive TZ=Europe/Brussels apt install -y libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype-dev libopenal-dev
       - run: mkdir -p build
       - run: cd build && cmake ..
       - run: cd build && make
