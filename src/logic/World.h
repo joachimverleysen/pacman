@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-
 class World : public Subject {
 public:
   friend GameController;
@@ -17,12 +16,14 @@ public:
 private:
   std::shared_ptr<Player> player_;
   std::vector<std::shared_ptr<Entity>> entities_;
+  std::vector<std::shared_ptr<Entity>> ghosts_;
   EntityFactory &factory_;
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
 
 public:
-  [[maybe_unused]] [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &getEntities() const;
+  [[maybe_unused]] [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &
+  getEntities() const;
 
 public:
   explicit World(EntityFactory &factory) : factory_(factory) {};
@@ -39,11 +40,17 @@ public:
 
   void createPlayer(std::shared_ptr<MazeNode> node);
 
+  void createGhost(std::shared_ptr<MazeNode> node);
+
+  void placeGhosts();
+
   void cleanupEntities();
 
   void placeWall(unsigned int row, unsigned int column);
 
   void makeWall();
+
+  void updateGhosts();
 };
 
 #endif // WORLD_H

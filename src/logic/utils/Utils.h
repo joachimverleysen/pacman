@@ -4,7 +4,7 @@
 // Type defs
 #include <string>
 class Entity;
-enum class Direction { NONE, LEFT, RIGHT, UP, DOWN };
+enum class Direction { LEFT, RIGHT, UP, DOWN, NONE};
 
 namespace Utils {
 

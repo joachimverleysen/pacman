@@ -7,7 +7,7 @@
 Maze *Maze::instance_ = nullptr;
 
 void Maze::loadGrid(Grid &grid) {
-  std::set<char> chars = {'+', 'S', '.', 'W'};
+  std::set<char> chars = {'+', 'S', '.', 'W', 'G'};
   grid_ = grid;
   // Initialize node map
   node_map_ = std::vector<std::vector<NodePtr>>(
@@ -19,11 +19,15 @@ void Maze::loadGrid(Grid &grid) {
       char c = vec[j];
       if (chars.find(c) == chars.end())
         throw std::invalid_argument("unexpected char in grid");
-      if (c == '+')
-        addNode(i, j);
-      else if (c == 'S') {
-        NodePtr node = addNode(i, j);
+      NodePtr node;
+      if (c == '+') {
+        node = addNode(i, j);
+      } else if (c == 'S') {
+        node = addNode(i, j);
         start_node_ = node;
+      } else if (c == 'G') {
+        node = addNode(i, j);
+        ghost_nodes_.push_back(node);
       }
     }
   }
@@ -46,7 +50,7 @@ NodePtr Maze::addNode(unsigned int row, unsigned int column) {
 
 NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
                            Direction direction) const {
-  std::set<char> node_chars = {'+', 'S'};
+  std::set<char> node_chars = {'+', 'S', 'G'};
   if (node_chars.find(at(row, column)) == node_chars.end())
     throw std::invalid_argument("Invalid node position provided");
 
@@ -76,9 +80,9 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
     return nullptr;
   char c = at(i, j);
   while (c != '0') {
-    if (c == 'W')  // Wall
+    if (c == 'W') // Wall
       return nullptr;
-    else if (c == '.') {  // Path
+    else if (c == '.') { // Path
       i += d_row;
       j += d_column;
     } else if (node_chars.find(c) != node_chars.end()) {
@@ -94,8 +98,7 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
 }
 
 bool Maze::inGridRange(unsigned int row, unsigned int column) const {
-  return row < getYunits() and
-         column < getXunits();
+  return row < getYunits() and column < getXunits();
 }
 
 Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {

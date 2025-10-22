@@ -25,6 +25,7 @@ public:
 public:
   Grid grid_;
   std::vector<std::vector<NodePtr>> node_map_;
+  std::vector<NodePtr> ghost_nodes_;
   NodePtr start_node_;
 
 public:

@@ -10,6 +10,6 @@ int main() {
     game.run();
   } catch (...) {
     std::cout << "Caught error in main" << std::endl;
-    return 1;
+    exit(1);
   }
 }

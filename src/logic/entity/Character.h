@@ -1,9 +1,10 @@
+#ifndef CHARACTER_H
+#define CHARACTER_H
 #include "../../configure/constants.h"
 #include "../maze/Maze.h"
 #include "../maze/MazeNode.h"
 #include "Entity.h"
 #include <memory>
-#ifndef CHARACTER_H
 typedef std::shared_ptr<MazeNode> NodePtr;
 using Config::Player::SPEED;
 
@@ -45,6 +46,8 @@ public:
   void takeTarget();
 
   void setTarget(NodePtr target);
+
+  bool findAnyTarget();
 };
 
 #endif // !CHARACTER_H

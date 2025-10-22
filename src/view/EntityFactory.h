@@ -28,7 +28,9 @@ public:
       : game_(game), window_(window) {}
 
   std::shared_ptr<Player> createPlayer(NodePtr) override;
-  std::shared_ptr<Wall> createWall(unsigned int row, unsigned int column) override;
+  std::shared_ptr<Wall> createWall(unsigned int row,
+                                   unsigned int column) override;
+  std::shared_ptr<Ghost> createGhost(NodePtr node) override;
 
   const std::vector<std::weak_ptr<EntityView>> &getViews() const;
 

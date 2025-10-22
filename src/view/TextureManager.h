@@ -1,22 +1,22 @@
-#ifndef TEXTUREMANAGER_H
-#define TEXTUREMANAGER_H
+#ifndef DOODLEJUMP_TEXTUREMANAGER_H
+#define DOODLEJUMP_TEXTUREMANAGER_H
 
 #include <SFML/Graphics/Texture.hpp>
 #include <map>
 #include <stdexcept>
 
-using TextureConfig = std::pair<std::string, const sf::IntRect>;
+//using TextureConfig = std::pair<std::string, const sf::IntRect>;
 
-namespace std {
-// Add comparison operator for TextureConfig
-template <> struct less<TextureConfig> {
-  bool operator()(const TextureConfig &lhs, const TextureConfig &rhs) const {
-    if (lhs.first != rhs.first)
-      return lhs.first < rhs.first;
-    return lhs.second.top < rhs.second.top;
-  }
+struct TextureConfig {
+    std::string file;
+    sf::IntRect area;
+
+    bool operator<(const TextureConfig& other) const {
+        return std::tie(file, area.left, area.top, area.width, area.height) <
+               std::tie(other.file, other.area.left, other.area.top, other.area.width, other.area.height);
+    }
 };
-} // namespace std
+
 
 class TextureManager {
 public:
@@ -37,4 +37,4 @@ public:
   }
 };
 
-#endif // TEXTUREMANAGER_H
+#endif // DOODLEJUMP_TEXTUREMANAGER_H

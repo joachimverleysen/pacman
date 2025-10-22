@@ -28,6 +28,8 @@ void Character::update() {
 }
 
 Direction Character::getTargetDirection() const {
+  if (!target_node_)
+    throw std::logic_error("can't get targetDirection since target is absent");
   if (target_node_->row_ == current_node_->row_) {
     if (target_node_->column_ > current_node_->column_)
       return Direction::RIGHT;
@@ -129,9 +131,24 @@ bool Character::updateTarget(Direction direction) {
   return true;
 }
 
+bool Character::findAnyTarget() {
+  if (updateTarget(Direction::RIGHT))
+    ;
+  else if (updateTarget(Direction::LEFT))
+    ;
+  else if (updateTarget(Direction::DOWN))
+    ;
+  else if (updateTarget(Direction::UP))
+    ;
+  else
+    throw std::logic_error("Character has no direction to go");
+};
+
 void Character::stop() { moving_ = false; }
 void Character::startMove() { moving_ = true; }
 void Character::reverseDirection() {
+  if (!target_node_)
+    throw std::logic_error("Can't reverse when target is absent");
   if (direction_ != getTargetDirection())
     setDirection(getTargetDirection());
   swap(target_node_, current_node_);

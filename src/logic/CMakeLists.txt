@@ -1,6 +1,7 @@
 add_library(logic
         World.cpp
         entity/Player.cpp
+				entity/Ghost.cpp
 				entity/Character.cpp
 				entity/Wall.cpp
         controller/GameController.cpp

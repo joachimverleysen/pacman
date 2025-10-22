@@ -1,7 +1,9 @@
 #include "Random.h"
+#include <initializer_list>
 #include <iostream>
 #include <stdexcept>
 
+Random *Random::instance_ = nullptr;
 bool Random::decide(float chance) {
   if (chance < 0.0f || chance > 1.0f) {
     throw std::invalid_argument("Chance must be between 0 and 1");
@@ -37,11 +39,22 @@ int Random::makeWeightedDecision(const std::vector<float> &weights) {
 
 float Random::getFloat(float min, float max) {
   std::uniform_real_distribution<float> distribution(min, max);
-  auto val = distribution(generator);
+  auto val = distribution(generator_);
   if (std::isnan(val)) {
     std::cerr << "invalid random num" << std::endl;
     // throw std::logic_error("invalid random num");
   }
 
-  return distribution(generator);
+  return distribution(generator_);
 }
+
+int Random::getInt(int min, int max) {
+  std::uniform_int_distribution<int> distribution(min, max);
+  return distribution(generator_);
+}
+
+Random::Random() {
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  generator_.seed(seed);
+}
+
