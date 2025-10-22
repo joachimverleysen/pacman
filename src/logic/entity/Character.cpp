@@ -138,13 +138,9 @@ void Character::reverseDirection() {
   updateDirection(Utils::getReverseDirection(direction_));
 }
 
-void Character::setDirection(Direction direction) {
-  std::cout << "direction changed\n";
-  direction_ = direction;
-}
+void Character::setDirection(Direction direction) { direction_ = direction; }
 
 void Character::updateDirection(Direction direction) {
-  std::cout << "call updateDirection()\n";
   setDirection(direction);
   auto state = state_;
 
