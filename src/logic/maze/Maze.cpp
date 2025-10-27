@@ -1,5 +1,6 @@
 #include "Maze.h"
 #include "MazeNode.h"
+#include "Wall.h"
 #include <memory>
 #include <set>
 #include <stdexcept>
@@ -28,6 +29,8 @@ void Maze::loadGrid(Grid &grid) {
       } else if (c == 'G') {
         node = addNode(i, j);
         ghost_nodes_.push_back(node);
+      } else if (c == 'W') {
+        wall_positions_.push_back({i, j});
       }
     }
   }

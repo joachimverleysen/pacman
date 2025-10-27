@@ -29,35 +29,42 @@ void World::placeGhosts() {
   }
 }
 
+void World::createWall() {
+  auto positions = Maze::getInstance()->wall_positions_;
+  wall_ = factory_.createWall(positions);
+  entities_.push_back(wall_);
+}
+
 void World::updateGhosts() {
   for (auto &ghost : ghosts_)
     ghost->update();
 }
 
-void World::makeWall() {
-  auto grid = Maze::getInstance()->grid_;
-  for (unsigned int row = 0; row < grid.size(); row++) {
-    for (unsigned int column = 0; column < grid[row].size(); column++) {
-      if (grid[row][column] == 'W')
-        placeWall(row, column);
-    }
-  }
-}
-void World::placeWall(unsigned int row, unsigned int column) {
-  auto wall = factory_.createWall(row, column);
-  entities_.push_back(wall);
-  notifyObservers();
-}
-
+//void World::makeWall() {
+//  auto grid = Maze::getInstance()->grid_;
+//  for (unsigned int row = 0; row < grid.size(); row++) {
+//    for (unsigned int column = 0; column < grid[row].size(); column++) {
+//      if (grid[row][column] == 'W')
+//        placeWall(row, column);
+//    }
+//  }
+//}
+//void World::placeWall(unsigned int row, unsigned int column) {
+//  auto wall = factory_.createWall(row, column);
+//  entities_.push_back(wall);
+//  notifyObservers();
+//}
 
 void World::initialize() {
   cleanupEntities();
 
-  makeWall();
+  // makeWall();
+  createWall();
   placeGhosts();
   createPlayer(Maze::getInstance()->start_node_);
   player_->update();
   updateGhosts();
+  wall_->update();
 }
 
 Player *World::getPlayer() const { return player_.get(); }

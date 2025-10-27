@@ -1,6 +1,7 @@
 add_library(view
 				Game.cpp
 				EntityView.cpp
+				WallView.cpp
 				DrawableInterface.h
 				SpriteDrawable.cpp
 				ShapeDrawable.cpp

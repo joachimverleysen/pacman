@@ -20,6 +20,7 @@ private:
   EntityFactory &factory_;
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
+  std::shared_ptr<Wall> wall_;
 
 public:
   [[maybe_unused]] [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &
@@ -41,6 +42,8 @@ public:
   void createPlayer(std::shared_ptr<MazeNode> node);
 
   void createGhost(std::shared_ptr<MazeNode> node);
+
+  void createWall();
 
   void placeGhosts();
 

@@ -7,8 +7,6 @@ ShapeDrawable::ShapeDrawable(std::unique_ptr<sf::Shape> shape)
     : shape_(std::move(shape)) {}
 
 void ShapeDrawable::draw(sf::RenderWindow &window) {
-  sf::RectangleShape rect{{100, 200}};
-  // window.draw(rect);
   window.draw(*shape_);
 }
 

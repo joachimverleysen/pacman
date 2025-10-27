@@ -3,15 +3,20 @@
 
 #include "../utils/Utils.h"
 #include "MazeNode.h"
+#include "Wall.h"
+#include <memory>
+#include <vector>
 
 typedef std::vector<std::vector<char>> Grid;
 
 class Maze {
 private:
   static Maze *instance_;
+  std::shared_ptr<Wall> wall_{nullptr};
   Maze() {};
 
 public:
+  std::vector<MazePosition> wall_positions_{};
   Maze(const Maze &) = delete;
   Maze &operator=(const Maze &) = delete;
 

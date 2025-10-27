@@ -3,7 +3,6 @@ add_library(logic
         entity/Player.cpp
 				entity/Ghost.cpp
 				entity/Character.cpp
-				entity/Wall.cpp
         controller/GameController.cpp
         observer/Observer.cpp
         utils/JSONParser.cpp
@@ -16,5 +15,6 @@ add_library(logic
 				utils/Camera.cpp
 				maze/MazeNode.cpp
 				maze/Maze.cpp
+				maze/Wall.cpp
 )
 
