@@ -48,15 +48,11 @@ void Character::move() {
   if (!moving_)
     return;
   float delta = Stopwatch::getInstance()->getDeltaTime();
-  // std::cout << delta << '\n';
-  // todo: Use statistics to replace the magic number
-  delta = std::min(delta, 0.104f); // Limit delta to avoid 'jumping'
   float speed = speed_ * delta;
   Position new_pos = Camera::world2Window(position_);
   Direction direction;
   try {
     direction = getTargetDirection();
-
   } catch (std::logic_error &e) {
     std::cout << e.what() << std::endl;
   }

@@ -62,7 +62,7 @@ void World::initialize() {
   createWall();
   placeGhosts();
   createPlayer(Maze::getInstance()->start_node_);
-  player_->update();
+//  player_->update();
   updateGhosts();
   wall_->update();
 }
@@ -90,6 +90,7 @@ void World::update() {
   if (!player_->isActive()) {
     return;
   }
+  Stopwatch::getInstance()->update();
   cleanupEntities();
   checkCollisions();
   updateAllEntities();
