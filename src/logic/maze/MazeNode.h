@@ -1,6 +1,6 @@
 #ifndef MAZE_NODE_H
 #define MAZE_NODE_H
-#include "../utils/Position.h"
+#include "../utils/MyVector.h"
 #include <memory>
 #include <vector>
 
@@ -20,7 +20,7 @@ struct MazeNode {
   Type type_;
   Neighbours neighbours_;
 
-  Position getPosition() const;
+  MyVector getPosition() const;
 
   Type getType() const;
 

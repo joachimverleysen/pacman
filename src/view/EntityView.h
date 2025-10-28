@@ -18,10 +18,10 @@ using FilePath = std::string;
 class DrawableInterface;
 class EntityView : public Observer {
   std::weak_ptr<Entity> entity_;
-  Position position_{};
+  MyVector position_{};
 
 public:
-  const Position &getPosition() const;
+  const MyVector &getPosition() const;
 
 protected:
   std::unique_ptr<DrawableInterface> drawable_;
@@ -36,7 +36,7 @@ public:
 
   virtual void draw(sf::RenderWindow &window);
 
-  void setPosition(Position &position);
+  void setPosition(MyVector &position);
 
   void updatePosition();
 };

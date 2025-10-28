@@ -14,7 +14,7 @@ SpriteDrawable::SpriteDrawable(Texture::TextureMap texture_map, float scale)
 }
 void SpriteDrawable::draw(sf::RenderWindow &window) { window.draw(sprite_); }
 
-void SpriteDrawable::setPosition(Position pos) {
+void SpriteDrawable::setPosition(MyVector pos) {
   sprite_.setPosition(pos.x, pos.y);
 }
 

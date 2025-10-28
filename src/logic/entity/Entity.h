@@ -2,7 +2,7 @@
 #define ENTITY_H
 
 #include "../observer/Subject.h"
-#include "../utils/Position.h"
+#include "../utils/MyVector.h"
 #include "../utils/Utils.h"
 #include "EntityType.h"
 
@@ -31,7 +31,7 @@ public:
 
 protected:
   EntityType type_{EntityType::None};
-  Position position_{0, 0};
+  MyVector position_{0, 0};
   BoundingBox spawn_box_;
   float width_{0};
   float height_{0};
@@ -44,10 +44,8 @@ public:
 
   void setState(State state);
 
-  Entity(float x, float y)
-      : position_(Position{x, y}), spawn_box_(getBoundingBox()) {}
 
-  Entity(float width, float height, float scale)
+  Entity(float width, float height, float scale=1)
       : width_(width * scale), height_(height * scale), scale_(scale),
         spawn_box_(getBoundingBox()) {}
   virtual ~Entity() = default;
@@ -83,8 +81,8 @@ public:
   void setHeight(float height);
 
 public:
-  [[nodiscard]] Position getPosition() const { return position_; };
-  void setPosition(const Position &position) { position_ = position; };
+  [[nodiscard]] MyVector getPosition() const { return position_; };
+  void setPosition(const MyVector &position) { position_ = position; };
 
   [[nodiscard]] float getBottom() const;
 

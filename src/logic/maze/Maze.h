@@ -47,9 +47,11 @@ public:
   char at(unsigned int row, unsigned int column) const;
   NodePtr getNode(unsigned int row, unsigned int column) const;
 
-  Position
+  MyVector
   getWorldPosition(unsigned int row,
                    unsigned int column) const; // Returns center of the 'square'
   bool inGridRange(unsigned int row, unsigned int column) const;
+
+  std::vector<Direction> getPossibleDirections(NodePtr node) const;
 };
 #endif // !MAZE_H

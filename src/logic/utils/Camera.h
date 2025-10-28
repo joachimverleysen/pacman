@@ -1,11 +1,11 @@
 #ifndef CAMERA_h
 
 #include "../../configure/constants.h"
-#include "../../logic/utils/Position.h"
+#include "../../logic/utils/MyVector.h"
 class Camera {
 public:
-  static Position world2Window(const Position &position);
-  static Position window2World(const Position &position);
+  static MyVector world2Window(const MyVector &position);
+  static MyVector window2World(const MyVector &position);
 };
 
 #endif // !CAMERA_h

@@ -17,7 +17,7 @@ public:
   Wall(std::vector<MazePosition> &positions);
 
   std::vector<MazePosition> getPositions() const;
-  Position getPosition() const;
+  MyVector getPosition() const;
   EntityType getType() const override;
   void onCollision(Entity *other) override {};
   bool allowsSpawn(Entity *other) override { return false; };

@@ -1,6 +1,6 @@
 #ifndef SHAPE_DRAWABLE_H
 #define SHAPE_DRAWABLE_H
-#include "../logic/utils/Position.h"
+#include "../logic/utils/MyVector.h"
 #include "DrawableInterface.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -15,7 +15,7 @@ class ShapeDrawable : public DrawableInterface {
 public:
   ShapeDrawable(std::unique_ptr<sf::Shape> shape);
   void draw(sf::RenderWindow &window) override;
-  void setPosition(Position pos) override;
+  void setPosition(MyVector pos) override;
   void updateState(Entity::State) override{};
 };
 #endif // !SHAPE_DRAWABLE_H

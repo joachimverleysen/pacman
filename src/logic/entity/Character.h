@@ -48,6 +48,8 @@ public:
   void setTarget(NodePtr target);
 
   bool findAnyTarget();
+
+  std::vector<Direction> getPossibleDirections(NodePtr *node) const;
 };
 
 #endif // !CHARACTER_H

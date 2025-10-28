@@ -1,5 +1,5 @@
 #ifndef SPRITE_DRAWABLE_H
-#include "../logic/utils/Position.h"
+#include "../logic/utils/MyVector.h"
 #include "DrawableInterface.h"
 #include "Visuals.h"
 #include <SFML/Graphics.hpp>
@@ -15,7 +15,7 @@ class SpriteDrawable : public DrawableInterface {
 public:
   SpriteDrawable(Texture::TextureMap texture_map, float scale);
   void draw(sf::RenderWindow &window) override;
-  void setPosition(Position pos) override;
+  void setPosition(MyVector pos) override;
   void setTexture(const sf::Texture *texture);
   void updateState(Entity::State state) override;
 };

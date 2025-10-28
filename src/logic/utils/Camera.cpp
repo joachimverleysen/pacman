@@ -2,7 +2,7 @@
 #include "../../logic/maze/Maze.h"
 
 using namespace Config;
-Position Camera::world2Window(const Position &position) {
+MyVector Camera::world2Window(const MyVector &position) {
   float x, y;
   // todo: no constant 3 here!
   float w = Window::UNIT_LENGTH * Maze::getInstance()->getXunits();
@@ -14,14 +14,14 @@ Position Camera::world2Window(const Position &position) {
 
   x = (position.x + 1) / 2 * w;
   y = (1 - (position.y + 1) / 2) * h;
-  return Position{x, y};
+  return MyVector{x, y};
 }
 
-Position Camera::window2World(const Position &position) {
+MyVector Camera::window2World(const MyVector &position) {
   float w = Window::UNIT_LENGTH * Maze::getInstance()->getXunits();
   float h = Window::UNIT_LENGTH * Maze::getInstance()->getYunits();
 
   float x = (position.x / w) * 2 - 1;
   float y = 1 - (position.y / h) * 2;
-  return Position{x, y};
+  return MyVector{x, y};
 }

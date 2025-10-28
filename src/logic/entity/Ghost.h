@@ -22,7 +22,7 @@ public:
 
   bool chooseDirection();
 
-  bool chooseDirection(std::vector<Direction> options);
+  bool chooseDirection(const std::vector<Direction>& options);
 };
 
 #endif

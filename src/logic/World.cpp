@@ -56,6 +56,14 @@ void World::updateGhosts() {
 //}
 
 void World::initialize() {
+  try {
+    verifyInit();
+  }
+  catch (std::logic_error &e) {
+    std::cerr << "World initialization failed:\n";
+    std::cerr << e.what() << '\n';
+    exit(1);
+  }
   cleanupEntities();
 
   // makeWall();
@@ -96,9 +104,14 @@ void World::update() {
   updateAllEntities();
 }
 
+bool World::verifyInit() const {
+  if (! Maze::getInstance()->start_node_)
+    throw std::logic_error("No start node in maze");
+}
 void World::checkCollisions() {
   for (auto &entity : entities_) {
-    if (entity == player_)
+    if (entity->getType() == EntityType::Player ||
+    entity->getType() == EntityType::Wall)
       continue;
 
     CollisionHandler::onCollision(entity.get(), player_.get());

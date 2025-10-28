@@ -10,6 +10,6 @@ void ShapeDrawable::draw(sf::RenderWindow &window) {
   window.draw(*shape_);
 }
 
-void ShapeDrawable::setPosition(Position pos) {
+void ShapeDrawable::setPosition(MyVector pos) {
   shape_->setPosition(pos.x, pos.y);
 }
