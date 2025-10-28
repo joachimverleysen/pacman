@@ -11,7 +11,8 @@ Ghost::Ghost(NodePtr node, float width, float height)
   startMove();
 }
 
-void Ghost::onCollision(Entity *other) {}
+void Ghost::onCollision(Entity *other) {
+  deactivate();}
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
 

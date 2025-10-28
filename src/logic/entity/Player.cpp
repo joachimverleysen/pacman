@@ -7,9 +7,7 @@
 Player::Player(NodePtr node, float width, float height)
     : Character(std::move(node), width, height) {}
 
-void Player::onCollision(Entity *other) {
-  std::printf("boom\n");
-}
+void Player::onCollision(Entity *other) {}
 
 EntityType Player::getType() const { return EntityType::Player; }
 

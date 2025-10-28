@@ -99,8 +99,8 @@ void World::update() {
     return;
   }
   Stopwatch::getInstance()->update();
-  cleanupEntities();
   checkCollisions();
+  cleanupEntities();
   updateAllEntities();
 }
 

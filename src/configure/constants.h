@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Config {
-inline const std::string MazeFile = "input/maze2.txt";
+inline const std::string MazeFile = "input/maze.txt";
 namespace TextureFiles {
 inline const std::string background = "assets/background/bck@2x.png";
 inline const std::string sprites_json = "assets/textures.json";
@@ -19,11 +19,11 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 100;
+inline const float SPEED = 300;
 } // namespace Player
 
 namespace Ghost {
-inline const float SPEED = 50;
+inline const float SPEED = 200;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
 }
