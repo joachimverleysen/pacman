@@ -17,14 +17,14 @@ using FilePath = std::string;
 
 class DrawableInterface;
 class EntityView : public Observer {
-  std::unique_ptr<DrawableInterface> drawable_;
   std::weak_ptr<Entity> entity_;
   Position position_{};
 
 public:
   const Position &getPosition() const;
 
-private:
+protected:
+  std::unique_ptr<DrawableInterface> drawable_;
 
 public:
   EntityView(std::weak_ptr<Entity> entity,

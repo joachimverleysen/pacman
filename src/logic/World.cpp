@@ -1,11 +1,12 @@
 #include "World.h"
 
-#include <utility>
 #include "../configure/constants.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
+#include <utility>
 
-[[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &World::getEntities() const {
+[[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &
+World::getEntities() const {
   return entities_;
 }
 
@@ -15,27 +16,55 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   notifyObservers();
 }
 
-void World::makeWall() {
-  auto grid = Maze::getInstance()->grid_;
-  for (unsigned int row = 0; row < grid.size(); row++) {
-    for (unsigned int column = 0; column < grid[row].size(); column++) {
-      if (grid[row][column] == 'W')
-        placeWall(row, column);
-    }
-  }
-}
-void World::placeWall(unsigned int row, unsigned int column) {
-  auto wall = factory_.createWall(row, column);
-  entities_.push_back(wall);
+void World::createGhost(std::shared_ptr<MazeNode> node) {
+  auto ghost = factory_.createGhost(std::move(node));
+  entities_.push_back(ghost);
+  ghosts_.push_back(ghost);
   notifyObservers();
 }
+
+void World::placeGhosts() {
+  for (auto &node : Maze::getInstance()->ghost_nodes_) {
+    createGhost(node);
+  }
+}
+
+void World::createWall() {
+  auto positions = Maze::getInstance()->wall_positions_;
+  wall_ = factory_.createWall(positions);
+  entities_.push_back(wall_);
+}
+
+void World::updateGhosts() {
+  for (auto &ghost : ghosts_)
+    ghost->update();
+}
+
+//void World::makeWall() {
+//  auto grid = Maze::getInstance()->grid_;
+//  for (unsigned int row = 0; row < grid.size(); row++) {
+//    for (unsigned int column = 0; column < grid[row].size(); column++) {
+//      if (grid[row][column] == 'W')
+//        placeWall(row, column);
+//    }
+//  }
+//}
+//void World::placeWall(unsigned int row, unsigned int column) {
+//  auto wall = factory_.createWall(row, column);
+//  entities_.push_back(wall);
+//  notifyObservers();
+//}
+
 void World::initialize() {
   cleanupEntities();
 
-  makeWall();
+  // makeWall();
+  createWall();
+  placeGhosts();
   createPlayer(Maze::getInstance()->start_node_);
-  player_->update();
-  updateAllEntities();
+//  player_->update();
+  updateGhosts();
+  wall_->update();
 }
 
 Player *World::getPlayer() const { return player_.get(); }
@@ -61,9 +90,10 @@ void World::update() {
   if (!player_->isActive()) {
     return;
   }
+  Stopwatch::getInstance()->update();
   cleanupEntities();
   checkCollisions();
-  player_->update();
+  updateAllEntities();
 }
 
 void World::checkCollisions() {

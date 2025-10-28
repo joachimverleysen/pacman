@@ -1,9 +1,10 @@
 #include "EntityFactory.h"
 #include "../configure/constants.h"
 #include "../logic/utils/Camera.h"
+#include "EntityView.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "ShapeDrawable.h"
-#include "EntityView.h"
+#include "WallView.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
@@ -26,11 +27,51 @@ std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
   return player;
 }
 
+// todo: replace Player by ghost constants
+std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node) {
+  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(
+      node, Config::Player::WIDTH, Config::Player::HEIGHT);
+  // todo: no hardcoded
+  std::string type = "ghost";
+  Texture::TextureMap texture_map =
+      TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+
+  std::unique_ptr<SpriteDrawable> drawable =
+      std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
+  std::shared_ptr<EntityView> view = std::make_shared<EntityView>(
+      ghost,
+      std::move(drawable)); // ghost is passed as a weak pointer here
+
+  ghost->addObserver(view); // view is passed as shared pointer here
+  views_.push_back(view);
+  return ghost;
+}
+
 const std::vector<std::weak_ptr<EntityView>> &EntityFactory::getViews() const {
   return views_;
 }
 
-std::shared_ptr<Wall> EntityFactory::createWall(unsigned int row,
+std::shared_ptr<Wall>
+EntityFactory::createWall(std::vector<MazePosition> &positions) {
+  using Config::Window::UNIT_LENGTH;
+  std::shared_ptr<Wall> wall = std::make_shared<Wall>(positions);
+  sf::Vector2f vec{UNIT_LENGTH, UNIT_LENGTH};
+  std::unique_ptr<sf::RectangleShape> rect =
+      std::make_unique<sf::RectangleShape>(vec);
+  sf::Color darkblue{11, 0, 200};
+  rect->setFillColor(darkblue);
+  std::unique_ptr<ShapeDrawable> drawable =
+      std::move(std::make_unique<ShapeDrawable>(std::move(rect)));
+
+  std::shared_ptr<EntityView> view =
+      std::make_shared<WallView>(wall, std::move(drawable));
+
+  wall->addObserver(view);
+  views_.push_back(view);
+  return wall;
+}
+
+/* std::shared_ptr<Wall> EntityFactory::createWall(unsigned int row,
                                                 unsigned int column) {
   auto maze = Maze::getInstance();
   auto wall = std::make_shared<Wall>(row, column);
@@ -61,4 +102,4 @@ std::shared_ptr<Wall> EntityFactory::createWall(unsigned int row,
   views_.push_back(view);
 
   return wall;
-}
+} */

@@ -7,6 +7,7 @@
 class Stopwatch {
   static Stopwatch *instance_;
   Stopwatch() : last_time_(std::chrono::high_resolution_clock::now()) {}
+  float delta_time_;
 
 public:
   Stopwatch(const Stopwatch &) = delete;
@@ -20,6 +21,8 @@ public:
   }
 
   float getDeltaTime();
+
+  void update();
 
   void capFramerate(float max_fps);
 

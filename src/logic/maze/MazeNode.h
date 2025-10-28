@@ -14,11 +14,17 @@ struct Neighbours {
 };
 
 struct MazeNode {
+  enum class Type { Start = 0, Ghost = 1 };
   int row_;
   int column_;
+  Type type_;
   Neighbours neighbours_;
 
   Position getPosition() const;
+
+  Type getType() const;
+
+  void setType(Type);
 
   MazeNode(int row, int column) : row_(row), column_(column) {}
 };
