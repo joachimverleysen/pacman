@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "../utils/Camera.h"
 #include "../utils/Stopwatch.h"
+#include "../utils/Utils.h"
 #include "../utils/Vector.h"
 #include <cmath>
 #include <iostream>
