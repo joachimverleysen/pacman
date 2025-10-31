@@ -3,10 +3,10 @@
 #include "../utils/Stopwatch.h"
 #include "../utils/Utils.h"
 #include "../utils/Vector.h"
+#include <array>
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-#include <utility>
 
 using namespace Config;
 
@@ -139,6 +139,7 @@ bool Character::findAnyTarget() {
     ;
   else
     throw std::logic_error("Character has no direction to go");
+  return true;
 };
 
 void Character::stop() { moving_ = false; }
