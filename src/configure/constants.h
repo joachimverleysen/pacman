@@ -19,8 +19,14 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 200;
+inline const float SPEED = 300;
 } // namespace Player
+
+namespace Ghost {
+inline const float SPEED = 200;
+inline const float WIDTH = 40;
+inline const float HEIGHT = 40;
+}
 
 } // namespace Config
 

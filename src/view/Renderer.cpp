@@ -16,7 +16,7 @@ void Renderer::render() {
 
 void Renderer::updateViews() {
   for (auto &v : factory_.lock()->views_) {
-    if (!v.lock()->isActive())
+    if (!v.lock() || !v.lock()->isActive())
       removeView(v);
   }
 }

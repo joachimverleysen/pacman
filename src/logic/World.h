@@ -54,6 +54,8 @@ public:
   void makeWall();
 
   void updateGhosts();
+
+  bool verifyInit() const;
 };
 
 #endif // WORLD_H

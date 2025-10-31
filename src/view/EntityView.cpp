@@ -16,7 +16,7 @@ EntityView::~EntityView() {
 
 void EntityView::draw(sf::RenderWindow &window) { drawable_->draw(window); }
 
-void EntityView::setPosition(Position &position) {
+void EntityView::setPosition(MyVector &position) {
   position_ = position;
   drawable_->setPosition(position);
 }
@@ -35,4 +35,4 @@ void EntityView::updatePosition() {
 
 
 
-const Position &EntityView::getPosition() const { return position_; }
+const MyVector &EntityView::getPosition() const { return position_; }

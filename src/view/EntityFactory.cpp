@@ -8,9 +8,20 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
+MyVector dimensionsToWorld(float width, float height) {
+  MyVector start = Camera::window2World({0, 0});
+  MyVector end = Camera::window2World({width, height});
+  float w = std::abs(end.x - start.x);
+  float h = std::abs(end.y - start.y);
+  return {w, h};
+}
+
 std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
-  std::shared_ptr<Player> player = std::make_shared<Player>(
-      node, Config::Player::WIDTH, Config::Player::HEIGHT);
+  MyVector size_dimensions =
+      dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
+  float w = size_dimensions.x;
+  float h = size_dimensions.y;
+  std::shared_ptr<Player> player = std::make_shared<Player>(node, w, h);
   // todo: no hardcoded
   std::string type = "pacman";
   Texture::TextureMap texture_map =
@@ -27,10 +38,12 @@ std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
   return player;
 }
 
-// todo: replace Player by ghost constants
 std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node) {
-  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(
-      node, Config::Player::WIDTH, Config::Player::HEIGHT);
+  MyVector size_dimensions =
+      dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
+  float w = size_dimensions.x;
+  float h = size_dimensions.y;
+  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, w, h);
   // todo: no hardcoded
   std::string type = "ghost";
   Texture::TextureMap texture_map =
@@ -76,10 +89,10 @@ EntityFactory::createWall(std::vector<MazePosition> &positions) {
   auto maze = Maze::getInstance();
   auto wall = std::make_shared<Wall>(row, column);
 
-  Position topleft = Camera::world2Window(wall->getPosition());
+  MyVector topleft = Camera::world2Window(wall->getPosition());
 
   using Config::Window::UNIT_LENGTH;
-  Position bottomright = topleft + Position{UNIT_LENGTH, UNIT_LENGTH};
+  MyVector bottomright = topleft + MyVector{UNIT_LENGTH, UNIT_LENGTH};
   float x_distance = bottomright.x - topleft.x;
   float y_distance = bottomright.y - topleft.y;
   sf::Vector2f vec{x_distance, y_distance};
@@ -97,7 +110,7 @@ EntityFactory::createWall(std::vector<MazePosition> &positions) {
       std::make_shared<EntityView>(wall, std::move(drawable));
 
   wall->addObserver(view);
-  Position pos = Camera::window2World(topleft);
+  MyVector pos = Camera::window2World(topleft);
   wall->setPosition(pos);
   views_.push_back(view);
 

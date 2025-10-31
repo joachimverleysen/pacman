@@ -6,14 +6,14 @@
 
 Wall::Wall(std::vector<MazePosition> &positions) : positions_(positions) {}
 
-Position Wall::getPosition() const {
+MyVector Wall::getPosition() const {
   // Compute top left corner
   auto maze = Maze::getInstance();
   float x, y;
 
   /* x = -1 + maze->getCellWidth() * column_;
   y = 1 - maze->getCellHeight() * row_; */
-  // return Position{x, y};
+  // return MyVector{x, y};
   return {0, 0};
 }
 

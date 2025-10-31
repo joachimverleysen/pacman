@@ -11,7 +11,7 @@ void WallView::draw(sf::RenderWindow &window) {
     drawable_->setPosition(
       Camera::world2Window(
         Maze::getInstance()->getWorldPosition(maze_pos.first, maze_pos.second))
-        - Position{UNIT_LENGTH/2, UNIT_LENGTH/2}
+      - MyVector{UNIT_LENGTH / 2, UNIT_LENGTH / 2}
         ) ;
 
     drawable_->draw(window);

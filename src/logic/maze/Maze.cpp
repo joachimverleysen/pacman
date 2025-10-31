@@ -1,6 +1,8 @@
 #include "Maze.h"
+#include "../utils/Utils.h"
 #include "MazeNode.h"
 #include "Wall.h"
+#include <array>
 #include <memory>
 #include <set>
 #include <stdexcept>
@@ -116,6 +118,19 @@ Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {
   return neighbors;
 }
 
+std::vector<Direction> Maze::getPossibleDirections(NodePtr node) const {
+
+  std::vector<Direction> result = {};
+  std::array<Direction, 4> directions = {Direction::UP, Direction::DOWN,
+                                         Direction::LEFT, Direction::RIGHT};
+
+  for (auto &d : directions) {
+    if (findNeighbor(node->row_, node->column_, d))
+      result.push_back(d);
+  }
+  return result;
+}
+
 char Maze::at(unsigned int row, unsigned int column) const {
   if (inGridRange(row, column))
     return grid_[row][column];
@@ -126,13 +141,13 @@ NodePtr Maze::getNode(unsigned int row, unsigned int column) const {
   return node_map_[row][column];
 }
 
-Position Maze::getWorldPosition(unsigned int row, unsigned int column) const {
+MyVector Maze::getWorldPosition(unsigned int row, unsigned int column) const {
   // World is bounded between -1 and +1, so width = 2.0
   float cell_width = 2.0 / getXunits();
   float cell_height = 2.0 / getYunits();
   float x_center = -1 + (cell_width / 2) + cell_width * column;
   float y_center = 1 - (cell_height / 2) - cell_height * row;
-  return Position{x_center, y_center};
+  return MyVector{x_center, y_center};
 }
 
 float Maze::getCellHeight() const { return 2.0 / getYunits(); }

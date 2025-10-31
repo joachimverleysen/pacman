@@ -1,13 +1,13 @@
-#include "Position.h"
+#include "MyVector.h"
 #ifndef VECTOR_H
 
 struct Vector {
-  Position start;
-  Position end;
+  MyVector start;
+  MyVector end;
   float dx;
   float dy;
 
-  Vector(const Position &start = {}, const Position &end = {});
+  Vector(const MyVector &start = {}, const MyVector &end = {});
 
   float getMagnitude() const;
 

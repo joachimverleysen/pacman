@@ -1,11 +1,12 @@
 #include "Character.h"
 #include "../utils/Camera.h"
 #include "../utils/Stopwatch.h"
+#include "../utils/Utils.h"
 #include "../utils/Vector.h"
+#include <array>
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-#include <utility>
 
 using namespace Config;
 
@@ -49,7 +50,7 @@ void Character::move() {
     return;
   float delta = Stopwatch::getInstance()->getDeltaTime();
   float speed = speed_ * delta;
-  Position new_pos = Camera::world2Window(position_);
+  MyVector new_pos = Camera::world2Window(position_);
   Direction direction;
   try {
     direction = getTargetDirection();
@@ -74,8 +75,8 @@ void Character::move() {
 bool Character::overshotTarget() const {
   if (!target_node_)
     return false;
-  Position prev_pos = current_node_->getPosition();
-  Position target_pos = target_node_->getPosition();
+  MyVector prev_pos = current_node_->getPosition();
+  MyVector target_pos = target_node_->getPosition();
 
   Vector vec1{prev_pos, target_pos};
   Vector vec2{prev_pos, position_};
@@ -138,6 +139,7 @@ bool Character::findAnyTarget() {
     ;
   else
     throw std::logic_error("Character has no direction to go");
+  return true;
 };
 
 void Character::stop() { moving_ = false; }
@@ -153,7 +155,22 @@ void Character::reverseDirection() {
 
 void Character::setDirection(Direction direction) { direction_ = direction; }
 
+std::vector<Direction> Character::getPossibleDirections(NodePtr *node) const {
+
+  std::vector<Direction> result = {};
+  std::array<Direction, 4> directions = {Direction::UP, Direction::DOWN,
+                                         Direction::LEFT, Direction::RIGHT};
+
+  for (auto &d : directions) {
+    if (Maze::getInstance()->findNeighbor(node->get()->row_,
+                                          node->get()->column_, d))
+      result.push_back(d);
+  }
+  return result;
+}
 void Character::updateDirection(Direction direction) {
+  // todo: get rid of Direction::NONE
+  // and use std::optional instead
   setDirection(direction);
   auto state = state_;
 

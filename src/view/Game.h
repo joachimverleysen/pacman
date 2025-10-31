@@ -13,7 +13,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
 
-struct Position;
+struct MyVector;
 
 class EntityFactory;
 
