@@ -1,6 +1,8 @@
 #include "Maze.h"
+#include "../utils/Utils.h"
 #include "MazeNode.h"
 #include "Wall.h"
+#include <array>
 #include <memory>
 #include <set>
 #include <stdexcept>
@@ -123,8 +125,7 @@ std::vector<Direction> Maze::getPossibleDirections(NodePtr node) const {
                                          Direction::LEFT, Direction::RIGHT};
 
   for (auto &d : directions) {
-    if (findNeighbor(node->row_,
-                                          node->column_, d))
+    if (findNeighbor(node->row_, node->column_, d))
       result.push_back(d);
   }
   return result;
