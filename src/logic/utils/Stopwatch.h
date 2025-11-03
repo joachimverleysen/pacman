@@ -7,7 +7,7 @@
 class Stopwatch {
   static Stopwatch *instance_;
   Stopwatch() : last_time_(std::chrono::high_resolution_clock::now()) {}
-  float delta_time_;
+  float delta_time_{0};
 
 public:
   Stopwatch(const Stopwatch &) = delete;

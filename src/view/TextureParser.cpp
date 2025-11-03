@@ -16,10 +16,12 @@ Texture::TextureMap TextureParser::getTextureMap(const std::string &json_path,
     Entity::State state = getEntityState(animation_name);
     if (state == Entity::State::NONE)
       throw std::runtime_error("Unknown state in configuration file");
-    auto area = parseIntRect(item.value()["area"]);
-    auto texture = TextureManager::getTexture(
-        item.value()["texture"].get<std::string>(), area);
-    map[state] = texture;
+    for (auto &texture_config : item.value()) {
+      auto area = parseIntRect(texture_config["area"]);
+      auto texture = TextureManager::getTexture(
+        texture_config["texture"].get<std::string>(), area);
+      map[state].push_back(texture);
+    }
   }
   return map;
 }
