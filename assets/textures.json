@@ -1,96 +1,188 @@
 {
     "pacman": {
-        "idle": {
-            "texture": "assets/sprites.png",
-            "area": [
-                850,
-                0,
-                37,
-                39
-            ]
-        },
-        "right": {
-            "texture": "assets/sprites.png",
-            "area": [
-                850,
-                50,
-                37,
-                39
-            ]
-        },
-        "left": {
-            "texture": "assets/sprites.png",
-            "area": [
-                850,
-                350,
-                37,
-                39
-            ]
-        },
-        "up": {
-            "texture": "assets/sprites.png",
-            "area": [
-                850,
-                500,
-                37,
-                39
-            ]
-        },
-        "down": {
-            "texture": "assets/sprites.png",
-            "area": [
-                850,
-                200,
-                37,
-                39
-            ]
-        }
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    0,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    50,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    100,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    350,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    400,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    500,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    550,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    200,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    850,
+                    250,
+                    37,
+                    39
+                ]
+            }
+        ]
     },
     "ghost": {
-        "idle": {
-            "texture": "assets/sprites.png",
-            "area": [
-                800,
-                0,
-                37,
-                39
-            ]
-        },
-        "right": {
-            "texture": "assets/sprites.png",
-            "area": [
-                800,
-                0,
-                37,
-                39
-            ]
-        },
-        "left": {
-            "texture": "assets/sprites.png",
-            "area": [
-                800,
-                200,
-                37,
-                39
-            ]
-        },
-        "up": {
-            "texture": "assets/sprites.png",
-            "area": [
-                800,
-                300,
-                37,
-                39
-            ]
-        },
-        "down": {
-            "texture": "assets/sprites.png",
-            "area": [
-                800,
-                100,
-                37,
-                39
-            ]
-        }
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    0,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    0,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    50,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    200,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    250,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    300,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    350,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    100,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
     }
 }
