@@ -32,7 +32,7 @@ public:
                                    unsigned int column) override; */
   std::shared_ptr<Wall>
   createWall(std::vector<MazePosition> &positions) override;
-  std::shared_ptr<Ghost> createGhost(NodePtr node) override;
+  std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player) override;
 
   const std::vector<std::weak_ptr<EntityView>> &getViews() const;
 
