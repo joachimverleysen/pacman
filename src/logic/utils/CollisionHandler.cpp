@@ -2,17 +2,20 @@
 #include <iostream>
 
 bool CollisionHandler::onCollision(Entity *first, Entity *second) {
-  if (checkCollision(first, second)) {
-    first->onCollision(second);
-    second->onCollision(first);
-    return true;
-  }
+  first->onCollision(second);
+  second->onCollision(first);
+  return true;
   return false;
 }
 
 bool CollisionHandler::checkCollision(const Entity *first,
                                       const Entity *second) {
   return checkCollision(first->getBoundingBox(), second->getBoundingBox());
+}
+
+bool CollisionHandler::checkCollision(const Entity *first,
+                                      const Entity *second, float margin) {
+  return checkCollision(first->getBoundingBox(), second->getBoundingBox(), margin);
 }
 
 bool CollisionHandler::checkCollision(const BoundingBox &first,

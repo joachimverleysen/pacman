@@ -33,7 +33,7 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 }
 
 void World::createGhost(std::shared_ptr<MazeNode> node) {
-  auto ghost = factory_->createGhost(std::move(node));
+  auto ghost = factory_.createGhost(std::move(node), player_);
   entities_.push_back(ghost);
   ghosts_.push_back(ghost);
   notifyObservers();
@@ -56,26 +56,25 @@ void World::updateGhosts() {
     ghost->update();
 }
 
-//void World::makeWall() {
-//  auto grid = Maze::getInstance()->grid_;
-//  for (unsigned int row = 0; row < grid.size(); row++) {
-//    for (unsigned int column = 0; column < grid[row].size(); column++) {
-//      if (grid[row][column] == 'W')
-//        placeWall(row, column);
-//    }
-//  }
-//}
-//void World::placeWall(unsigned int row, unsigned int column) {
-//  auto wall = factory_.createWall(row, column);
-//  entities_.push_back(wall);
-//  notifyObservers();
-//}
+// void World::makeWall() {
+//   auto grid = Maze::getInstance()->grid_;
+//   for (unsigned int row = 0; row < grid.size(); row++) {
+//     for (unsigned int column = 0; column < grid[row].size(); column++) {
+//       if (grid[row][column] == 'W')
+//         placeWall(row, column);
+//     }
+//   }
+// }
+// void World::placeWall(unsigned int row, unsigned int column) {
+//   auto wall = factory_.createWall(row, column);
+//   entities_.push_back(wall);
+//   notifyObservers();
+// }
 
 void World::initialize() {
   try {
     verifyInit();
-  }
-  catch (std::logic_error &e) {
+  } catch (std::logic_error &e) {
     std::cerr << "World initialization failed:\n";
     std::cerr << e.what() << '\n';
     exit(1);
@@ -84,9 +83,9 @@ void World::initialize() {
 
   // makeWall();
   createWall();
-  placeGhosts();
   createPlayer(Maze::getInstance()->start_node_);
-//  player_->update();
+  placeGhosts();
+  //  player_->update();
   updateGhosts();
   wall_->update();
 }
@@ -121,16 +120,19 @@ void World::update() {
 }
 
 bool World::verifyInit() const {
-  if (! Maze::getInstance()->start_node_)
+  if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");
+  return true;
 }
+
 void World::checkCollisions() {
   for (auto &entity : entities_) {
     if (entity->getType() == EntityType::Player ||
-    entity->getType() == EntityType::Wall)
+        entity->getType() == EntityType::Wall)
       continue;
 
-    CollisionHandler::onCollision(entity.get(), player_.get());
+    if (CollisionHandler::checkCollision(entity.get(), player_.get()))
+      CollisionHandler::onCollision(entity.get(), player_.get());
   }
 }
 

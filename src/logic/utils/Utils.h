@@ -27,6 +27,18 @@ inline Direction getReverseDirection(Direction direction) {
   }
 
 } // namespace Utils
+inline Direction getDirection(int num) {
+  switch (num) {
+  case 0:
+    return Direction::LEFT;
+  case 1:
+    return Direction::RIGHT;
+  case 2:
+    return Direction::UP;
+  case 3:
+    return Direction::DOWN;
+  case 4:
+    return Direction::NONE;
 typedef Action Action;
 inline std::optional<Direction> getDirection(Action action) {
   switch (action) {

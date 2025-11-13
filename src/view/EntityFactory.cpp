@@ -44,12 +44,13 @@ void EntityFactory::addView(std::shared_ptr<EntityView> view) {
   auto &vec = state_manager_->getCurrentStateView()->views_;
   vec.push_back(view);
 }
-std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node) {
+
+std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player) {
   MyVector size_dimensions =
       dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
   float w = size_dimensions.x;
   float h = size_dimensions.y;
-  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, w, h);
+  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, w, h, player);
   // todo: no hardcoded
   std::string type = "ghost";
   Texture::TextureMap texture_map =
