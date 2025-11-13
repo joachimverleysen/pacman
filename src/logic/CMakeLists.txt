@@ -16,5 +16,6 @@ add_library(logic
 				maze/MazeNode.cpp
 				maze/Maze.cpp
 				maze/Wall.cpp
+		State.cpp
 )
 

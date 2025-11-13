@@ -1,7 +1,7 @@
 #include "SpriteDrawable.h"
-#include "../configure/constants.h"
-#include "Visuals.h"
-#include "../logic/utils/Stopwatch.h"
+#include "../../configure/constants.h"
+#include "../Visuals.h"
+#include "../../logic/utils/Stopwatch.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 

@@ -1,7 +1,7 @@
 #ifndef DRAWABLE_INTERFACE_H
 #define DRAWABLE_INTERFACE_H
-#include "../logic/entity/Entity.h"
-#include "../logic/utils/MyVector.h"
+#include "../../logic/entity/Entity.h"
+#include "../../logic/utils/MyVector.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
 

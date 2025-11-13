@@ -6,8 +6,9 @@
 #include "../logic/maze/Maze.h"
 #include "../logic/observer/Observer.h"
 #include "../logic/utils/Stopwatch.h"
-#include "EntityView.h"
+#include "view/EntityView.h"
 #include "Renderer.h"
+#include "state/StateManager.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -19,12 +20,13 @@ class EntityFactory;
 
 class Game : public Observer {
 public:
-  enum class State { RUNNING, GAME_OVER };
+  enum class GameState { RUNNING, GAME_OVER };
 
 private:
-  State state_{State::RUNNING};
+  GameState state_{GameState::RUNNING};
+  std::shared_ptr<StateManager> state_manager_;
   std::shared_ptr<EntityFactory> factory_;
-  std::shared_ptr<World> world_;
+  std::shared_ptr<State> world_;
   std::unique_ptr<GameController> controller_;
   sf::RenderWindow window_;
   sf::Sprite background_sprite_;
@@ -41,7 +43,7 @@ public:
   void setup();
   void run();
 
-  State getState() const;
+  GameState getState() const;
 
   void update() override;
 

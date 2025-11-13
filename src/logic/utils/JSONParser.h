@@ -1,7 +1,7 @@
 #ifndef JSONPARSER_H
 #define JSONPARSER_H
 
-#include "../../view/EntityView.h"
+#include "../../view/view/EntityView.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
