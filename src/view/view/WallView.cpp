@@ -1,6 +1,6 @@
 #include "WallView.h"
-#include "../logic/utils/Camera.h"
-#include "../logic/maze/Maze.h"
+#include "../../logic/utils/Camera.h"
+#include "../../logic/maze/Maze.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
 void WallView::draw(sf::RenderWindow &window) {

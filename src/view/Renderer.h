@@ -2,10 +2,12 @@
 #define RENDERER_H
 
 #include "EntityFactory.h"
-#include "EntityView.h"
+#include "view/EntityView.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 #include <vector>
+
+class StateView;
 class Renderer {
   sf::RenderWindow &window_;
   std::weak_ptr<EntityFactory> factory_;
@@ -21,5 +23,9 @@ public:
   void updateViews();
 
   void removeView(std::weak_ptr<EntityView>);
+
+  void render(const std::weak_ptr<StateView>& weakPtr);
+
+  void updateViews(const std::weak_ptr<StateView>& state_view);
 };
 #endif // !RENDERER_H

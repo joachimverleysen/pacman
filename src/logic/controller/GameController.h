@@ -6,19 +6,22 @@
 
 class GameController {
 
-  World &game_world_;
+  State &game_state_;
 
 public:
-  enum class Action { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, NONE };
 
 public:
-  explicit GameController(World &game_world) : game_world_(game_world) {};
+
+  friend World;
+  explicit GameController(State &game_world) : game_state_(game_world) {};
 
   void handleInput(const sf::Event &event);
 
   [[maybe_unused]] static Action getAction();
 
   static Action getAction(const sf::Event &event);
+
+  static std::optional<Direction> getDirection(Action action);
 };
 
 #endif // GAMECONTROLLER_H

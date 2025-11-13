@@ -5,19 +5,35 @@
 #include "utils/Stopwatch.h"
 #include <utility>
 
+World::World(std::unique_ptr<AbstractFactory> factory)
+: State(std::move(factory)){
+
+}
+
 [[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &
 World::getEntities() const {
   return entities_;
 }
 
+void World::handleAction(Action action) {
+  std::optional<Direction> direction = Utils::getDirection(action);
+    if (action == Action::NONE or !direction)
+    return;
+  // If player does not have target, find one.
+  if (player_->updateTarget(direction.value())) {
+    player_->startMove();
+  } else
+    return;
+}
+
 void World::createPlayer(std::shared_ptr<MazeNode> node) {
-  player_ = factory_.createPlayer(std::move(node));
+  player_ = factory_->createPlayer(std::move(node));
   entities_.push_back(player_);
   notifyObservers();
 }
 
 void World::createGhost(std::shared_ptr<MazeNode> node) {
-  auto ghost = factory_.createGhost(std::move(node));
+  auto ghost = factory_->createGhost(std::move(node));
   entities_.push_back(ghost);
   ghosts_.push_back(ghost);
   notifyObservers();
@@ -31,7 +47,7 @@ void World::placeGhosts() {
 
 void World::createWall() {
   auto positions = Maze::getInstance()->wall_positions_;
-  wall_ = factory_.createWall(positions);
+  wall_ = factory_->createWall(positions);
   entities_.push_back(wall_);
 }
 
@@ -123,3 +139,4 @@ void World::updateAllEntities() {
     e->update();
   }
 }
+

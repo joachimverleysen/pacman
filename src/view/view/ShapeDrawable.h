@@ -1,6 +1,6 @@
 #ifndef SHAPE_DRAWABLE_H
 #define SHAPE_DRAWABLE_H
-#include "../logic/utils/MyVector.h"
+#include "../../logic/utils/MyVector.h"
 #include "DrawableInterface.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

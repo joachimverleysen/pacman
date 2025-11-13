@@ -1,11 +1,11 @@
 #ifndef ENTITYVIEW_H
 #define ENTITYVIEW_H
 
-#include "../logic/entity/Entity.h"
-#include "../logic/observer/Observer.h"
+#include "../../logic/entity/Entity.h"
+#include "../../logic/observer/Observer.h"
 #include "SpriteDrawable.h"
-#include "TextureManager.h"
-#include "Visuals.h"
+#include "../TextureManager.h"
+#include "../Visuals.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Window.hpp>
 #include <iostream>

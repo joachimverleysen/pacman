@@ -6,6 +6,8 @@
 #include "../utils/Utils.h"
 #include "EntityType.h"
 
+//todo: remove unused methods
+
 struct BoundingBox {
   BoundingBox() = default;
   BoundingBox(float top, float bottom, float left, float right)
