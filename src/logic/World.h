@@ -3,13 +3,14 @@
 
 #include "../configure/constants.h"
 #include "../view/EntityFactory.h"
-#include "../view/EntityView.h"
+#include "../view/view/EntityView.h"
 #include "entity/Player.h"
 #include "maze/Maze.h"
+#include "State.h"
 #include <memory>
 #include <string>
 
-class World : public Subject {
+class World : public State {
 public:
   friend GameController;
 
@@ -17,7 +18,6 @@ private:
   std::shared_ptr<Player> player_;
   std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> ghosts_;
-  EntityFactory &factory_;
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
   std::shared_ptr<Wall> wall_;
@@ -27,15 +27,15 @@ public:
   getEntities() const;
 
 public:
-  explicit World(EntityFactory &factory) : factory_(factory) {};
+  World(std::unique_ptr<AbstractFactory> factory);
 
-  void initialize();
+  void initialize() override;
 
   void updateAllEntities();
 
   [[nodiscard]] Player *getPlayer() const;
 
-  void update();
+  void update() override;
 
   void checkCollisions();
 
@@ -49,13 +49,12 @@ public:
 
   void cleanupEntities();
 
-  void placeWall(unsigned int row, unsigned int column);
-
-  void makeWall();
-
   void updateGhosts();
 
-  bool verifyInit() const;
+  [[nodiscard]] bool verifyInit() const;
+
+
+  void handleAction(Action action) override;
 };
 
 #endif // WORLD_H

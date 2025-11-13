@@ -1,10 +1,12 @@
 #include "EntityFactory.h"
 #include "../configure/constants.h"
 #include "../logic/utils/Camera.h"
-#include "EntityView.h"
+#include "view/EntityView.h"
 #include "SFML/Graphics/RectangleShape.hpp"
-#include "ShapeDrawable.h"
-#include "WallView.h"
+#include "view/ShapeDrawable.h"
+#include "view/WallView.h"
+#include "state/StateManager.h"
+#include "state/StateView.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
@@ -34,10 +36,14 @@ std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
       std::move(drawable)); // player is passed as a weak pointer here
 
   player->addObserver(view); // view is passed as shared pointer here
-  views_.push_back(view);
+  addView(view);
   return player;
 }
 
+void EntityFactory::addView(std::shared_ptr<EntityView> view) {
+  auto &vec = state_manager_->getCurrentStateView()->views_;
+  vec.push_back(view);
+}
 std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node) {
   MyVector size_dimensions =
       dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
@@ -56,7 +62,7 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node) {
       std::move(drawable)); // ghost is passed as a weak pointer here
 
   ghost->addObserver(view); // view is passed as shared pointer here
-  views_.push_back(view);
+  addView(view);
   return ghost;
 }
 
@@ -80,39 +86,7 @@ EntityFactory::createWall(std::vector<MazePosition> &positions) {
       std::make_shared<WallView>(wall, std::move(drawable));
 
   wall->addObserver(view);
-  views_.push_back(view);
+  addView(view);
   return wall;
 }
 
-/* std::shared_ptr<Wall> EntityFactory::createWall(unsigned int row,
-                                                unsigned int column) {
-  auto maze = Maze::getInstance();
-  auto wall = std::make_shared<Wall>(row, column);
-
-  MyVector topleft = Camera::world2Window(wall->getPosition());
-
-  using Config::Window::UNIT_LENGTH;
-  MyVector bottomright = topleft + MyVector{UNIT_LENGTH, UNIT_LENGTH};
-  float x_distance = bottomright.x - topleft.x;
-  float y_distance = bottomright.y - topleft.y;
-  sf::Vector2f vec{x_distance, y_distance};
-  std::unique_ptr<sf::RectangleShape> rect =
-      std::make_unique<sf::RectangleShape>(vec);
-  sf::Color darkblue{11, 0, 200};
-  rect->setFillColor(darkblue);
-
-  rect->setPosition(topleft.x, topleft.y);
-
-  std::unique_ptr<ShapeDrawable> drawable =
-      std::move(std::make_unique<ShapeDrawable>(std::move(rect)));
-
-  std::shared_ptr<EntityView> view =
-      std::make_shared<EntityView>(wall, std::move(drawable));
-
-  wall->addObserver(view);
-  MyVector pos = Camera::window2World(topleft);
-  wall->setPosition(pos);
-  views_.push_back(view);
-
-  return wall;
-} */

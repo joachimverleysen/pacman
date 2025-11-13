@@ -1,7 +1,7 @@
 #ifndef WALL_VIEW_H
 #define WALL_VIEW_H
 
-#include "../logic/maze/Wall.h"
+#include "../../logic/maze/Wall.h"
 #include "DrawableInterface.h"
 #include "EntityView.h"
 #include <SFML/Graphics/RenderWindow.hpp>

@@ -3,8 +3,8 @@
 
 #include "../logic/utils/JSONParser.h"
 #include "../logic/utils/json.hpp"
-#include "../view/EntityView.h"
-#include "EntityView.h"
+#include "view/EntityView.h"
+#include "view/EntityView.h"
 
 using json = nlohmann::json;
 

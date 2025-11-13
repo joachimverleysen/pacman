@@ -1,7 +1,7 @@
 #include "EntityView.h"
-#include "../logic/entity/Entity.h"
-#include "../logic/utils/Camera.h"
-#include "Game.h"
+#include "../../logic/entity/Entity.h"
+#include "../../logic/utils/Camera.h"
+#include "../Game.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
 #include <memory>
