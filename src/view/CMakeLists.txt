@@ -16,7 +16,5 @@ add_library(view
 		state/StateView.cpp
 		view/TextDrawable.cpp
 		view/TextDrawable.h
-		state/PauseStateView.cpp
-		state/PauseStateView.h
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)

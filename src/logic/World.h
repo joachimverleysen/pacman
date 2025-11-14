@@ -15,8 +15,12 @@
 class World : public State {
 public:
   friend GameController;
+public:
+  enum class Status {GAME_OVER, VICTORY, RUNNING};
 
 private:
+  Status status_{Status::RUNNING};
+  std::weak_ptr<StateManager> state_manager_;
   std::shared_ptr<Player> player_;
 //  std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> ghosts_;
@@ -28,9 +32,12 @@ private:
 public:
   [[maybe_unused]] [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &
   getEntities() const;
+  void setStatus(Status status);
+  Status getStatus() const;
 
 public:
-  World(std::shared_ptr<AbstractFactory> factory);
+  World(std::shared_ptr<AbstractFactory> factory,
+        std::weak_ptr<StateManager> state_manager);
 
   void initialize() override;
 

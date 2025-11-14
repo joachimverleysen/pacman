@@ -26,7 +26,6 @@ private:
   GameState state_{GameState::RUNNING};
   std::shared_ptr<StateManager> state_manager_;
   std::shared_ptr<EntityFactory> factory_;
-  std::shared_ptr<State> world_;
   std::unique_ptr<GameController> controller_;
   sf::RenderWindow window_;
   sf::Sprite background_sprite_;

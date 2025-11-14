@@ -3,6 +3,9 @@
 #include <utility>
 #include "StateView.h"
 #include "../EntityFactory.h"
+#include "../../logic/GameOverScreen.h"
+#include "../../logic/World.h"
+#include "../../logic/StartMenu.h"
 
 
 std::shared_ptr<StateView> StateManager::getCurrentStateView() const {
@@ -18,6 +21,27 @@ void StateManager::updateCurrentState() {
   current->updateState();
   if (current->getState()->closed())
     state_views_.pop();
+}
+
+void StateManager::loadNewLevel(std::shared_ptr<StateManager> ptr_to_this) {
+  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this);
+  pushState(world);
+}
+
+void StateManager::pushStartMenu(std::shared_ptr<StateManager> ptr_to_this) {
+  std::shared_ptr<StartMenu> startmenu = std::make_shared<StartMenu>(factory_, ptr_to_this);
+  pushState(startmenu);
+}
+void StateManager::onLevelGameOver() {
+ state_views_.pop();
+ pushGameOverState();
+}
+
+void StateManager::pushGameOverState() {
+  std::shared_ptr<GameOverScreen> state = std::make_shared<GameOverScreen>(factory_);
+  std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
+  state_views_.push(view);
+  getCurrentState()->initialize();
 }
 
 void StateManager::pushState(const std::shared_ptr<State>& state) {

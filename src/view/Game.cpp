@@ -74,8 +74,7 @@ void Game::setup() {
     factory_ = std::make_unique<EntityFactory>(*this, window_, state_manager_);
     state_manager_->setFactory(factory_);
     auto factory = std::make_unique<EntityFactory>(*this, window_, state_manager_);
-    world_ = std::make_shared<World>(std::move(factory));
-    state_manager_->pushState(world_);
+    state_manager_->loadNewLevel(state_manager_);
     controller_ = std::make_unique<GameController>(state_manager_);
     renderer_ = std::make_unique<Renderer>(window_, factory_);
   } catch (std::runtime_error &e) {

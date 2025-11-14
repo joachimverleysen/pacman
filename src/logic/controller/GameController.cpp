@@ -30,6 +30,8 @@ void GameController::pauseAction() {
     state_manager_->popCurrentState();
     return;
   }
+  if (state_manager_->getCurrentType() == StateNS::Type::GAME_OVER)
+    return;
 
   auto factory = state_manager_->getFactory();
   std::shared_ptr<PauseMenu> state_new = std::make_shared<PauseMenu>(factory);
@@ -38,7 +40,7 @@ void GameController::pauseAction() {
 void GameController::handleInput(const sf::Event &event) {
   // todo: disable player friend class, use setters and getters instead.
   auto action = getAction(event);
-  if (action == Action::PAUSE) {
+  if (action == Action::SPACE) {
     pauseAction();
   }
   game_state_->handleAction(action);
@@ -60,7 +62,7 @@ Action GameController::getAction(const sf::Event &event) {
     action = Action::MOVE_DOWN;
     break;
   case sf::Keyboard::Space:
-    action = Action::PAUSE;
+    action = Action::SPACE;
     break;
   default:
     action = Action::NONE;
@@ -83,7 +85,7 @@ Action GameController::getAction(const sf::Event &event) {
     return Action::MOVE_DOWN;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-    return Action::PAUSE;
+    return Action::SPACE;
   }
 
   return Action::NONE;

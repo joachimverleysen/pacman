@@ -35,6 +35,14 @@ public:
   std::shared_ptr<EntityFactory> getFactory() const;
 
   void popCurrentState();
+
+  void onLevelGameOver();
+
+  void pushGameOverState();
+
+  void loadNewLevel(std::shared_ptr<StateManager> ptr_to_this);
+
+  void pushStartMenu(std::shared_ptr<StateManager> ptr_to_this);
 };
 
 

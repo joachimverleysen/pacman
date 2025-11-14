@@ -8,12 +8,19 @@
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-enum class Action { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, PAUSE, NONE };
+enum class Action {
+  MOVE_LEFT,
+  MOVE_RIGHT,
+  MOVE_UP,
+  MOVE_DOWN,
+  SPACE,
+  NONE };
+
 namespace Utils {
 
 // State
 namespace StateNS {
-enum class Type {WORLD, PAUSE};
+enum class Type {WORLD, PAUSE, GAME_OVER, STARTMENU};
 }
 
 // Direction
