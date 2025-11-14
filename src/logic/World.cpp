@@ -108,6 +108,7 @@ void World::cleanupEntities() {
 
 void World::update() {
   if (!player_->isActive()) {
+    gameOver();
     return;
   }
   Stopwatch::getInstance()->update();
@@ -116,6 +117,9 @@ void World::update() {
   updateAllEntities();
 }
 
+void World::gameOver() {
+  std::cout << "World Game over\n";
+}
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");

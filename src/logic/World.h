@@ -60,6 +60,8 @@ public:
   void createCoin(MazePosition pos);
 
   void placeCoins();
+
+  void gameOver();
 };
 
 #endif // WORLD_H

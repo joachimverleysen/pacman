@@ -46,9 +46,7 @@ public:
   float getCellWidth() const;
   float getCellHeight() const;
   NodePtr addNode(unsigned int row, unsigned int column);
-  Neighbours findAllNeighbors(unsigned int row, unsigned int column);
-  NodePtr findNeighbor(unsigned int row, unsigned int column,
-                       Direction direction) const;
+  Neighbours findAllNeighbors(unsigned int row, unsigned int column, EntityType etype);
 
   char at(unsigned int row, unsigned int column) const;
   NodePtr getNode(unsigned int row, unsigned int column) const;
@@ -58,10 +56,13 @@ public:
                    unsigned int column) const; // Returns center of the 'square'
   bool inGridRange(unsigned int row, unsigned int column) const;
 
-  std::vector<Direction> getPossibleDirections(NodePtr node) const;
 
   void addPortal(unsigned int row, unsigned int col, int index);
 
   std::optional<MazePosition> findPortal(unsigned int row, unsigned int col) const;
+
+  NodePtr findNeighbor(unsigned int row, unsigned int column, Direction direction, EntityType etype=EntityType::Ghost) const;
+
+  std::vector<Direction> getPossibleDirections(NodePtr node, EntityType etype=EntityType::Ghost) const;
 };
 #endif // !MAZE_H

@@ -41,6 +41,12 @@ float Ghost::getDistance2Player(Direction direction) const {
 
 void Ghost::onCollision(Entity *other) {
   deactivate();
+  if (mode_ == Mode::CHASE);
+//    killPlayer();
+}
+
+void Ghost::killPlayer() const {
+  player_->deactivate();
 }
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }

@@ -12,13 +12,13 @@ Maze *Maze::instance_ = nullptr;
 void Maze::loadGrid(Grid &grid) {
   // Numbers are for portals
   // Corresponding number pairs are corresponding portals
-  std::set<char> chars = {'+', 'S', '.', 'W', 'G', 'c', 'C', '1'};
+  std::set<char> chars = {'+', 'S', '.', 'W', 'G', 'c', 'C', '1', 'h'};
   grid_ = grid;
   // Initialize node map
   node_map_ = std::vector<std::vector<NodePtr>>(
       grid.size(), std::vector<NodePtr>(grid[0].size(), nullptr));
   // Add nodes to node map
-  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1'};
+  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1', 'h'};
   for (int i = 0; i < grid.size(); i++) {
     const auto &vec = grid_[i];
     for (int j = 0; j < vec.size(); j++) {
@@ -47,7 +47,7 @@ void Maze::loadGrid(Grid &grid) {
     std::vector<char> vec = grid_[i];
     for (int j = 0; j < vec.size(); j++) {
       if (node_map_[i][j] != nullptr)
-        node_map_[i][j]->neighbours_ = findAllNeighbors(i, j);
+        node_map_[i][j]->neighbours_ = findAllNeighbors(i, j, EntityType::Ghost);
     }
   }
 }
@@ -73,8 +73,8 @@ std::optional<MazePosition> Maze::findPortal(unsigned int row, unsigned int col)
   return std::nullopt;
 }
 NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
-                           Direction direction) const {
-  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1'};
+                           Direction direction, EntityType etype) const {
+  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1', 'h'};
   if (node_chars.find(at(row, column)) == node_chars.end())
     throw std::invalid_argument("Invalid node position provided");
 
@@ -107,6 +107,8 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
   while (c != '0') {
     if (c == 'W') // Wall
       return nullptr;
+    if (c == 'h' && etype != EntityType::Ghost)
+      return nullptr;
     else if (c == '.' || c == 'c') { // Path
       i += d_row;
       j += d_column;
@@ -126,15 +128,15 @@ bool Maze::inGridRange(unsigned int row, unsigned int column) const {
   return row < getYunits() and column < getXunits();
 }
 
-Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {
+Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column, EntityType etype=EntityType::Ghost) {
   auto node = node_map_[row][column];
   if (!node)
     throw std::invalid_argument("Invalid node position provided");
   Neighbours neighbors;
-  neighbors.up = findNeighbor(row, column, Direction::UP);
-  neighbors.down = findNeighbor(row, column, Direction::DOWN);
-  neighbors.left = findNeighbor(row, column, Direction::LEFT);
-  neighbors.right = findNeighbor(row, column, Direction::RIGHT);
+  neighbors.up = findNeighbor(row, column, Direction::UP, etype);
+  neighbors.down = findNeighbor(row, column, Direction::DOWN, etype);
+  neighbors.left = findNeighbor(row, column, Direction::LEFT, etype);
+  neighbors.right = findNeighbor(row, column, Direction::RIGHT, etype);
   if (findPortal(row, column)) {
     auto pos = findPortal(row, column).value();
     neighbors.portal = getNode(pos.first, pos.second);
@@ -143,14 +145,14 @@ Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {
   return neighbors;
 }
 
-std::vector<Direction> Maze::getPossibleDirections(NodePtr node) const {
+std::vector<Direction> Maze::getPossibleDirections(NodePtr node, EntityType etype) const {
 
   std::vector<Direction> result = {};
   std::array<Direction, 4> directions = {Direction::UP, Direction::DOWN,
                                          Direction::LEFT, Direction::RIGHT};
 
   for (auto &d : directions) {
-    if (findNeighbor(node->row_, node->column_, d))
+    if (findNeighbor(node->row_, node->column_, d, etype))
       result.push_back(d);
   }
   return result;
