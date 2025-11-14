@@ -1,7 +1,7 @@
 #include "GameController.h"
-#include "../../view/state/StateManager.h"
+#include "../state/StateManager.h"
 #include "../../logic/State.h"
-#include "../PauseMenu.h"
+#include "../../logic/PauseMenu.h"
 #include <SFML/Window/Event.hpp>
 #include <optional>
 #include <utility>
