@@ -41,6 +41,17 @@ StateManager::StateManager() {
 
 void StateManager::setFactory(const std::shared_ptr<EntityFactory> &factory) {
   factory_ = factory;
+}
 
+std::shared_ptr<EntityFactory> StateManager::getFactory() const {
+  return factory_;
+}
+
+StateNS::Type StateManager::getCurrentType() const {
+  return getCurrentState()->getType();
+}
+
+void StateManager::popCurrentState() {
+  state_views_.pop();
 }
 

@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "utils/Utils.h"
 #include "../configure/constants.h"
 #include "../view/EntityFactory.h"
 #include "../view/view/EntityView.h"
@@ -9,6 +10,7 @@
 #include "maze/Maze.h"
 #include <memory>
 #include <string>
+
 
 class World : public State {
 public:
@@ -28,9 +30,11 @@ public:
   getEntities() const;
 
 public:
-  World(std::unique_ptr<AbstractFactory> factory);
+  World(std::shared_ptr<AbstractFactory> factory);
 
   void initialize() override;
+
+  StateNS::Type getType() const override {return StateNS::Type::WORLD;}
 
   void updateAllEntities();
 

@@ -11,6 +11,11 @@ enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 enum class Action { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, PAUSE, NONE };
 namespace Utils {
 
+// State
+namespace StateNS {
+enum class Type {WORLD, PAUSE};
+}
+
 // Direction
 inline Direction getReverseDirection(Direction direction) {
   switch (direction) {
@@ -40,6 +45,7 @@ inline Direction getDirection(int num) {
     case 4:
       return Direction::NONE;
   }
+  return Direction::LEFT;
 }
 typedef Action Action;
 inline std::optional<Direction> getDirection(Action action) {
@@ -55,6 +61,7 @@ inline std::optional<Direction> getDirection(Action action) {
   case Action::NONE:
     return std::nullopt;
   }
+  return std::nullopt;
 }
 } // namespace Utils
 #endif // PACMAN_UTILS_H

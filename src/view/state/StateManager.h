@@ -3,6 +3,7 @@
 
 #include <stack>
 #include <memory>
+ #include "../../logic/utils/Utils.h"
 
 class StateView;
 class State;
@@ -28,6 +29,12 @@ public:
   StateManager();
 
   void setFactory(const std::shared_ptr<EntityFactory> &factory);
+
+  Utils::StateNS::Type getCurrentType() const;
+
+  std::shared_ptr<EntityFactory> getFactory() const;
+
+  void popCurrentState();
 };
 
 

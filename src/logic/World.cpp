@@ -5,7 +5,7 @@
 #include "utils/Stopwatch.h"
 #include <utility>
 
-World::World(std::unique_ptr<AbstractFactory> factory)
+World::World(std::shared_ptr<AbstractFactory> factory)
 : State(std::move(factory)){
 
 }
