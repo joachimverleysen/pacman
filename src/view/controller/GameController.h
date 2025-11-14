@@ -1,8 +1,8 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include "../World.h"
-#include <SFML/Window/Event.hpp>
+#include "../../logic/World.h"
+#include "SFML/Window/Event.hpp"
 
 class GameController {
 

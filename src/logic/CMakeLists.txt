@@ -3,7 +3,6 @@ add_library(logic
         entity/Player.cpp
 				entity/Ghost.cpp
 				entity/Character.cpp
-        controller/GameController.cpp
         observer/Observer.cpp
         utils/JSONParser.cpp
         utils/Utils.h
