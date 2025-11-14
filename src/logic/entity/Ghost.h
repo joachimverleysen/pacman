@@ -38,6 +38,8 @@ public:
   bool chooseChaseDirection();
 
   bool chooseFleeDirection();
+
+  void killPlayer() const;
 };
 
 #endif
