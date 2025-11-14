@@ -44,10 +44,6 @@ void Ghost::onCollision(Entity *other) {
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
 
-bool Ghost::allowsSpawn(Entity *other) {
-  return CollisionHandler::checkCollision(this, other);
-}
-
 bool Ghost::updateTarget(const std::vector<Direction> &options) {
   for (auto &direction : options) {
     if (updateTarget(direction))

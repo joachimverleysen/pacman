@@ -33,7 +33,7 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 }
 
 void World::createGhost(std::shared_ptr<MazeNode> node) {
-  auto ghost = factory_.createGhost(std::move(node), player_);
+  auto ghost = factory_->createGhost(std::move(node), player_);
   entities_.push_back(ghost);
   ghosts_.push_back(ghost);
   notifyObservers();
@@ -42,6 +42,18 @@ void World::createGhost(std::shared_ptr<MazeNode> node) {
 void World::placeGhosts() {
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
     createGhost(node);
+  }
+}
+
+void World::createCoin(MazePosition pos) {
+  auto coin = factory_->createCoin(pos);
+  entities_.push_back(coin);
+  coins_.push_back(coin);
+  notifyObservers();
+}
+void World::placeCoins() {
+  for (auto pos : Maze::getInstance()->coin_positions_) {
+    createCoin(pos);
   }
 }
 
@@ -55,21 +67,6 @@ void World::updateGhosts() {
   for (auto &ghost : ghosts_)
     ghost->update();
 }
-
-// void World::makeWall() {
-//   auto grid = Maze::getInstance()->grid_;
-//   for (unsigned int row = 0; row < grid.size(); row++) {
-//     for (unsigned int column = 0; column < grid[row].size(); column++) {
-//       if (grid[row][column] == 'W')
-//         placeWall(row, column);
-//     }
-//   }
-// }
-// void World::placeWall(unsigned int row, unsigned int column) {
-//   auto wall = factory_.createWall(row, column);
-//   entities_.push_back(wall);
-//   notifyObservers();
-// }
 
 void World::initialize() {
   try {
@@ -85,8 +82,8 @@ void World::initialize() {
   createWall();
   createPlayer(Maze::getInstance()->start_node_);
   placeGhosts();
+  placeCoins();
   //  player_->update();
-  updateGhosts();
   wall_->update();
 }
 

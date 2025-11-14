@@ -6,8 +6,6 @@
 #include "../utils/Utils.h"
 #include "EntityType.h"
 
-//todo: remove unused methods
-
 struct BoundingBox {
   BoundingBox() = default;
   BoundingBox(float top, float bottom, float left, float right)
@@ -20,6 +18,7 @@ struct BoundingBox {
     right += value;
     return *this;
   }
+
   float top{};
   float bottom{};
   float left{};
@@ -43,60 +42,48 @@ protected:
 
 public:
   Entity() = default;
-
-  void setState(State state);
-
-
-  Entity(float width, float height, float scale=1)
+  Entity(float width, float height, float scale = 1)
       : width_(width * scale), height_(height * scale), scale_(scale),
         spawn_box_(getBoundingBox()) {}
   virtual ~Entity() = default;
 
-public:
   virtual void update() = 0;
-
-  const BoundingBox &getSpawn() const;
-
   virtual void onCollision(Entity *other) = 0;
-  void move(const Direction &direction, float speed);
-  virtual bool allowsSpawn(Entity *other) = 0;
+  virtual EntityType getType() const = 0;
+
+  void setState(State state);
   [[nodiscard]] State getCurrentState() const;
 
-  virtual void activate() { is_active_ = true; };
+  virtual void activate() { is_active_ = true; }
   virtual void deactivate();
   void notifyDeactivate();
   [[nodiscard]] bool isActive() const { return is_active_; }
 
-public:
-  [[nodiscard]] virtual EntityType getType() const = 0;
-  [[nodiscard]] float getScale() const;
+  void move(const Direction &direction, float speed);
 
+  [[nodiscard]] float getScale() const;
   void setScale(float scale);
 
-public:
   [[nodiscard]] float getWidth() const;
-
   void setWidth(float width);
 
   [[nodiscard]] float getHeight() const;
-
   void setHeight(float height);
 
-public:
-  [[nodiscard]] MyVector getPosition() const { return position_; };
-  void setPosition(const MyVector &position) { position_ = position; };
+  virtual MyVector getPosition() const { return position_; }
+  void setPosition(const MyVector &position) { position_ = position; }
 
   [[nodiscard]] float getBottom() const;
-
   void setBottom(float y);
 
   [[nodiscard]] float getTop() const;
-
   [[nodiscard]] float getLeft() const;
   [[nodiscard]] float getRight() const;
-  [[nodiscard]] BoundingBox getBoundingBox() const;
-  [[nodiscard]] float getCenterX() const;
 
+  [[nodiscard]] BoundingBox getBoundingBox() const;
+  [[nodiscard]] const BoundingBox &getSpawn() const;
+
+  [[nodiscard]] float getCenterX() const;
   float getCenterY() const;
 };
 

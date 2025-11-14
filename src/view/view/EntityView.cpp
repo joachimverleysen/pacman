@@ -8,7 +8,8 @@
 
 EntityView::EntityView(std::weak_ptr<Entity> entity,
                        std::unique_ptr<DrawableInterface> drawable)
-    : entity_(entity), drawable_(std::move(drawable)) {}
+    : entity_(entity), drawable_(std::move(drawable)),
+    position_(Camera::world2Window(entity.lock()->getPosition())) {}
 EntityView::~EntityView() {
   //    std::cout << "view destruct \n";
   // entity_.removeObserver(this);

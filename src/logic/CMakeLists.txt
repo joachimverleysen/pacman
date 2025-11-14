@@ -17,5 +17,7 @@ add_library(logic
 				maze/Maze.cpp
 				maze/Wall.cpp
 		State.cpp
+		entity/Coin.h
+		entity/Coin.cpp
 )
 

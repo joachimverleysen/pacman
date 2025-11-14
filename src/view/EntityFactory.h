@@ -37,6 +37,8 @@ public:
   createWall(std::vector<MazePosition> &positions) override;
   std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player) override;
 
+  std::shared_ptr<Coin> createCoin(MazePosition pos) override;
+
   const std::vector<std::weak_ptr<EntityView>> &getViews() const;
 
   friend class Renderer;
