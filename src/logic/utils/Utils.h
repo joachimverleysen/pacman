@@ -8,19 +8,23 @@
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-enum class Action {
+//todo remove this enum class
+enum class GameAction {
   MOVE_LEFT,
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
-  SPACE,
   NONE };
 
+namespace MyFont {
+inline std::string LIBER = "assets/font/liber.ttf";
+inline std::string PACFONT= "assets/font/Pacfont.ttf";
+}
 namespace Utils {
-
 // State
 namespace StateNS {
 enum class Type {WORLD, PAUSE, GAME_OVER, STARTMENU};
+enum class Action {};
 }
 
 // Direction
@@ -54,18 +58,17 @@ inline Direction getDirection(int num) {
   }
   return Direction::LEFT;
 }
-typedef Action Action;
-inline std::optional<Direction> getDirection(Action action) {
+inline std::optional<Direction> getDirection(GameAction action) {
   switch (action) {
-  case Action::MOVE_LEFT:
+  case GameAction::MOVE_LEFT:
     return Direction::LEFT;
-  case Action::MOVE_RIGHT:
+  case GameAction::MOVE_RIGHT:
     return Direction::RIGHT;
-  case Action::MOVE_UP:
+  case GameAction::MOVE_UP:
     return Direction::UP;
-  case Action::MOVE_DOWN:
+  case GameAction::MOVE_DOWN:
     return Direction::DOWN;
-  case Action::NONE:
+  case GameAction::NONE:
     return std::nullopt;
   }
   return std::nullopt;

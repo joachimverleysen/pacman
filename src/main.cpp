@@ -8,7 +8,11 @@ int main() {
 
   try {
     game.run();
-  } catch (...) {
+  } catch(std::exception &e) {
+    std::cout << "Exception: " << e.what() << std::endl;
+    exit(1);
+  }
+  catch (...) {
     std::cout << "Caught error in main" << std::endl;
     exit(1);
   }

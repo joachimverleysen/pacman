@@ -15,9 +15,9 @@ Game::Game()
 }
 
 void Game::updateState() {
-  state_manager_->updateCurrentState();
   if (state_manager_->empty())
     close();
+  state_manager_->updateCurrentState();
 }
 void Game::update() {
   window_.clear();
@@ -31,9 +31,6 @@ void Game::update() {
 
 void Game::run() {
   while (window_.isOpen()) {
-    if (getState() != GameState::RUNNING) {
-      close();
-    }
     handleInput();
     update();
   }
@@ -71,10 +68,12 @@ void Game::setup() {
   try {
 
     state_manager_ = std::make_shared<StateManager>();
+    state_manager_->setPtrToThis(state_manager_);
     factory_ = std::make_unique<EntityFactory>(*this, window_, state_manager_);
     state_manager_->setFactory(factory_);
-    auto factory = std::make_unique<EntityFactory>(*this, window_, state_manager_);
-    state_manager_->loadNewLevel(state_manager_);
+    state_manager_->initialize();
+    state_manager_->pushStartMenu(state_manager_);
+
     controller_ = std::make_unique<GameController>(state_manager_);
     renderer_ = std::make_unique<Renderer>(window_, factory_);
   } catch (std::runtime_error &e) {
@@ -100,14 +99,7 @@ void Game::handleEvent(const sf::Event &event) {
 
 void Game::close() {
   std::cout << "End of program\n";
-  state_ = GameState::GAME_OVER;
   window_.close();
   exit(0);
-}
-
-Game::GameState Game::getState() const {
-//  if (!world_->getPlayer())
-//    return GameState::GAME_OVER;
-  return GameState::RUNNING;
 }
 

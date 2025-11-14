@@ -23,5 +23,6 @@ add_library(logic
 		entity/layout/Text.cpp
 		entity/layout/Text.h
 		../view/FontManager.h
+		utils/TextConfig.h
 )
 

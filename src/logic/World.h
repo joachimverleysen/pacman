@@ -45,8 +45,6 @@ public:
 
   void updateAllEntities();
 
-  [[nodiscard]] Player *getPlayer() const;
-
   void update() override;
 
   void checkCollisions();
@@ -63,7 +61,7 @@ public:
 
   [[nodiscard]] bool verifyInit() const;
 
-  void handleAction(Action action) override;
+  void handleAction(GameAction action) override;
 
   void createCoin(MazePosition pos);
 

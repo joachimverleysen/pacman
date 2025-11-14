@@ -19,11 +19,7 @@ struct MyVector;
 class EntityFactory;
 
 class Game : public Observer {
-public:
-  enum class GameState { RUNNING, GAME_OVER };
-
 private:
-  GameState state_{GameState::RUNNING};
   std::shared_ptr<StateManager> state_manager_;
   std::shared_ptr<EntityFactory> factory_;
   std::unique_ptr<GameController> controller_;
@@ -41,8 +37,6 @@ public:
 
   void setup();
   void run();
-
-  GameState getState() const;
 
   void update() override;
 
