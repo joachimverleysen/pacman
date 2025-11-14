@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "../logic/World.h"
-#include "../logic/controller/GameController.h"
+#include "../view/controller/GameController.h"
 #include "../logic/maze/Maze.h"
 #include "../logic/observer/Observer.h"
 #include "../logic/utils/Stopwatch.h"

@@ -1,5 +1,5 @@
 #include "GameController.h"
-#include "../../view/state/StateManager.h"
+#include "../state/StateManager.h"
 #include <SFML/Window/Event.hpp>
 #include <optional>
 #include <utility>
