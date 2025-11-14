@@ -10,12 +10,15 @@
 Maze *Maze::instance_ = nullptr;
 
 void Maze::loadGrid(Grid &grid) {
-  std::set<char> chars = {'+', 'S', '.', 'W', 'G', 'c', 'C'};
+  // Numbers are for portals
+  // Corresponding number pairs are corresponding portals
+  std::set<char> chars = {'+', 'S', '.', 'W', 'G', 'c', 'C', '1'};
   grid_ = grid;
   // Initialize node map
   node_map_ = std::vector<std::vector<NodePtr>>(
       grid.size(), std::vector<NodePtr>(grid[0].size(), nullptr));
   // Add nodes to node map
+  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1'};
   for (int i = 0; i < grid.size(); i++) {
     const auto &vec = grid_[i];
     for (int j = 0; j < vec.size(); j++) {
@@ -23,7 +26,7 @@ void Maze::loadGrid(Grid &grid) {
       if (chars.find(c) == chars.end())
         throw std::invalid_argument("unexpected char in grid");
       NodePtr node;
-      if (c == '+' || c == 'S' || c == 'G' || c == 'C') {
+      if (node_chars.find(c) != node_chars.end()) {
         node = addNode(i, j);
       } if (c == 'S')
         start_node_ = node;
@@ -34,7 +37,8 @@ void Maze::loadGrid(Grid &grid) {
      if (c == 'W') {
         wall_positions_.push_back({i, j});
       }
-
+     if (c == '1')
+       addPortal(i, j, 1);
     }
   }
 
@@ -54,9 +58,23 @@ NodePtr Maze::addNode(unsigned int row, unsigned int column) {
   return node;
 }
 
+std::optional<MazePosition> Maze::findPortal(unsigned int row, unsigned int col) const {
+  for (auto p : portal_pairs_) {
+    if (p.first.pos.first == row && p.first.pos.second == col &&
+    p.first.index == p.second.index) {
+      return p.second.pos;
+    }
+
+    if (p.second.pos.first == row && p.second.pos.second == col &&
+        p.second.index == p.first.index) {
+      return p.first.pos;
+    }
+  }
+  return std::nullopt;
+}
 NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
                            Direction direction) const {
-  std::set<char> node_chars = {'+', 'S', 'G', 'C'};
+  std::set<char> node_chars = {'+', 'S', 'G', 'C', '1'};
   if (node_chars.find(at(row, column)) == node_chars.end())
     throw std::invalid_argument("Invalid node position provided");
 
@@ -78,6 +96,7 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
     d_row = 1;
     d_column = 0;
     break;
+
   case Direction::NONE:
     throw std::invalid_argument("Can't find neighbor for Direction::NONE");
   }
@@ -116,6 +135,11 @@ Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column) {
   neighbors.down = findNeighbor(row, column, Direction::DOWN);
   neighbors.left = findNeighbor(row, column, Direction::LEFT);
   neighbors.right = findNeighbor(row, column, Direction::RIGHT);
+  if (findPortal(row, column)) {
+    auto pos = findPortal(row, column).value();
+    neighbors.portal = getNode(pos.first, pos.second);
+  }
+  else neighbors.portal = nullptr;
   return neighbors;
 }
 
@@ -154,3 +178,17 @@ MyVector Maze::getWorldPosition(unsigned int row, unsigned int column) const {
 float Maze::getCellHeight() const { return 2.0 / getYunits(); }
 
 float Maze::getCellWidth() const { return 2.0 / getXunits(); }
+
+void Maze::addPortal(unsigned int row, unsigned int col, int index) {
+  for (auto &p : portal_pairs_) {
+    if (p.first.index == index && p.second.index == index)
+      throw std::logic_error("Pair already complete");
+    if (p.first.index == index && p.second.index == -1) {
+      p.second = Portal{{row, col}, index};
+      return;
+    }
+  }
+  Portal new_portal{{row, col}, index};
+  std::pair<Portal, Portal> new_pair{new_portal, {{-1,-1}, -1}};
+  portal_pairs_.push_back(new_pair);
+}
