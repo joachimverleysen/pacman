@@ -1,12 +1,13 @@
 #include "EntityFactory.h"
-#include "../configure/constants.h"
 #include "../logic/utils/Camera.h"
 #include "view/EntityView.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "view/ShapeDrawable.h"
 #include "view/WallView.h"
+#include "FontManager.h"
 #include "state/StateManager.h"
 #include "state/StateView.h"
+#include "view/TextDrawable.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
@@ -40,8 +41,8 @@ std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
   return player;
 }
 
-void EntityFactory::addView(std::shared_ptr<EntityView> view) {
-  auto &vec = state_manager_->getCurrentStateView()->views_;
+void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
+  auto &vec = state_manager_.lock()->getCurrentStateView()->views_;
   vec.push_back(view);
 }
 
@@ -66,10 +67,6 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<
   view->pushToForeground();
   addView(view);
   return ghost;
-}
-
-const std::vector<std::weak_ptr<EntityView>> &EntityFactory::getViews() const {
-  return views_;
 }
 
 std::shared_ptr<Wall>
@@ -111,5 +108,32 @@ std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
   coin->addObserver(view);
   addView(view);
   return coin;
+}
+
+std::shared_ptr<Text>
+EntityFactory::createText(MyVector vec, const std::string &str, const std::string &font_path, int size) {
+  std::shared_ptr<Text> text = std::make_shared<Text>(str);
+  text->setPosition(vec);
+  auto font = FontManager::get(font_path);
+
+  sf::Text text_;
+  text_.setCharacterSize(size);
+  text_.setStyle(sf::Text::Regular);
+  text_.setFont(*font);
+  text_.setString(str);
+  sf::Color white{255, 255, 255};
+  sf::Color red{100, 0, 0};
+  text_.setFillColor(white);
+  text_.setOutlineThickness(3);
+  text_.setOutlineColor(red);
+  sf::FloatRect rc = text_.getLocalBounds();
+text_.setOrigin(rc.width/2, rc.height/2);
+  std::unique_ptr<TextDrawable> drawable = std::make_unique<TextDrawable>(text_);
+  drawable->setPosition(Camera::world2Window(vec));
+  std::shared_ptr<EntityView> text_view = std::make_shared<EntityView>(text, std::move(drawable));
+  text_view->pushToForeground();
+  text->addObserver(text_view);
+  addView(text_view);
+  return text;
 }
 

@@ -9,6 +9,7 @@ class Renderer;
 class EntityFactory;
 //
 class StateView {
+protected:
   std::shared_ptr<State> state_;
   std::vector<std::weak_ptr<EntityView>> views_;
 public:
@@ -16,5 +17,6 @@ public:
   friend EntityFactory;
   StateView(std::shared_ptr<State> state) : state_(state) {};
   void updateState();
+  std::shared_ptr<State> getState() const;
 };
 #endif //PACMAN_STATEVIEW_H

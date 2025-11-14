@@ -14,5 +14,7 @@ add_library(view
 		state/StateManager.h
 		state/StateManager.cpp
 		state/StateView.cpp
+		view/TextDrawable.cpp
+		view/TextDrawable.h
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)

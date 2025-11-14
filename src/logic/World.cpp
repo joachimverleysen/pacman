@@ -1,14 +1,14 @@
 #include "World.h"
 
 #include "../configure/constants.h"
+#include "../view/state/StateManager.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
 #include <utility>
 
-World::World(std::unique_ptr<AbstractFactory> factory)
-: State(std::move(factory)){
-
-}
+World::World(std::shared_ptr<AbstractFactory> factory,
+             std::weak_ptr<StateManager> state_manager)
+    : State(std::move(factory)), state_manager_(state_manager) {}
 
 [[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &
 World::getEntities() const {
@@ -17,7 +17,7 @@ World::getEntities() const {
 
 void World::handleAction(Action action) {
   std::optional<Direction> direction = Utils::getDirection(action);
-    if (action == Action::NONE or !direction)
+  if (action == Action::NONE or !direction)
     return;
   // If player does not have target, find one.
   if (player_->updateTarget(direction.value())) {
@@ -35,7 +35,7 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 void World::createGhost(std::shared_ptr<MazeNode> node) {
   auto ghost = factory_->createGhost(std::move(node), player_);
   entities_.push_back(ghost);
-  ghosts_.push_back(ghost);
+  //  ghosts_.push_back(ghost);
   notifyObservers();
 }
 
@@ -63,9 +63,12 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
-void World::updateGhosts() {
-  for (auto &ghost : ghosts_)
-    ghost->update();
+void World::makeDesign() {
+  // Instruction to enter pause menu
+  std::string text = "Press SPACE to pause";
+  std::string font = "assets/font/arial.ttf";
+  auto text_ = factory_->createText({0, 0.95}, text, font, 30);
+  entities_.push_back(text_);
 }
 
 void World::initialize() {
@@ -79,6 +82,7 @@ void World::initialize() {
   cleanupEntities();
 
   // makeWall();
+  makeDesign();
   createWall();
   createPlayer(Maze::getInstance()->start_node_);
   player_->setDirection(Direction::LEFT);
@@ -104,13 +108,30 @@ void World::cleanupEntities() {
                                    return !entity->isActive();
                                  }),
                   entities_.end());
+
+  coins_.erase(std::remove_if(coins_.begin(), coins_.end(),
+                              [this](const std::shared_ptr<Coin> &coin) {
+                                // If any coin gets deactivated, notify
+                                // observers
+                                bool active = coin->isActive();
+                                if (!active)
+                                  notifyObservers();
+                                return !coin->isActive();
+                              }),
+               coins_.end());
 }
 
-void World::update() {
+void World::checkState() {
   if (!player_->isActive()) {
     gameOver();
     return;
   }
+  if (coins_.empty())
+    victory();
+}
+
+void World::update() {
+  checkState();
   Stopwatch::getInstance()->update();
   checkCollisions();
   cleanupEntities();
@@ -118,8 +139,16 @@ void World::update() {
 }
 
 void World::gameOver() {
-  std::cout << "World Game over\n";
+  std::cout << "World game over\n";
+  state_manager_.lock()->onLevelGameOver();
 }
+
+void World::victory() {
+  std::cout << "Victory\n";
+  close();
+}
+
+
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");
@@ -143,3 +172,6 @@ void World::updateAllEntities() {
   }
 }
 
+World::Status World::getStatus() const { return status_; }
+
+void World::setStatus(World::Status status) { status_ = status; }

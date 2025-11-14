@@ -1,6 +1,11 @@
 #include "GameController.h"
+#include "../../view/state/StateManager.h"
+#include "../../logic/State.h"
+#include "../PauseMenu.h"
 #include <SFML/Window/Event.hpp>
 #include <optional>
+#include <utility>
+
 using namespace std;
 
 
@@ -20,10 +25,25 @@ std::optional<Direction> GameController::getDirection(Action action) {
   }
 }
 
+void GameController::pauseAction() {
+  if (state_manager_->getCurrentType() == StateNS::Type::PAUSE) {
+    state_manager_->popCurrentState();
+    return;
+  }
+  if (state_manager_->getCurrentType() == StateNS::Type::GAME_OVER)
+    return;
+
+  auto factory = state_manager_->getFactory();
+  std::shared_ptr<PauseMenu> state_new = std::make_shared<PauseMenu>(factory);
+  state_manager_->pushState(state_new);
+}
 void GameController::handleInput(const sf::Event &event) {
   // todo: disable player friend class, use setters and getters instead.
   auto action = getAction(event);
-  game_state_.handleAction(action);
+  if (action == Action::SPACE) {
+    pauseAction();
+  }
+  game_state_->handleAction(action);
 }
 
 Action GameController::getAction(const sf::Event &event) {
@@ -40,6 +60,9 @@ Action GameController::getAction(const sf::Event &event) {
     break;
   case sf::Keyboard::Down:
     action = Action::MOVE_DOWN;
+    break;
+  case sf::Keyboard::Space:
+    action = Action::SPACE;
     break;
   default:
     action = Action::NONE;
@@ -61,6 +84,14 @@ Action GameController::getAction(const sf::Event &event) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
     return Action::MOVE_DOWN;
   }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    return Action::SPACE;
+  }
 
   return Action::NONE;
+}
+
+GameController::GameController(std::shared_ptr<StateManager> state_manager)
+: state_manager_(std::move(state_manager)), game_state_(state_manager_->getCurrentState()) {
+
 }

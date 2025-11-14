@@ -6,6 +6,7 @@
 #include "Ghost.h"
 #include "Player.h"
 #include "Coin.h"
+#include "layout/Text.h"
 #include <memory>
 
 class AbstractFactory {
@@ -22,6 +23,11 @@ public:
   virtual ~AbstractFactory() = default;
 
   virtual std::shared_ptr<Coin> createCoin(MazePosition) = 0;
+
+  /// LAYOUT ///
+
+  virtual std::shared_ptr<Text>
+  createText(MyVector vec, const std::string &text, const std::string &font_path, int size) = 0;
 };
 
 #endif // ABSTRACT_FACTORY_H

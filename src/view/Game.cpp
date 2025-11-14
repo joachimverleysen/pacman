@@ -14,10 +14,15 @@ Game::Game()
   setup();
 }
 
+void Game::updateState() {
+  state_manager_->updateCurrentState();
+  if (state_manager_->empty())
+    close();
+}
 void Game::update() {
   window_.clear();
   window_.draw(background_sprite_);
-  world_->update();
+  updateState();
   renderer_->render(state_manager_->getCurrentStateView());
   window_.display();
 
@@ -67,11 +72,10 @@ void Game::setup() {
 
     state_manager_ = std::make_shared<StateManager>();
     factory_ = std::make_unique<EntityFactory>(*this, window_, state_manager_);
+    state_manager_->setFactory(factory_);
     auto factory = std::make_unique<EntityFactory>(*this, window_, state_manager_);
-    world_ = std::make_shared<World>(std::move(factory));
-    state_manager_->pushState(world_);
-    world_->initialize();
-    controller_ = std::make_unique<GameController>(*world_);
+    state_manager_->loadNewLevel(state_manager_);
+    controller_ = std::make_unique<GameController>(state_manager_);
     renderer_ = std::make_unique<Renderer>(window_, factory_);
   } catch (std::runtime_error &e) {
     std::cout << "Failed to initialize game: " << e.what() << std::endl;
@@ -95,7 +99,7 @@ void Game::handleEvent(const sf::Event &event) {
 }
 
 void Game::close() {
-  std::cout << "GAME OVER\n";
+  std::cout << "End of program\n";
   state_ = GameState::GAME_OVER;
   window_.close();
   exit(0);
@@ -106,3 +110,4 @@ Game::GameState Game::getState() const {
 //    return GameState::GAME_OVER;
   return GameState::RUNNING;
 }
+

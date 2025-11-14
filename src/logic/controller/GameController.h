@@ -6,14 +6,15 @@
 
 class GameController {
 
-  State &game_state_;
+  std::shared_ptr<StateManager> state_manager_;
+  std::shared_ptr<State> game_state_;
 
 public:
 
 public:
 
   friend World;
-  explicit GameController(State &game_world) : game_state_(game_world) {};
+  explicit GameController(std::shared_ptr<StateManager> state_manager);
 
   void handleInput(const sf::Event &event);
 
@@ -22,6 +23,8 @@ public:
   static Action getAction(const sf::Event &event);
 
   static std::optional<Direction> getDirection(Action action);
+
+  void pauseAction();
 };
 
 #endif // GAMECONTROLLER_H

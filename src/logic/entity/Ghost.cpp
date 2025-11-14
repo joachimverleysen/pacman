@@ -5,7 +5,8 @@
 #include <cmath>
 #include <utility>
 
-Ghost::Ghost(NodePtr node, float width, float height, std::shared_ptr<Player> player)
+Ghost::Ghost(NodePtr node, float width, float height,
+             std::shared_ptr<Player> player)
     : Character(std::move(node), width, height), player_(player) {
   speed_ = Config::Ghost::SPEED;
   startMove();
@@ -17,36 +18,36 @@ float Ghost::getDistance2Player(Direction direction) const {
   float step_size{0.1};
   MyVector vec{0, 0};
   switch (direction) {
-    case Direction::LEFT:
-      vec = {-step_size, 0};
-      break;
-    case Direction::RIGHT:
-      vec = {step_size, 0};
-      break;
-    case Direction::UP:
-      vec = {0, step_size};
-      break;
-    case Direction::DOWN:
-      vec = {0, -step_size};
-      break;
-    case Direction::NONE:
-      throw std::invalid_argument("NONE direction was passed");
+  case Direction::LEFT:
+    vec = {-step_size, 0};
+    break;
+  case Direction::RIGHT:
+    vec = {step_size, 0};
+    break;
+  case Direction::UP:
+    vec = {0, step_size};
+    break;
+  case Direction::DOWN:
+    vec = {0, -step_size};
+    break;
+  case Direction::NONE:
+    throw std::invalid_argument("NONE direction was passed");
   }
   vec = vec + position_;
 
   float x = std::abs(vec.x - player_->getPosition().x);
   float y = std::abs(vec.y - player_->getPosition().y);
-  return x+y;
-}
-
-void Ghost::onCollision(Entity *other) {
-  deactivate();
-  if (mode_ == Mode::CHASE);
-//    killPlayer();
+  return x + y;
 }
 
 void Ghost::killPlayer() const {
   player_->deactivate();
+}
+
+void Ghost::onCollision(Entity *other) {
+  if (mode_ == Mode::CHASE)
+    killPlayer();
+  else deactivate();
 }
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
@@ -66,7 +67,6 @@ bool Ghost::chooseDirection() {
     chooseChaseDirection();
   else
     chooseRandomDirection();
-
 }
 bool Ghost::chooseRandomDirection() {
   bool disable_reversing{true};
@@ -84,7 +84,8 @@ bool Ghost::chooseRandomDirection() {
 }
 
 bool Ghost::chooseChaseDirection() {
-  std::vector<Direction> options = Maze::getInstance()->getPossibleDirections(current_node_);
+  std::vector<Direction> options =
+      Maze::getInstance()->getPossibleDirections(current_node_);
   if (reverse_count_ >= max_reversing_) {
 
     options.erase(std::remove(options.begin(), options.end(),
@@ -102,11 +103,12 @@ bool Ghost::chooseChaseDirection() {
   if (updateTarget(chosen) || findAnyTarget())
     return true;
 
-  return false;   // shouldn't happen... !!!
+  return false; // shouldn't happen... !!!
 }
 
 bool Ghost::chooseFleeDirection() {
-  std::vector<Direction> options = Maze::getInstance()->getPossibleDirections(current_node_);
+  std::vector<Direction> options =
+      Maze::getInstance()->getPossibleDirections(current_node_);
   Direction chosen = options[0];
   float max_ = getDistance2Player(chosen);
   for (auto d : options) {
@@ -118,15 +120,14 @@ bool Ghost::chooseFleeDirection() {
   if (updateTarget(chosen) || findAnyTarget())
     return true;
 
-  return false;   // shouldn't happen... !!!
+  return false; // shouldn't happen... !!!
 }
 
 void Ghost::update() {
   Direction prev = direction_;
   if (!target_node_) {
     chooseRandomDirection();
-  }
-  else if (target_node_)
+  } else if (target_node_)
     move();
   if (overshotTarget()) {
     takeTarget();
