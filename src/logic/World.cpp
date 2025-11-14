@@ -18,7 +18,7 @@ World::getEntities() const {
 void World::handleAction(Action action) {
   std::optional<Direction> direction = Utils::getDirection(action);
     if (action == Action::NONE or !direction)
-    return;
+      return;
   // If player does not have target, find one.
   if (player_->updateTarget(direction.value())) {
     player_->startMove();
@@ -35,7 +35,7 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 void World::createGhost(std::shared_ptr<MazeNode> node) {
   auto ghost = factory_->createGhost(std::move(node), player_);
   entities_.push_back(ghost);
-  ghosts_.push_back(ghost);
+//  ghosts_.push_back(ghost);
   notifyObservers();
 }
 
@@ -61,11 +61,6 @@ void World::createWall() {
   auto positions = Maze::getInstance()->wall_positions_;
   wall_ = factory_->createWall(positions);
   entities_.push_back(wall_);
-}
-
-void World::updateGhosts() {
-  for (auto &ghost : ghosts_)
-    ghost->update();
 }
 
 void World::initialize() {
@@ -104,16 +99,45 @@ void World::cleanupEntities() {
                                    return !entity->isActive();
                                  }),
                   entities_.end());
+
+  coins_.erase(std::remove_if(coins_.begin(), coins_.end(),
+                                 [this](const std::shared_ptr<Coin> &coin) {
+                                   // If any coin gets deactivated, notify
+                                   // observers
+                                   bool active = coin->isActive();
+                                   if (!active)
+                                     notifyObservers();
+                                   return !coin->isActive();
+                                 }),
+                  coins_.end());
+
+}
+
+void World::checkState() {
+  if (!player_->isActive()) {
+    gameOver();
+    return;
+  }
+  if (coins_.empty())
+    victory();
 }
 
 void World::update() {
-  if (!player_->isActive()) {
-    return;
-  }
+  checkState();
   Stopwatch::getInstance()->update();
   checkCollisions();
   cleanupEntities();
   updateAllEntities();
+}
+
+void World::gameOver() {
+  std::cout << "World game over\n";
+  close();
+}
+
+void World::victory() {
+  std::cout << "Victory\n";
+  close();
 }
 
 bool World::verifyInit() const {

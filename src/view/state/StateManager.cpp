@@ -1,18 +1,46 @@
 #include "StateManager.h"
+
+#include <utility>
 #include "StateView.h"
+#include "../EntityFactory.h"
 
 
 std::shared_ptr<StateView> StateManager::getCurrentStateView() const {
   return state_views_.top();
 }
 
+std::shared_ptr<State> StateManager::getCurrentState() const {
+  return state_views_.top()->getState();
+}
+
 void StateManager::updateCurrentState() {
   std::shared_ptr<StateView> current = state_views_.top();
   current->updateState();
+  if (current->getState()->closed())
+    state_views_.pop();
 }
 
 void StateManager::pushState(const std::shared_ptr<State>& state) {
   std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
   state_views_.push(view);
+  view->getState()->initialize();
+}
+
+bool StateManager::empty() const {
+  return state_views_.empty();
+}
+
+StateManager::StateManager(std::shared_ptr<EntityFactory> factory)
+: factory_(std::move(factory)){
+
+}
+
+StateManager::StateManager() {
+
+}
+
+void StateManager::setFactory(const std::shared_ptr<EntityFactory> &factory) {
+  factory_ = factory;
+
 }
 

@@ -3,8 +3,8 @@
 #include "../../configure/constants.h"
 #include "../utils/Utils.h"
 #include "Character.h"
-#include "iostream"
 #include "Player.h"
+#include "iostream"
 #include <future>
 
 class Ghost : public Character {
@@ -13,13 +13,14 @@ class Ghost : public Character {
 
   Mode mode_{Mode::CHASE};
   std::shared_ptr<Player> player_;
-  unsigned int max_reversing_{1};  // Max times that ghost can reverse in a row
+  unsigned int max_reversing_{1}; // Max times that ghost can reverse in a row
   unsigned int reverse_count_{0};
 
 public:
   Ghost() = delete;
 
-  Ghost(NodePtr node, float width, float height, std::shared_ptr<Player> player);
+  Ghost(NodePtr node, float width, float height,
+        std::shared_ptr<Player> player);
 
   void onCollision(Entity *other) override;
 
@@ -38,6 +39,9 @@ public:
   bool chooseChaseDirection();
 
   bool chooseFleeDirection();
+  bool chooseDirection(const std::vector<Direction> &options);
+
+  void killPlayer() const;
 };
 
 #endif

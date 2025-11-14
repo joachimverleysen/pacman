@@ -8,7 +8,7 @@
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-enum class Action { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, NONE };
+enum class Action { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, PAUSE, NONE };
 namespace Utils {
 
 // Direction

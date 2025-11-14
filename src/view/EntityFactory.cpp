@@ -1,5 +1,4 @@
 #include "EntityFactory.h"
-#include "../configure/constants.h"
 #include "../logic/utils/Camera.h"
 #include "view/EntityView.h"
 #include "SFML/Graphics/RectangleShape.hpp"
@@ -40,8 +39,8 @@ std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
   return player;
 }
 
-void EntityFactory::addView(std::shared_ptr<EntityView> view) {
-  auto &vec = state_manager_->getCurrentStateView()->views_;
+void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
+  auto &vec = state_manager_.lock()->getCurrentStateView()->views_;
   vec.push_back(view);
 }
 
@@ -66,10 +65,6 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<
   view->pushToForeground();
   addView(view);
   return ghost;
-}
-
-const std::vector<std::weak_ptr<EntityView>> &EntityFactory::getViews() const {
-  return views_;
 }
 
 std::shared_ptr<Wall>

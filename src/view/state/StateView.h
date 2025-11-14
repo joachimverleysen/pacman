@@ -16,5 +16,6 @@ public:
   friend EntityFactory;
   StateView(std::shared_ptr<State> state) : state_(state) {};
   void updateState();
+  std::shared_ptr<State> getState() const;
 };
 #endif //PACMAN_STATEVIEW_H

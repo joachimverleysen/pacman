@@ -1,6 +1,10 @@
 #include "GameController.h"
+#include "../../view/state/StateManager.h"
+#include "../PauseMenu.h"
 #include <SFML/Window/Event.hpp>
 #include <optional>
+#include <utility>
+
 using namespace std;
 
 
@@ -23,7 +27,12 @@ std::optional<Direction> GameController::getDirection(Action action) {
 void GameController::handleInput(const sf::Event &event) {
   // todo: disable player friend class, use setters and getters instead.
   auto action = getAction(event);
-  game_state_.handleAction(action);
+//  if (action == Action::PAUSE) {
+//    std::shared_ptr<PauseMenu> state_new = std::make_shared<PauseMenu>(
+//      std::make_unique<EntityFactory>()
+//      )
+//  }
+  game_state_->handleAction(action);
 }
 
 Action GameController::getAction(const sf::Event &event) {
@@ -61,6 +70,14 @@ Action GameController::getAction(const sf::Event &event) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
     return Action::MOVE_DOWN;
   }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    return Action::PAUSE;
+  }
 
   return Action::NONE;
+}
+
+GameController::GameController(std::shared_ptr<StateManager> state_manager)
+: state_manager_(std::move(state_manager)), game_state_(state_manager_->getCurrentState()) {
+
 }

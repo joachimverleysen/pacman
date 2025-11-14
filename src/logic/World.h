@@ -4,9 +4,9 @@
 #include "../configure/constants.h"
 #include "../view/EntityFactory.h"
 #include "../view/view/EntityView.h"
+#include "State.h"
 #include "entity/Player.h"
 #include "maze/Maze.h"
-#include "State.h"
 #include <memory>
 #include <string>
 
@@ -50,16 +50,19 @@ public:
 
   void cleanupEntities();
 
-  void updateGhosts();
-
   [[nodiscard]] bool verifyInit() const;
-
 
   void handleAction(Action action) override;
 
   void createCoin(MazePosition pos);
 
   void placeCoins();
+
+  void gameOver();
+
+  void checkState();
+
+  void victory();
 };
 
 #endif // WORLD_H

@@ -19,5 +19,6 @@ add_library(logic
 		State.cpp
 		entity/Coin.h
 		entity/Coin.cpp
+		PauseMenu.h
 )
 

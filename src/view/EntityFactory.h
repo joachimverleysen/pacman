@@ -19,15 +19,13 @@ using json = nlohmann::json;
 
 class StateManager;
 class EntityFactory : public AbstractFactory {
-  sf::RenderWindow &window_;
-  Game &game_;
   std::vector<std::weak_ptr<EntityView>> views_;
-  std::shared_ptr<StateManager> state_manager_;
+  std::weak_ptr<StateManager> state_manager_;
 
 public:
   EntityFactory() = delete;
-  explicit EntityFactory(Game &game, sf::RenderWindow &window, std::shared_ptr<StateManager> state_manager)
-      : game_(game), window_(window), state_manager_(state_manager) {}
+  explicit EntityFactory(Game &game, sf::RenderWindow &window, std::weak_ptr<StateManager> state_manager)
+      : state_manager_(state_manager) {}
 
 
   std::shared_ptr<Player> createPlayer(NodePtr) override;
@@ -39,12 +37,10 @@ public:
 
   std::shared_ptr<Coin> createCoin(MazePosition pos) override;
 
-  const std::vector<std::weak_ptr<EntityView>> &getViews() const;
-
   friend class Renderer;
 
 
-  void addView(std::shared_ptr<EntityView> view);
+  void addView(const std::shared_ptr<EntityView>& view);
 };
 
 #endif // ENTITY_FACTORY_H

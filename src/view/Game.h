@@ -52,6 +52,8 @@ public:
   void handleInput();
 
   void close();
+
+  void updateState();
 };
 
 #endif // GAME_H
