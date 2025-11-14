@@ -37,3 +37,11 @@ void EntityView::updatePosition() {
 
 
 const MyVector &EntityView::getPosition() const { return position_; }
+
+void EntityView::pushToForeground() {
+foreground_ = true;
+}
+
+bool EntityView::isForeGround() const {
+  return foreground_;
+}

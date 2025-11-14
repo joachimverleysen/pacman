@@ -19,6 +19,7 @@ class DrawableInterface;
 class EntityView : public Observer {
   std::weak_ptr<Entity> entity_;
   MyVector position_{};
+  bool foreground_{false};
 
 public:
   const MyVector &getPosition() const;
@@ -39,6 +40,10 @@ public:
   void setPosition(MyVector &position);
 
   void updatePosition();
+
+  void pushToForeground();
+
+  [[nodiscard]] bool isForeGround() const;
 };
 
 #endif // ENTITYVIEW_H
