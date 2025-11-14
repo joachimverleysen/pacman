@@ -7,6 +7,7 @@
 #include "../logic/utils/json.hpp"
 #include "view/EntityView.h"
 #include "../view/TextureParser.h"
+#include "../logic/utils/TextConfig.h"
 #include <SFML/Window/Window.hpp>
 #include <memory>
 #include <stdexcept>
@@ -42,8 +43,8 @@ public:
 
 
   /// LAYOUT ///
-  std::shared_ptr<Text>
-  createText(MyVector vec, const std::string &str, const std::string &font_path, int size) override;
+
+  std::shared_ptr<Text> createText(MyVector vec, TextConfig &config);
 };
 
 #endif // ENTITY_FACTORY_H

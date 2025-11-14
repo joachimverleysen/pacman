@@ -18,13 +18,10 @@ public:
 
   void handleInput(const sf::Event &event);
 
-  [[maybe_unused]] static Action getAction();
+  [[maybe_unused]] static std::optional<GameAction> getAction();
 
-  static Action getAction(const sf::Event &event);
+  static GameAction getAction(const sf::Event &event);
 
-  static std::optional<Direction> getDirection(Action action);
-
-  void pauseAction();
 };
 
 #endif // GAMECONTROLLER_H

@@ -15,7 +15,7 @@ public:
   virtual void initialize() = 0;
   virtual void update() = 0;
   [[nodiscard]] virtual StateNS::Type getType() const = 0;
-  virtual void handleAction(Action action) = 0;
+  virtual void handleAction(GameAction action) = 0;
   void close() {active_ = false;}
   bool closed() const {return !active_;}
 };

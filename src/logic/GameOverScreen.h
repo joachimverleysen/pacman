@@ -14,29 +14,30 @@ public:
   GameOverScreen(std::shared_ptr<AbstractFactory> factory) : State(factory) {};
   void initialize() override;
   void update() override;
-  void handleAction(Action action) override {}
+  void handleAction(GameAction action) override {}
   [[nodiscard]] StateNS::Type getType() const override {
     return StateNS::Type::GAME_OVER;
   }
-  void makeTitle();
 };
 
-void GameOverScreen::initialize() {
-  std::string text, font;
+inline void GameOverScreen::initialize() {
+  TextConfig config;
   // Title
-  text = "Game Over";
-  font = "assets/font/Pacfont.ttf";
-  auto text_ = factory_->createText({0, 0}, text, font, 70);
+  config.text = "Game Over";
+  config.font = MyFont::PACFONT;
+  config.character_size = 70;
+  auto text_ = factory_->createText({0, 0}, config);
   entities_.push_back(text_);
 
   // Subtext
-  text = "Press Q to go to Start Menu";
-  font = "assets/font/liber.ttf";
-  text_ = factory_->createText({0, -0.4}, text, font, 30);
+  TextConfig sconfig;
+  sconfig.text = "Press Q to go to Start Menu";
+  sconfig.font = MyFont::LIBER;
+  text_ = factory_->createText({0, -0.4}, sconfig);
   entities_.push_back(text_);
 }
 
-void GameOverScreen::update() {
+inline void GameOverScreen::update() {
   for (auto e : entities_)
     e->update();
 }

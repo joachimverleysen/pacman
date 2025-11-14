@@ -15,9 +15,9 @@ World::getEntities() const {
   return entities_;
 }
 
-void World::handleAction(Action action) {
+void World::handleAction(GameAction action) {
   std::optional<Direction> direction = Utils::getDirection(action);
-  if (action == Action::NONE or !direction)
+  if (action == GameAction::NONE or !direction)
     return;
   // If player does not have target, find one.
   if (player_->updateTarget(direction.value())) {
@@ -65,9 +65,10 @@ void World::createWall() {
 
 void World::makeDesign() {
   // Instruction to enter pause menu
-  std::string text = "Press SPACE to pause";
-  std::string font = "assets/font/arial.ttf";
-  auto text_ = factory_->createText({0, 0.95}, text, font, 30);
+  TextConfig config;
+  config.text = "Press SPACE to pause";
+  config.font = MyFont::LIBER;
+  auto text_ = factory_->createText({0, -0.95}, config);
   entities_.push_back(text_);
 }
 
@@ -90,8 +91,6 @@ void World::initialize() {
   placeCoins();
   wall_->update();
 }
-
-Player *World::getPlayer() const { return player_.get(); }
 
 void World::cleanupEntities() {
   for (auto &e : entities_) {
@@ -139,15 +138,12 @@ void World::update() {
 }
 
 void World::gameOver() {
-  std::cout << "World game over\n";
   state_manager_.lock()->onLevelGameOver();
 }
 
 void World::victory() {
-  std::cout << "Victory\n";
-  close();
+  state_manager_.lock()->onLevelGameOver();
 }
-
 
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)

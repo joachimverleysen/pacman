@@ -8,6 +8,7 @@
 #include "state/StateManager.h"
 #include "state/StateView.h"
 #include "view/TextDrawable.h"
+#include "../logic/utils/TextConfig.h"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
@@ -110,22 +111,30 @@ std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
   return coin;
 }
 
+sf::Color getColor(Color color) {
+  sf::Color result = {static_cast<sf::Uint8>(color.r),
+                             static_cast<sf::Uint8>(color.b),
+                             static_cast<sf::Uint8>(color.b)
+  };
+  return result;
+}
+
 std::shared_ptr<Text>
-EntityFactory::createText(MyVector vec, const std::string &str, const std::string &font_path, int size) {
-  std::shared_ptr<Text> text = std::make_shared<Text>(str);
+EntityFactory::createText(MyVector vec, TextConfig &config) {
+  std::shared_ptr<Text> text = std::make_shared<Text>(config.text);
   text->setPosition(vec);
-  auto font = FontManager::get(font_path);
+  auto font = FontManager::get(config.font);
 
   sf::Text text_;
-  text_.setCharacterSize(size);
+  text_.setCharacterSize(config.character_size);
   text_.setStyle(sf::Text::Regular);
   text_.setFont(*font);
-  text_.setString(str);
-  sf::Color white{255, 255, 255};
-  sf::Color red{100, 0, 0};
-  text_.setFillColor(white);
-  text_.setOutlineThickness(3);
-  text_.setOutlineColor(red);
+  text_.setString(config.text);
+  sf::Color fill_color = getColor(config.fill_color);
+  sf::Color outline_color = getColor(config.outline_color);
+  text_.setFillColor(fill_color);
+  text_.setOutlineThickness(config.outline_thickness);
+  text_.setOutlineColor(outline_color);
   sf::FloatRect rc = text_.getLocalBounds();
 text_.setOrigin(rc.width/2, rc.height/2);
   std::unique_ptr<TextDrawable> drawable = std::make_unique<TextDrawable>(text_);

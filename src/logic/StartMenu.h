@@ -17,36 +17,37 @@ public:
   : State(factory), state_manager_(state_manager) {};
   void initialize() override;
   void update() override;
-  void handleAction(Action action) override {}
+  void handleAction(GameAction action) override {}
   [[nodiscard]] StateNS::Type getType() const override {
     return StateNS::Type::STARTMENU;
   }
-  void makeTitle();
 };
 
-void StartMenu::initialize() {
-  std::string text, font;
+inline void StartMenu::initialize() {
+  TextConfig config;
   // Title
-  text = "Start Menu";
-  font = "assets/font/Pacfont.ttf";
-  auto text_ = factory_->createText({0, 0}, text, font, 70);
+  config.text = "Welcome";
+  config.font = MyFont::PACFONT;
+  config.character_size = 70;
+  auto text_ = factory_->createText({0, 0.8}, config);
   entities_.push_back(text_);
 
   // Subtext
-  text = "Press S to start";
-  font = "assets/font/liber.ttf";
-  text_ = factory_->createText({0, -0.4}, text, font, 30);
+  TextConfig sconfig;
+  sconfig.text = "Press S to start playing";
+  sconfig.font = MyFont::LIBER;
+  text_ = factory_->createText({0, 0.4}, sconfig);
+  entities_.push_back(text_);
+
+  // Subtext2
+  TextConfig sconfig2;
+  sconfig2.text = "Press X to exit";
+  sconfig2.font = MyFont::LIBER;
+  text_ = factory_->createText({0, 0.3}, sconfig2);
   entities_.push_back(text_);
 }
 
-void StartMenu::makeTitle() {
-  std::string title = "Game Over";
-  std::string font = "assets/font/Pacfont.ttf";
-  auto text = factory_->createText({0, 0}, title, font, 70);
-  entities_.push_back(text);
-}
-
-void StartMenu::update() {
+inline void StartMenu::update() {
   for (auto e : entities_)
     e->update();
 }
