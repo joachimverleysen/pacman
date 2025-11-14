@@ -40,7 +40,8 @@ float Ghost::getDistance2Player(Direction direction) const {
 }
 
 void Ghost::onCollision(Entity *other) {
-  deactivate();}
+  deactivate();
+}
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
 
@@ -116,12 +117,14 @@ bool Ghost::chooseFleeDirection() {
 
 void Ghost::update() {
   Direction prev = direction_;
-  if (!target_node_)
+  if (!target_node_) {
     chooseRandomDirection();
+  }
   else if (target_node_)
     move();
   if (overshotTarget()) {
     takeTarget();
+    portalCheck();
     chooseDirection();
   }
 

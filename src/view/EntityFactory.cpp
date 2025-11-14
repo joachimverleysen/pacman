@@ -63,6 +63,7 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<
       std::move(drawable)); // ghost is passed as a weak pointer here
 
   ghost->addObserver(view); // view is passed as shared pointer here
+  view->pushToForeground();
   addView(view);
   return ghost;
 }

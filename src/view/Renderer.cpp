@@ -62,9 +62,21 @@ void Renderer::removeView(std::weak_ptr<EntityView> view) {
 
 void Renderer::render(const std::weak_ptr<StateView>& state_view) {
   updateViews(state_view);
+
+  // Render background
   for (const auto& v : state_view.lock()->views_) {
     if (!v.lock()->isActive())
-    throw std::logic_error("View list should not contain inactive views");
+      throw std::logic_error("View list should not contain inactive views");
+    if (v.lock()->isForeGround())  // background only
+      continue;
+    v.lock()->draw(window_);
+  }
+
+  for (const auto& v : state_view.lock()->views_) {
+    if (!v.lock()->isActive())
+      throw std::logic_error("View list should not contain inactive views");
+    if (!v.lock()->isForeGround())  // foreground only
+      continue;
     v.lock()->draw(window_);
   }
 }
