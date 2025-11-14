@@ -39,6 +39,7 @@ public:
   bool chooseChaseDirection();
 
   bool chooseFleeDirection();
+  
   bool chooseDirection(const std::vector<Direction> &options);
 
   void killPlayer() const;

@@ -148,6 +148,7 @@ void World::victory() {
   close();
 }
 
+
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");

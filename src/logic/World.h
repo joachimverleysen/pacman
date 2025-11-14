@@ -76,6 +76,7 @@ public:
   void victory();
 
   void makeDesign();
+
 };
 
 #endif // WORLD_H

@@ -99,8 +99,8 @@ void Character::setTarget(NodePtr target) { target_node_ = std::move(target); }
 
 bool Character::portalCheck() {
   auto maze = Maze::getInstance();
-  if (maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal) {
-    setTarget(maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal);
+  if (maze->findAllNeighbors(current_node_->row_, current_node_->column_, EntityType::Ghost).portal) {
+    setTarget(maze->findAllNeighbors(current_node_->row_, current_node_->column_, EntityType::Ghost).portal);
     takeTarget();
     return true;
   }
@@ -114,7 +114,7 @@ bool Character::updateTarget(Direction direction) {
  // First, try finding a target
   if (!target_node_) {
     setTarget(maze->findNeighbor(current_node_->row_, current_node_->column_,
-                                 direction));
+                                 direction, getType()));
     if (target_node_) {
       updateDirection(direction);
       return true;
@@ -125,7 +125,7 @@ bool Character::updateTarget(Direction direction) {
   }
 
   NodePtr new_target =
-      maze->findNeighbor(target_node_->row_, target_node_->column_, direction);
+      maze->findNeighbor(target_node_->row_, target_node_->column_, direction, getType());
   if (!new_target)
     return false;
   if (new_target && new_target == current_node_)
@@ -176,7 +176,7 @@ std::vector<Direction> Character::getPossibleDirections(NodePtr *node) const {
 
   for (auto &d : directions) {
     if (Maze::getInstance()->findNeighbor(node->get()->row_,
-                                          node->get()->column_, d))
+                                          node->get()->column_, d, getType()))
       result.push_back(d);
   }
   return result;
