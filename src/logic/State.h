@@ -7,6 +7,7 @@ using namespace Utils;
 class State : public Subject {
 public:
 protected:
+  std::vector<std::shared_ptr<Entity>> entities_;
   bool active_{true};
   std::shared_ptr<AbstractFactory> factory_;
 public:

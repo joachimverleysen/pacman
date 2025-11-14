@@ -63,6 +63,14 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
+void World::makeDesign() {
+  // Instruction to enter pause menu
+  std::string text = "Press SPACE to pause";
+  std::string font = "assets/arialfont/arial.ttf";
+  auto text_ = factory_->createText({0, 0.95}, text, font, 30);
+  entities_.push_back(text_);
+}
+
 void World::initialize() {
   try {
     verifyInit();
@@ -74,6 +82,7 @@ void World::initialize() {
   cleanupEntities();
 
   // makeWall();
+  makeDesign();
   createWall();
   createPlayer(Maze::getInstance()->start_node_);
   player_->setDirection(Direction::LEFT);

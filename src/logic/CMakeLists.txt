@@ -20,5 +20,8 @@ add_library(logic
 		entity/Coin.h
 		entity/Coin.cpp
 		PauseMenu.h
+		entity/layout/Text.cpp
+		entity/layout/Text.h
+		../view/FontManager.h
 )
 

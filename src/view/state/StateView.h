@@ -9,6 +9,7 @@ class Renderer;
 class EntityFactory;
 //
 class StateView {
+protected:
   std::shared_ptr<State> state_;
   std::vector<std::weak_ptr<EntityView>> views_;
 public:

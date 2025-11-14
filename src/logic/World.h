@@ -18,7 +18,7 @@ public:
 
 private:
   std::shared_ptr<Player> player_;
-  std::vector<std::shared_ptr<Entity>> entities_;
+//  std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> ghosts_;
   std::vector<std::shared_ptr<Coin>> coins_;
   std::vector<std::vector<char>> arena_grid_;
@@ -67,6 +67,8 @@ public:
   void checkState();
 
   void victory();
+
+  void makeDesign();
 };
 
 #endif // WORLD_H
