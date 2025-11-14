@@ -50,6 +50,8 @@ public:
   bool findAnyTarget();
 
   std::vector<Direction> getPossibleDirections(NodePtr *node) const;
+
+  bool portalCheck();
 };
 
 #endif // !CHARACTER_H

@@ -97,17 +97,21 @@ void Character::takeTarget() {
 
 void Character::setTarget(NodePtr target) { target_node_ = std::move(target); }
 
+bool Character::portalCheck() {
+  auto maze = Maze::getInstance();
+  if (maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal) {
+    setTarget(maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal);
+    takeTarget();
+    return true;
+  }
+  return false;
+}
 bool Character::updateTarget(Direction direction) {
   // Returns true if the target changed.
 
   auto maze = Maze::getInstance();
 
-  if (maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal) {
-    setTarget(maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal);
-    takeTarget();
-  }
-
-  // First, try finding a target
+ // First, try finding a target
   if (!target_node_) {
     setTarget(maze->findNeighbor(current_node_->row_, current_node_->column_,
                                  direction));
@@ -115,9 +119,11 @@ bool Character::updateTarget(Direction direction) {
       updateDirection(direction);
       return true;
     } else if (!target_node_) {
+      portalCheck() && updateTarget(direction_);
       return false;
     }
   }
+
   NodePtr new_target =
       maze->findNeighbor(target_node_->row_, target_node_->column_, direction);
   if (!new_target)

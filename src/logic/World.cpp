@@ -81,9 +81,9 @@ void World::initialize() {
   // makeWall();
   createWall();
   createPlayer(Maze::getInstance()->start_node_);
+  player_->setDirection(Direction::LEFT);
   placeGhosts();
   placeCoins();
-  //  player_->update();
   wall_->update();
 }
 
