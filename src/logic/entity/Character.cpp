@@ -84,6 +84,8 @@ bool Character::overshotTarget() const {
   float node_2_target = std::pow(vec1.getMagnitude(), 2);
   float node_2_self = std::pow(vec2.getMagnitude(), 2);
 
+
+
   return node_2_self > node_2_target;
 }
 
@@ -99,6 +101,11 @@ bool Character::updateTarget(Direction direction) {
   // Returns true if the target changed.
 
   auto maze = Maze::getInstance();
+
+  if (maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal) {
+    setTarget(maze->findAllNeighbors(current_node_->row_, current_node_->column_).portal);
+    takeTarget();
+  }
 
   // First, try finding a target
   if (!target_node_) {

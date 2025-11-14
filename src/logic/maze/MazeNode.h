@@ -11,6 +11,7 @@ struct Neighbours {
   NodePtr down;
   NodePtr left;
   NodePtr right;
+  NodePtr portal;
 };
 
 struct MazeNode {

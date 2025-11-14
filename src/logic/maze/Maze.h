@@ -7,6 +7,10 @@
 #include <memory>
 #include <vector>
 
+struct Portal {
+  MazePosition pos;
+  int index;
+};
 typedef std::vector<std::vector<char>> Grid;
 
 class Maze {
@@ -17,7 +21,7 @@ private:
 
 public:
   std::vector<MazePosition> wall_positions_{};
-  std::vector<std::pair<MazePosition, MazePosition>> portal_pairs_{};
+  std::vector<std::pair<Portal, Portal>> portal_pairs_{};  // maps the index to the 2 locations
   Maze(const Maze &) = delete;
   Maze &operator=(const Maze &) = delete;
 
@@ -55,5 +59,9 @@ public:
   bool inGridRange(unsigned int row, unsigned int column) const;
 
   std::vector<Direction> getPossibleDirections(NodePtr node) const;
+
+  void addPortal(unsigned int row, unsigned int col, int index);
+
+  std::optional<MazePosition> findPortal(unsigned int row, unsigned int col) const;
 };
 #endif // !MAZE_H
