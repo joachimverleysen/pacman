@@ -10,7 +10,3 @@ Player::Player(NodePtr node, float width, float height)
 void Player::onCollision(Entity *other) {}
 
 EntityType Player::getType() const { return EntityType::Player; }
-
-bool Player::allowsSpawn(Entity *other) {
-  return CollisionHandler::checkCollision(this, other);
-}

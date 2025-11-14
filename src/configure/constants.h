@@ -11,7 +11,7 @@ inline const std::string sprites_json = "assets/textures.json";
 } // namespace TextureFiles
 
 namespace Window {
-inline const unsigned int UNIT_LENGTH = 35;
+inline const unsigned int CELL_WIDTH = 35;
 
 } // namespace Window
 

@@ -3,6 +3,10 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
 
+ShapeDrawable::ShapeDrawable(std::unique_ptr<sf::Shape> shape, MyVector pos)
+    : shape_(std::move(shape)) {
+  shape_->setPosition(pos.x, pos.y);
+}
 ShapeDrawable::ShapeDrawable(std::unique_ptr<sf::Shape> shape)
     : shape_(std::move(shape)) {}
 

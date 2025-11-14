@@ -55,7 +55,7 @@ void Game::setup() {
   auto maze = Maze::getInstance();
   loadMaze(Config::MazeFile);
 
-  unsigned int UL = Config::Window::UNIT_LENGTH;
+  unsigned int UL = Config::Window::CELL_WIDTH;
   window_.create({maze->getXunits() * UL, maze->getYunits() * UL}, "Pacman",
                  sf::Style::Close);
 

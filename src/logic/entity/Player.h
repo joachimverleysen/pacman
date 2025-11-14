@@ -18,8 +18,6 @@ public:
 
   Player(NodePtr node, float width, float height);
 
-  bool allowsSpawn(Entity *other) override;
-
   void onCollision(Entity *other) override;
 
   [[nodiscard]] EntityType getType() const override;

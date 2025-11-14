@@ -10,10 +10,12 @@
 #include <memory>
 
 class ShapeDrawable : public DrawableInterface {
+
   std::unique_ptr<sf::Shape> shape_;
 
 public:
   ShapeDrawable(std::unique_ptr<sf::Shape> shape);
+  ShapeDrawable(std::unique_ptr<sf::Shape> shape, MyVector pos);
   void draw(sf::RenderWindow &window) override;
   void setPosition(MyVector pos) override;
   void updateState(Entity::State) override{};

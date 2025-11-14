@@ -5,8 +5,8 @@ using namespace Config;
 MyVector Camera::world2Window(const MyVector &position) {
   float x, y;
   // todo: no constant 3 here!
-  float w = Window::UNIT_LENGTH * Maze::getInstance()->getXunits();
-  float h = Window::UNIT_LENGTH * Maze::getInstance()->getYunits();
+  float w = Window::CELL_WIDTH * Maze::getInstance()->getXunits();
+  float h = Window::CELL_WIDTH * Maze::getInstance()->getYunits();
   float cx = w / 2, cy = h / 2;
   y = (1 - (position.y + 1) / 2) * h;
   x = cx + position.x;
@@ -18,8 +18,8 @@ MyVector Camera::world2Window(const MyVector &position) {
 }
 
 MyVector Camera::window2World(const MyVector &position) {
-  float w = Window::UNIT_LENGTH * Maze::getInstance()->getXunits();
-  float h = Window::UNIT_LENGTH * Maze::getInstance()->getYunits();
+  float w = Window::CELL_WIDTH * Maze::getInstance()->getXunits();
+  float h = Window::CELL_WIDTH * Maze::getInstance()->getYunits();
 
   float x = (position.x / w) * 2 - 1;
   float y = 1 - (position.y / h) * 2;

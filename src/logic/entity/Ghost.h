@@ -21,8 +21,6 @@ public:
 
   Ghost(NodePtr node, float width, float height, std::shared_ptr<Player> player);
 
-  bool allowsSpawn(Entity *other) override;
-
   void onCollision(Entity *other) override;
 
   [[nodiscard]] EntityType getType() const override;

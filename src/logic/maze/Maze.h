@@ -17,6 +17,7 @@ private:
 
 public:
   std::vector<MazePosition> wall_positions_{};
+  std::vector<std::pair<MazePosition, MazePosition>> portal_pairs_{};
   Maze(const Maze &) = delete;
   Maze &operator=(const Maze &) = delete;
 
@@ -29,9 +30,10 @@ public:
 
 public:
   Grid grid_;
-  std::vector<std::vector<NodePtr>> node_map_;
-  std::vector<NodePtr> ghost_nodes_;
-  NodePtr start_node_;
+  std::vector<std::vector<NodePtr>> node_map_{};
+  std::vector<NodePtr> ghost_nodes_{};
+  NodePtr start_node_{};
+  std::vector<MazePosition> coin_positions_{};
 
 public:
   void loadGrid(Grid &grid);

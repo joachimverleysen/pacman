@@ -73,9 +73,9 @@ const std::vector<std::weak_ptr<EntityView>> &EntityFactory::getViews() const {
 
 std::shared_ptr<Wall>
 EntityFactory::createWall(std::vector<MazePosition> &positions) {
-  using Config::Window::UNIT_LENGTH;
+  using Config::Window::CELL_WIDTH;
   std::shared_ptr<Wall> wall = std::make_shared<Wall>(positions);
-  sf::Vector2f vec{UNIT_LENGTH, UNIT_LENGTH};
+  sf::Vector2f vec{CELL_WIDTH, CELL_WIDTH};
   std::unique_ptr<sf::RectangleShape> rect =
       std::make_unique<sf::RectangleShape>(vec);
   sf::Color darkblue{11, 0, 200};
@@ -89,5 +89,26 @@ EntityFactory::createWall(std::vector<MazePosition> &positions) {
   wall->addObserver(view);
   addView(view);
   return wall;
+}
+
+std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
+  using Config::Window::CELL_WIDTH;
+  std::shared_ptr<Coin> coin = std::make_shared<Coin>(pos);
+  sf::Vector2f vec{CELL_WIDTH/4, CELL_WIDTH/4};
+  std::unique_ptr<sf::RectangleShape> rect =
+      std::make_unique<sf::RectangleShape>(vec);
+  sf::Color yellow{255, 255, 0};
+  rect->setFillColor(yellow);
+  MyVector window_pos = Camera::world2Window({coin->getPosition().x, coin->getPosition().y});
+  std::unique_ptr<ShapeDrawable> drawable =
+      std::move(std::make_unique<ShapeDrawable>(std::move(rect), window_pos));
+
+  drawable->setPosition({window_pos.x, window_pos.y});
+  std::shared_ptr<EntityView> view =
+      std::make_shared<EntityView>(coin, std::move(drawable));
+
+  coin->addObserver(view);
+  addView(view);
+  return coin;
 }
 
