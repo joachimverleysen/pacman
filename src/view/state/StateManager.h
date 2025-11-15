@@ -3,18 +3,29 @@
 
 #include <stack>
 #include <memory>
- #include "../../logic/utils/Utils.h"
+#include <functional>
+#include <SFML/Window/Event.hpp>
+#include <map>
+#include "../../logic/utils/Utils.h"
 
 class StateView;
 class State;
 class EntityFactory;
 
+using Action = std::function<void()>;
+using EventMap = std::map<sf::Keyboard::Key, Action>;
+using namespace Utils;
+
 class StateManager {
 
   std::stack<std::shared_ptr<StateView>> state_views_;
   std::shared_ptr<EntityFactory> factory_;
+  std::map<StateNS::Type, EventMap> fsm;
+  std::weak_ptr<StateManager> ptr_to_this_;
 
 public:
+  StateManager();
+
   explicit StateManager(std::shared_ptr<EntityFactory> factory);
 
   [[nodiscard]] std::shared_ptr<StateView> getCurrentStateView() const;
@@ -26,7 +37,8 @@ public:
 
   std::shared_ptr<State> getCurrentState() const;
 
-  StateManager();
+
+  void setPtrToThis(const std::weak_ptr<StateManager> &ptrToThis);
 
   void setFactory(const std::shared_ptr<EntityFactory> &factory);
 
@@ -40,9 +52,15 @@ public:
 
   void pushGameOverState();
 
-  void loadNewLevel(std::shared_ptr<StateManager> ptr_to_this);
+  void loadNewLevel(const std::weak_ptr<StateManager>& ptr_to_this);
 
   void pushStartMenu(std::shared_ptr<StateManager> ptr_to_this);
+
+  void pushPauseState();
+
+  void initialize();
+
+  Action getAction(sf::Keyboard::Key key);
 };
 
 

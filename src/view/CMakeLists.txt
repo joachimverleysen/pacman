@@ -16,8 +16,7 @@ add_library(view
 		state/StateView.cpp
 		view/TextDrawable.cpp
 		view/TextDrawable.h
-		controller/GameController.cpp
 		controller/GameController.h
-
+		controller/GameController.cpp
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)

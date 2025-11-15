@@ -8,7 +8,6 @@
 #include "state/StateManager.h"
 #include "state/StateView.h"
 #include "view/TextDrawable.h"
-#include <SFML/System/Vector2.hpp>
 #include <memory>
 
 MyVector dimensionsToWorld(float width, float height) {
@@ -19,113 +18,57 @@ MyVector dimensionsToWorld(float width, float height) {
   return {w, h};
 }
 
+
 std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
-  MyVector size_dimensions =
-      dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
-  float w = size_dimensions.x;
-  float h = size_dimensions.y;
-  std::shared_ptr<Player> player = std::make_shared<Player>(node, w, h);
-  // todo: no hardcoded
-  std::string type = "pacman";
-  Texture::TextureMap texture_map =
-      TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+      MyVector dims = dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
+      return createEntityWithView<Player, EntityView>(nullptr, node, dims.x, dims.y);
+  }
 
-  std::unique_ptr<SpriteDrawable> drawable =
-      std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
-  std::shared_ptr<EntityView> view = std::make_shared<EntityView>(
-      player,
-      std::move(drawable)); // player is passed as a weak pointer here
+  std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player) {
+      MyVector dims = dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
+      auto ghost = EntityFactory::createEntityWithView<Ghost, EntityView>(
+        [](std::shared_ptr<EntityView> view){ view->pushToForeground(); },
+        node, dims.x, dims.y, player);
+      return ghost;
+  }
 
-  player->addObserver(view); // view is passed as shared pointer here
-  addView(view);
-  return player;
-}
+  std::shared_ptr<Wall> EntityFactory::createWall(std::vector<MazePosition>& positions) {
+      return EntityFactory::createEntityWithView<Wall, WallView>(nullptr, positions);
+  }
+
+  std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
+      return EntityFactory::createEntityWithView<Coin, EntityView>(nullptr, pos);
+  }
 
 void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
   auto &vec = state_manager_.lock()->getCurrentStateView()->views_;
   vec.push_back(view);
 }
 
-std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player) {
-  MyVector size_dimensions =
-      dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
-  float w = size_dimensions.x;
-  float h = size_dimensions.y;
-  std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, w, h, player);
-  // todo: no hardcoded
-  std::string type = "ghost";
-  Texture::TextureMap texture_map =
-      TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
-
-  std::unique_ptr<SpriteDrawable> drawable =
-      std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
-  std::shared_ptr<EntityView> view = std::make_shared<EntityView>(
-      ghost,
-      std::move(drawable)); // ghost is passed as a weak pointer here
-
-  ghost->addObserver(view); // view is passed as shared pointer here
-  view->pushToForeground();
-  addView(view);
-  return ghost;
-}
-
-std::shared_ptr<Wall>
-EntityFactory::createWall(std::vector<MazePosition> &positions) {
-  using Config::Window::CELL_WIDTH;
-  std::shared_ptr<Wall> wall = std::make_shared<Wall>(positions);
-  sf::Vector2f vec{CELL_WIDTH, CELL_WIDTH};
-  std::unique_ptr<sf::RectangleShape> rect =
-      std::make_unique<sf::RectangleShape>(vec);
-  sf::Color darkblue{11, 0, 200};
-  rect->setFillColor(darkblue);
-  std::unique_ptr<ShapeDrawable> drawable =
-      std::move(std::make_unique<ShapeDrawable>(std::move(rect)));
-
-  std::shared_ptr<EntityView> view =
-      std::make_shared<WallView>(wall, std::move(drawable));
-
-  wall->addObserver(view);
-  addView(view);
-  return wall;
-}
-
-std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
-  using Config::Window::CELL_WIDTH;
-  std::shared_ptr<Coin> coin = std::make_shared<Coin>(pos);
-  sf::Vector2f vec{CELL_WIDTH/4, CELL_WIDTH/4};
-  std::unique_ptr<sf::RectangleShape> rect =
-      std::make_unique<sf::RectangleShape>(vec);
-  sf::Color yellow{255, 255, 0};
-  rect->setFillColor(yellow);
-  MyVector window_pos = Camera::world2Window({coin->getPosition().x, coin->getPosition().y});
-  std::unique_ptr<ShapeDrawable> drawable =
-      std::move(std::make_unique<ShapeDrawable>(std::move(rect), window_pos));
-
-  drawable->setPosition({window_pos.x, window_pos.y});
-  std::shared_ptr<EntityView> view =
-      std::make_shared<EntityView>(coin, std::move(drawable));
-
-  coin->addObserver(view);
-  addView(view);
-  return coin;
+sf::Color getColor(Color color) {
+  sf::Color result = {static_cast<sf::Uint8>(color.r),
+                             static_cast<sf::Uint8>(color.b),
+                             static_cast<sf::Uint8>(color.b)
+  };
+  return result;
 }
 
 std::shared_ptr<Text>
-EntityFactory::createText(MyVector vec, const std::string &str, const std::string &font_path, int size) {
-  std::shared_ptr<Text> text = std::make_shared<Text>(str);
+EntityFactory::createText(MyVector vec, TextConfig &config) {
+  std::shared_ptr<Text> text = std::make_shared<Text>(config.text);
   text->setPosition(vec);
-  auto font = FontManager::get(font_path);
+  auto font = FontManager::get(config.font);
 
   sf::Text text_;
-  text_.setCharacterSize(size);
+  text_.setCharacterSize(config.character_size);
   text_.setStyle(sf::Text::Regular);
   text_.setFont(*font);
-  text_.setString(str);
-  sf::Color white{255, 255, 255};
-  sf::Color red{100, 0, 0};
-  text_.setFillColor(white);
-  text_.setOutlineThickness(3);
-  text_.setOutlineColor(red);
+  text_.setString(config.text);
+  sf::Color fill_color = getColor(config.fill_color);
+  sf::Color outline_color = getColor(config.outline_color);
+  text_.setFillColor(fill_color);
+  text_.setOutlineThickness(config.outline_thickness);
+  text_.setOutlineColor(outline_color);
   sf::FloatRect rc = text_.getLocalBounds();
 text_.setOrigin(rc.width/2, rc.height/2);
   std::unique_ptr<TextDrawable> drawable = std::make_unique<TextDrawable>(text_);

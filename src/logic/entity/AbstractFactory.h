@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Coin.h"
 #include "layout/Text.h"
+#include "../utils/TextConfig.h"
 #include <memory>
 
 class AbstractFactory {
@@ -27,7 +28,8 @@ public:
   /// LAYOUT ///
 
   virtual std::shared_ptr<Text>
-  createText(MyVector vec, const std::string &text, const std::string &font_path, int size) = 0;
+  createText(MyVector vec, TextConfig &config) = 0;
+
 };
 
 #endif // ABSTRACT_FACTORY_H

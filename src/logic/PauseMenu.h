@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "utils/Utils.h"
+#include "utils/TextConfig.h"
 #include <utility>
 
 typedef std::shared_ptr<Entity> EntityPtr;
@@ -13,32 +14,38 @@ public:
   PauseMenu(std::shared_ptr<AbstractFactory> factory) : State(factory) {};
   void initialize() override;
   void update() override;
-  void handleAction(Action action) override {}
+  void handleAction(GameAction action) override {}
   [[nodiscard]] StateNS::Type getType() const override {
     return StateNS::Type::PAUSE;
   }
-  std::string getTitlePrompt() const;
 };
 
-std::string PauseMenu::getTitlePrompt() const { return "Pause Menu"; }
+inline void PauseMenu::initialize() {
 
-void PauseMenu::initialize() {
-
-  std::string text, font;
+  TextConfig config;
   // Title
-  text = "Pause Menu";
-  font = "assets/font/Pacfont.ttf";
-  auto text_ = factory_->createText({0, 0}, text, font, 70);
+  config.text = "Pause Menu";
+  config.font = MyFont::PACFONT;
+  config.character_size = 70;
+  auto text_ = factory_->createText({0, 0}, config);
   entities_.push_back(text_);
 
   // Subtext
-  text = "Press SPACE to continue";
-  font = "assets/font/liber.ttf";
-  text_ = factory_->createText({0, -0.4}, text, font, 30);
+  TextConfig sconfig;
+  sconfig.text = "Press SPACE to continue";
+  sconfig.font = MyFont::LIBER;
+  text_ = factory_->createText({0, -0.4}, sconfig);
+  entities_.push_back(text_);
+
+  // Subtext 2
+  TextConfig sconfig2;
+  sconfig2.text = "Press Q to exit";
+  sconfig2.font = MyFont::LIBER;
+  text_ = factory_->createText({0, -0.5}, sconfig2);
   entities_.push_back(text_);
 }
 
-void PauseMenu::update() {
+inline void PauseMenu::update() {
   for (auto e : entities_)
     e->update();
 }
