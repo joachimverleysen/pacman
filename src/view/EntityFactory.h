@@ -26,7 +26,7 @@ public:
   friend class Renderer;
 public:
   EntityFactory() = delete;
-  explicit EntityFactory(Game &game, sf::RenderWindow &window, std::weak_ptr<StateManager> state_manager)
+  explicit EntityFactory(std::weak_ptr<StateManager> state_manager)
       : state_manager_(state_manager) {}
 
   /// LAYOUT ///
