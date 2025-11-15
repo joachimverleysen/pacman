@@ -80,3 +80,7 @@ text_.setOrigin(rc.width/2, rc.height/2);
   return text;
 }
 
+std::shared_ptr<Fruit> EntityFactory::createFruit(MazePosition pos) {
+  return EntityFactory::createEntityWithView<Fruit, EntityView>(nullptr, pos);
+}
+

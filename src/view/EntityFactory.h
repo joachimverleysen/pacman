@@ -9,6 +9,7 @@
 #include "../view/TextureParser.h"
 #include "../logic/utils/TextConfig.h"
 #include "view/ShapeDrawable.h"
+#include "../logic/entity/Fruit.h"
 #include <SFML/Window/Window.hpp>
 #include <memory>
 #include <stdexcept>
@@ -42,6 +43,8 @@ public:
   std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player) override;
 
   std::shared_ptr<Coin> createCoin(MazePosition pos) override;
+
+  std::shared_ptr<Fruit> createFruit(MazePosition pos) override;
 
   void addView(const std::shared_ptr<EntityView>& view);
 
@@ -97,6 +100,12 @@ inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Coin>
     auto rect = std::make_unique<sf::CircleShape>(CELL_WIDTH/8);
     rect->setFillColor({255, 255, 0});
     return std::make_unique<ShapeDrawable>(std::move(rect));
+}
+
+template<>
+inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Fruit>() {
+  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, "fruit");
+  return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE * 0.6);
 }
 
 

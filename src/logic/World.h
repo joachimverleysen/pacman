@@ -25,6 +25,7 @@ private:
 //  std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> ghosts_;
   std::vector<std::shared_ptr<Coin>> coins_;
+  std::vector<std::shared_ptr<Fruit>> fruits_;
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
   std::shared_ptr<Wall> wall_;
@@ -75,6 +76,9 @@ public:
 
   void makeDesign();
 
+  void placeFruits();
+
+  void createFruit(MazePosition pos);
 };
 
 #endif // WORLD_H

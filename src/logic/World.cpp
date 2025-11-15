@@ -57,6 +57,18 @@ void World::placeCoins() {
   }
 }
 
+void World::createFruit(MazePosition pos) {
+  auto fruit = factory_->createFruit(pos);
+  entities_.push_back(fruit);
+  fruits_.push_back(fruit);
+  notifyObservers();
+}
+void World::placeFruits() {
+  for (auto pos : Maze::getInstance()->fruit_positions_) {
+    createFruit(pos);
+  }
+}
+
 void World::createWall() {
   auto positions = Maze::getInstance()->wall_positions_;
   wall_ = factory_->createWall(positions);
@@ -89,6 +101,7 @@ void World::initialize() {
   player_->setDirection(Direction::LEFT);
   placeGhosts();
   placeCoins();
+  placeFruits();
   wall_->update();
 }
 

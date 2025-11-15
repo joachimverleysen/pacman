@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "layout/Text.h"
 #include "../utils/TextConfig.h"
+#include "Fruit.h"
 #include <memory>
 
 class AbstractFactory {
@@ -24,6 +25,8 @@ public:
   virtual ~AbstractFactory() = default;
 
   virtual std::shared_ptr<Coin> createCoin(MazePosition) = 0;
+
+  virtual std::shared_ptr<Fruit> createFruit(MazePosition) = 0;
 
   /// LAYOUT ///
 

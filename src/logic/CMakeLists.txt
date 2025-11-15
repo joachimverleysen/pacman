@@ -18,6 +18,7 @@ add_library(logic
 		State.cpp
 		entity/Coin.h
 		entity/Coin.cpp
+		entity/Fruit.cpp
 		PauseMenu.h
 		entity/layout/Text.cpp
 		entity/layout/Text.h

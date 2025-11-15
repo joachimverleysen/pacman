@@ -184,5 +184,18 @@
                 ]
             }
         ]
+    },
+    "fruit": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    600,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
     }
 }

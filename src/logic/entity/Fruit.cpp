@@ -1,21 +1,20 @@
-#include "Coin.h"
+#include "Fruit.h"
 #include "../maze/Maze.h"
 
-MyVector Coin::getPosition() const {
+MyVector Fruit::getPosition() const {
   return Maze::getInstance()->getWorldPosition(row_, column_);
 }
 
-Coin::Coin(const NodePtr& node)
+Fruit::Fruit(const NodePtr& node)
 : row_(node->row_), column_(node->column_) {
 }
 
-Coin::Coin(std::pair<int, int> pos)
+Fruit::Fruit(std::pair<int, int> pos)
 : row_(pos.first), column_(pos.second) {
   setPosition(Maze::getInstance()->getWorldPosition(row_, column_));
 }
 
-void Coin::onCollision(Entity *other) {
+void Fruit::onCollision(Entity *other) {
   if (other->getType() == EntityType::Player)
     deactivate();
-
 }
