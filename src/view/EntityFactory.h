@@ -94,8 +94,7 @@ inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Wall>
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Coin>() {
     using Config::Window::CELL_WIDTH;
-    sf::Vector2f vec{CELL_WIDTH/4, CELL_WIDTH/4};
-    auto rect = std::make_unique<sf::RectangleShape>(vec);
+    auto rect = std::make_unique<sf::CircleShape>(CELL_WIDTH/8);
     rect->setFillColor({255, 255, 0});
     return std::make_unique<ShapeDrawable>(std::move(rect));
 }
