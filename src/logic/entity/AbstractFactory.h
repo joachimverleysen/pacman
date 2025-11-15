@@ -29,6 +29,7 @@ public:
 
   virtual std::shared_ptr<Text>
   createText(MyVector vec, TextConfig &config) = 0;
+
 };
 
 #endif // ABSTRACT_FACTORY_H
