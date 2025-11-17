@@ -50,7 +50,7 @@ public:
 
   template<typename EntityT, typename ViewT, typename... Args>
 std::shared_ptr<EntityT> createEntityWithView(
-    std::function<void(std::shared_ptr<ViewT>)> postCreate = nullptr,
+    std::function<void(std::shared_ptr<ViewT>)> viewModifier = nullptr,
     Args&&... args)
 {
     std::shared_ptr<EntityT> entity = std::make_shared<EntityT>(std::forward<Args>(args)...);
@@ -60,7 +60,7 @@ std::shared_ptr<EntityT> createEntityWithView(
     entity->addObserver(view);
     addView(view);
 
-    if (postCreate) postCreate(view);
+    if (viewModifier) viewModifier(view);
 
     return entity;
 }

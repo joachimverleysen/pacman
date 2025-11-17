@@ -32,40 +32,24 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   notifyObservers();
 }
 
-void World::createGhost(std::shared_ptr<MazeNode> node) {
-  auto ghost = factory_->createGhost(std::move(node), player_);
-  entities_.push_back(ghost);
-  //  ghosts_.push_back(ghost);
-  notifyObservers();
-}
-
 void World::placeGhosts() {
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
-    createGhost(node);
+    auto ghost = factory_->createGhost(node, player_);
+    addEntity(ghost);
   }
 }
 
-void World::createCoin(MazePosition pos) {
-  auto coin = factory_->createCoin(pos);
-  entities_.push_back(coin);
-  coins_.push_back(coin);
-  notifyObservers();
-}
 void World::placeCoins() {
   for (auto pos : Maze::getInstance()->coin_positions_) {
-    createCoin(pos);
+    auto coin = factory_->createCoin(pos);
+    addEntity(coin);
   }
 }
 
-void World::createFruit(MazePosition pos) {
-  auto fruit = factory_->createFruit(pos);
-  entities_.push_back(fruit);
-  fruits_.push_back(fruit);
-  notifyObservers();
-}
 void World::placeFruits() {
   for (auto pos : Maze::getInstance()->fruit_positions_) {
-    createFruit(pos);
+    auto fruit = factory_->createFruit(pos);
+    addEntity(fruit);
   }
 }
 
@@ -106,31 +90,10 @@ void World::initialize() {
 }
 
 void World::cleanupEntities() {
-  for (auto &e : entities_) {
-    if (!e->isActive()) {
-    }
-  }
-  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
-                                 [this](const std::shared_ptr<Entity> &entity) {
-                                   // If any entity gets deactivated, notify
-                                   // observers
-                                   bool active = entity->isActive();
-                                   if (!active)
-                                     notifyObservers();
-                                   return !entity->isActive();
-                                 }),
-                  entities_.end());
-
-  coins_.erase(std::remove_if(coins_.begin(), coins_.end(),
-                              [this](const std::shared_ptr<Coin> &coin) {
-                                // If any coin gets deactivated, notify
-                                // observers
-                                bool active = coin->isActive();
-                                if (!active)
-                                  notifyObservers();
-                                return !coin->isActive();
-                              }),
-               coins_.end());
+  cleanUpEntities(entities_);
+  cleanUpEntities(coins_);
+  cleanUpEntities(fruits_);
+  cleanUpEntities(ghosts_);
 }
 
 void World::checkState() {
