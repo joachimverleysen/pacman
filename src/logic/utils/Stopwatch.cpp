@@ -41,8 +41,8 @@ void Stopwatch::update() {
   updateTimers();
 }
 
-std::shared_ptr<Timer> Stopwatch::getNewTimer(float miliseconds) {
-  auto timer = std::make_shared<Timer>(miliseconds);
+std::shared_ptr<Timer> Stopwatch::getNewTimer(float seconds) {
+  auto timer = std::make_shared<Timer>(seconds);
   timers_.push_back(timer);
   return timer;
 }

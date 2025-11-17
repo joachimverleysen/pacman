@@ -34,6 +34,8 @@ void Maze::loadGrid(Grid &grid) {
         start_node_ = node;
       if (c == 'G')
         ghost_nodes_.push_back(node);
+      if (c == 'h')
+        ghost_home_nodes_.push_back(node);
       if (c == 'C' || c == 'c')
         coin_positions_.push_back({i, j});
       if (c == 'W') {
@@ -113,9 +115,9 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
   while (c != '0') {
     if (c == 'W') // Wall
       return nullptr;
-    if (c == 'h' && etype != EntityType::Ghost)
+    if (c == 'G' && etype != EntityType::Ghost)
       return nullptr;
-    else if (c == '.' || c == 'c' || c == 'f') { // Path
+    else if (c == '.' || c == 'c' || c == 'f' || c == 'S') { // Path
       i += d_row;
       j += d_column;
     } else if (node_chars.find(c) != node_chars.end()) {

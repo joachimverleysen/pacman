@@ -33,7 +33,7 @@ public:
 
   float getDeltaTime();
 
-  std::shared_ptr<Timer> getNewTimer(float miliseconds);
+  std::shared_ptr<Timer> getNewTimer(float seconds);
   void update();
 
   void capFramerate(float max_fps);

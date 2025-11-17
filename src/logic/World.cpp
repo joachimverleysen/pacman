@@ -6,8 +6,8 @@
 #include "utils/Stopwatch.h"
 #include <utility>
 
-World::World(std::shared_ptr<AbstractFactory> factory,
-             std::weak_ptr<StateManager> state_manager)
+World::World(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager,
+             unsigned int difficulty)
     : State(std::move(factory)), state_manager_(state_manager) {}
 
 [[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &
@@ -32,15 +32,32 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   notifyObservers();
 }
 
-void World::placeGhosts() {
+
+void World::placeGhostsFixedType(GhostType type) {
   // To determine types, we simply cycle over the possible types
-  int NRTYPES = 3;
-  GhostType types[3] = {GhostType::Orange, GhostType::Red, GhostType::Pink};
+  int NR_GHOSTS = 4;
   int timeouts[4] = {0, 0, 5, 10};
   int types_index = 0;
   int timeouts_index= 0;
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
-    types_index = types_index % NRTYPES;
+    types_index = types_index % NR_GHOSTS;
+    timeouts_index= timeouts_index % 4;
+    auto ghost = factory_->createGhost(node, player_, type);
+    ghost->startTimeOut(timeouts[timeouts_index]);
+    addEntity(ghost);
+    types_index++;
+    timeouts_index++;
+  }
+}
+
+void World::placeGhosts() {
+  int NR_GHOSTS = 4;
+  GhostType types[4] = {GhostType::Red, GhostType::Orange, GhostType::Pink, GhostType::Pink};
+  int timeouts[4] = {0, 0, 5, 10};
+  int types_index = 0;
+  int timeouts_index= 0;
+  for (auto &node : Maze::getInstance()->ghost_nodes_) {
+    types_index = types_index % NR_GHOSTS;
     timeouts_index= timeouts_index % 4;
     auto ghost = factory_->createGhost(node, player_, types[types_index]);
     ghost->startTimeOut(timeouts[timeouts_index]);
@@ -107,6 +124,11 @@ void World::cleanupEntities() {
   cleanUpEntities(ghosts_);
 }
 
+void World::unfrightenGhosts() {
+  for (auto g : ghosts_)
+    g->enterChaseMode();
+}
+
 void World::checkState() {
   if (!player_->isActive()) {
     gameOver();
@@ -114,6 +136,12 @@ void World::checkState() {
   }
   if (coins_.empty())
     victory();
+  if (frightened_ghosts_timer_ && frightened_ghosts_timer_->done()) {
+    frightened_ghosts_timer_ = nullptr;
+    unfrightenGhosts();
+  }
+
+
 }
 
 void World::update() {
@@ -144,8 +172,12 @@ void World::checkCollisions() {
         entity->getType() == EntityType::Wall)
       continue;
 
-    if (CollisionHandler::checkCollision(entity.get(), player_.get()))
-      CollisionHandler::onCollision(entity.get(), player_.get());
+    if (!CollisionHandler::checkCollision(entity.get(), player_.get()))
+      continue;
+
+    CollisionHandler::onCollision(entity.get(), player_.get());
+    if (entity.get()->getType() == EntityType::Fruit)
+      frightenGhosts();
   }
 }
 
@@ -158,3 +190,9 @@ void World::updateAllEntities() {
 World::Status World::getStatus() const { return status_; }
 
 void World::setStatus(World::Status status) { status_ = status; }
+
+void World::frightenGhosts() {
+  std::shared_ptr<Timer> timer = Stopwatch::getInstance()->getNewTimer(freightened_ghosts_duration_);
+  for (std::shared_ptr<Ghost> g : ghosts_)
+    g->enterFrightenedMode(timer);
+}

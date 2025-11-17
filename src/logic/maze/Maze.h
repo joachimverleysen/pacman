@@ -36,6 +36,7 @@ public:
   Grid grid_;
   std::vector<std::vector<NodePtr>> node_map_{};
   std::vector<NodePtr> ghost_nodes_{};
+  std::vector<NodePtr> ghost_home_nodes_{};
   NodePtr start_node_{};
   std::vector<MazePosition> fruit_positions_{};
   std::vector<MazePosition> coin_positions_{};

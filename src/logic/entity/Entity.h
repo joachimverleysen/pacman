@@ -28,7 +28,7 @@ struct BoundingBox {
 class Entity : public Subject {
 
 public:
-  enum class State { IDLE, LEFT, RIGHT, UP, DOWN, TRIGGERED, NONE };
+  enum class State { IDLE, LEFT, RIGHT, UP, DOWN, FRIGHTENED, NONE };
 
 protected:
   EntityType type_{EntityType::None};

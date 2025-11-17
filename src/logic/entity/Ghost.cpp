@@ -71,7 +71,7 @@ Direction Ghost::chooseLockingDirection() {
     return chooseRandomDirection(true);
 }
 Direction Ghost::chooseDirection() {
-  if (mode_ == Mode::FLEE)
+  if (mode_ == Mode::FRIGHTENED)
     return chooseFleeDirection();
   else if (mode_ == Mode::CHASE) {
     if (ghost_type_ == GhostType::Orange)
@@ -132,10 +132,10 @@ Direction Ghost::chooseFleeDirection() {
                   options.end());
   }
   Direction chosen = options[0];
-  float min = getDistance2Player(chosen, 0);
+  float max_ = getDistance2Player(chosen, 0);
   for (auto d : options) {
-    if (getDistance2Player(d, 0) < min) {
-      min = getDistance2Player(d, 0);
+    if (getDistance2Player(d, 0) > max_) {
+      max_ = getDistance2Player(d, 0);
       chosen = d;
     }
   }
@@ -168,17 +168,40 @@ bool Ghost::findAnyTarget() {
   return updateTarget(direction);
 }
 
+void Ghost::enterFrightenedMode(std::shared_ptr<Timer> timer) {
+  state_ = State::FRIGHTENED;
+  if (mode_ == Mode::FRIGHTENED) return;
+  frightened_timer_ = timer;
+  reverseDirection();
+}
+
+void Ghost::enterChaseMode() {
+  state_ = State::IDLE;
+  if (mode_ == Mode::CHASE) return;
+  mode_ = Mode::CHASE;
+  reverseDirection();
+}
+
 void Ghost::startTimeOut(float seconds) {
-  timer_ = Stopwatch::getInstance()->getNewTimer(seconds);
+  timeout_timer_ = Stopwatch::getInstance()->getNewTimer(seconds);
 }
 
 bool Ghost::timeout() const {
-  if (!timer_.lock()) return false;
-  if (timer_.lock()->done()) return false;
+  if (!timeout_timer_.lock()) return false;
+  if (timeout_timer_.lock()->done()) return false;
   return true;
 }
 
+void Ghost::updateMode() {
+  if (frightened_timer_ && frightened_timer_->done()) {
+    frightened_timer_ = nullptr;
+    enterChaseMode();
+  }
+  if (frightened_timer_) mode_ = Mode::FRIGHTENED;
+}
+
 void Ghost::update() {
+  updateMode();
   Direction prev = direction_;
   if (!target_node_) {
     auto direction = chooseRandomDirection();

@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+using Seconds = float;
 
 class World : public State {
 public:
@@ -22,12 +23,16 @@ private:
   Status status_{Status::RUNNING};
   std::weak_ptr<StateManager> state_manager_;
   std::shared_ptr<Player> player_;
-  std::vector<std::shared_ptr<Entity>> ghosts_;
+  std::vector<std::shared_ptr<Ghost>> ghosts_;
   std::vector<std::shared_ptr<Coin>> coins_;
   std::vector<std::shared_ptr<Fruit>> fruits_;
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
   std::shared_ptr<Wall> wall_;
+
+private:
+  Seconds freightened_ghosts_duration_{5};
+  std::shared_ptr<Timer> frightened_ghosts_timer_{nullptr};
 
 public:
   template<typename EntityT>
@@ -60,19 +65,15 @@ public:
   void setStatus(Status status);
   Status getStatus() const;
 
+  /// Init  ///
 public:
-  World(std::shared_ptr<AbstractFactory> factory,
-        std::weak_ptr<StateManager> state_manager);
+  World(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager,
+        unsigned int difficulty);
 
   void initialize() override;
 
-  StateNS::Type getType() const override {return StateNS::Type::WORLD;}
 
-  void updateAllEntities();
-
-  void update() override;
-
-  void checkCollisions();
+  void makeDesign();
 
   void createPlayer(std::shared_ptr<MazeNode> node);
 
@@ -80,23 +81,39 @@ public:
 
   void placeGhosts();
 
-  void cleanupEntities();
 
   [[nodiscard]] bool verifyInit() const;
 
-  void handleAction(GameAction action) override;
 
   void placeCoins();
+
+  /// Update ///
+
+  void frightenGhosts();
+
+  void unfrightenGhosts();
+
+  void handleAction(GameAction action) override;
+
+  void cleanupEntities();
 
   void gameOver();
 
   void checkState();
 
+  void checkCollisions();
+
+  void updateAllEntities();
+
+  void update() override;
+
   void victory();
 
-  void makeDesign();
-
   void placeFruits();
+
+  void placeGhostsFixedType(GhostType type);
+
+  StateNS::Type getType() const override {return StateNS::Type::WORLD;}
 
 };
 

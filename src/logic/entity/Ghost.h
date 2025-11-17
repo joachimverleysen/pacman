@@ -16,14 +16,16 @@ public:
     Pink,  // Chases Pacman directly
   };
   using Character::updateTarget;
-  enum class Mode { FLEE, CHASE, RANDOM };
+  enum class Mode { FRIGHTENED, CHASE, RANDOM };
 
   GhostType ghost_type_{GhostType::Orange};
   Mode mode_{Mode::CHASE};
   std::shared_ptr<Player> player_;
   unsigned int max_reversing_{1}; // Max times that ghost can reverse in a row
   unsigned int reverse_count_{0};
-  std::weak_ptr<Timer> timer_{};
+  std::weak_ptr<Timer> timeout_timer_{};
+  std::shared_ptr<Timer> frightened_timer_;
+  bool frightened_{false};
 
 public:
   Ghost() = delete;
@@ -61,6 +63,14 @@ public:
   void startTimeOut(float seconds);
 
   bool timeout() const;
+
+  bool frightened() const;
+
+  void enterFrightenedMode(std::shared_ptr<Timer> timer);
+
+  void enterChaseMode();
+
+  void updateMode();
 };
 
 #endif

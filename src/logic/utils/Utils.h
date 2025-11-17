@@ -15,6 +15,8 @@ enum class GameAction {
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
+  T_key,
+  G_key,
   NONE };
 
 namespace MyFont {

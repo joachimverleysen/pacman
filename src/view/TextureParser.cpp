@@ -38,7 +38,7 @@ Entity::State TextureParser::getEntityState(const std::string &state_name) {
     return Entity::State::UP;
   if (state_name == "down")
     return Entity::State::DOWN;
-  if (state_name == "triggered")
-    return Entity::State::TRIGGERED;
+  if (state_name == "frightened")
+    return Entity::State::FRIGHTENED;
   return Entity::State::NONE;
 }
