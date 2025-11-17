@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <thread>
+#include <vector>
 
 struct Timer {
   Timer(float mili) : seconds(mili){
