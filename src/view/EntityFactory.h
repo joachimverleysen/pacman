@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+typedef Ghost::GhostType GhostType;
 class Game;
 using json = nlohmann::json;
 
@@ -40,7 +41,7 @@ public:
   std::shared_ptr<Wall>
   createWall(std::vector<MazePosition> &positions) override;
 
-  std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player) override;
+  std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player, GhostType type) override;
 
   std::shared_ptr<Coin> createCoin(MazePosition pos) override;
 
@@ -80,7 +81,7 @@ inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Playe
 
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Ghost>() {
-  std::string type = "ghost";
+  std::string type = "ghost-pink";
   auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }

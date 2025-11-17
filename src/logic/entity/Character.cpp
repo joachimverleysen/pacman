@@ -28,6 +28,10 @@ void Character::update() {
   notifyObservers();
 }
 
+Direction Character::getDirection() const {
+  return direction_;
+}
+
 Direction Character::getTargetDirection() const {
   if (!target_node_)
     throw std::logic_error("can't get targetDirection since target is absent");
@@ -166,7 +170,9 @@ void Character::reverseDirection() {
   updateDirection(Utils::getReverseDirection(direction_));
 }
 
-void Character::setDirection(Direction direction) { direction_ = direction; }
+void Character::setDirection(Direction direction) {
+  direction_ = direction;
+}
 
 std::vector<Direction> Character::getPossibleDirections(NodePtr *node) const {
 

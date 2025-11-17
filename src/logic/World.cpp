@@ -33,9 +33,20 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
 }
 
 void World::placeGhosts() {
+  // To determine types, we simply cycle over the possible types
+  int NRTYPES = 3;
+  GhostType types[3] = {GhostType::Orange, GhostType::Red, GhostType::Pink};
+  int timeouts[4] = {0, 0, 5, 10};
+  int types_index = 0;
+  int timeouts_index= 0;
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
-    auto ghost = factory_->createGhost(node, player_);
+    types_index = types_index % NRTYPES;
+    timeouts_index= timeouts_index % 4;
+    auto ghost = factory_->createGhost(node, player_, types[types_index]);
+    ghost->startTimeOut(timeouts[timeouts_index]);
     addEntity(ghost);
+    types_index++;
+    timeouts_index++;
   }
 }
 

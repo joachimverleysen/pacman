@@ -120,6 +120,12 @@ NodePtr Maze::findNeighbor(unsigned int row, unsigned int column,
       j += d_column;
     } else if (node_chars.find(c) != node_chars.end()) {
       auto node = getNode(i, j);
+
+      // Make sure the Ghosts don't go back to their homes
+      if (std::find(ghost_nodes_.begin(), ghost_nodes_.end(), node) != ghost_nodes_.end() &&
+      direction == Direction::DOWN)
+        return nullptr;
+
       if (!node)
         throw std::logic_error(
             "A node was expected in the node map but not found.");
@@ -154,7 +160,6 @@ Neighbours Maze::findAllNeighbors(unsigned int row, unsigned int column,
 
 std::vector<Direction> Maze::getPossibleDirections(NodePtr node,
                                                    EntityType etype) const {
-
   std::vector<Direction> result = {};
   std::array<Direction, 4> directions = {Direction::UP, Direction::DOWN,
                                          Direction::LEFT, Direction::RIGHT};

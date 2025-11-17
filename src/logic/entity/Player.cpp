@@ -10,4 +10,6 @@ Player::Player(NodePtr node, float width, float height)
 void Player::onCollision(Entity *other) {
 }
 
+
+
 EntityType Player::getType() const { return EntityType::Player; }

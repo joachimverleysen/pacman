@@ -52,6 +52,8 @@ public:
   std::vector<Direction> getPossibleDirections(NodePtr *node) const;
 
   bool portalCheck();
+
+  Direction getDirection() const;
 };
 
 #endif // !CHARACTER_H
