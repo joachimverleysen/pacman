@@ -48,7 +48,7 @@ void Ghost::killPlayer() const {
 }
 
 void Ghost::onCollision(Entity *other) {
-  if (mode_ == Mode::CHASE)
+  if (mode_ == Mode::NORMAL)
     killPlayer();
   else deactivate();
 }
@@ -73,7 +73,7 @@ Direction Ghost::chooseLockingDirection() {
 Direction Ghost::chooseDirection() {
   if (mode_ == Mode::FRIGHTENED)
     return chooseFleeDirection();
-  else if (mode_ == Mode::CHASE) {
+  else  { // Chase Mode
     if (ghost_type_ == GhostType::Orange)
       return chooseLockingDirection();
     if (ghost_type_ == GhostType::Red)
@@ -111,6 +111,7 @@ Direction Ghost::chooseChaseDirection(float predictive_offset=0) {
                               Utils::getReverseDirection(direction_)),
                   options.end());
   }
+  Random::getInstance()->shuffle(options);
   Direction chosen = options[0];
   float min = getDistance2Player(chosen, 0);
   for (auto d : options) {
@@ -131,6 +132,7 @@ Direction Ghost::chooseFleeDirection() {
                               Utils::getReverseDirection(direction_)),
                   options.end());
   }
+  Random::getInstance()->shuffle(options);
   Direction chosen = options[0];
   float max_ = getDistance2Player(chosen, 0);
   for (auto d : options) {
@@ -169,16 +171,14 @@ bool Ghost::findAnyTarget() {
 }
 
 void Ghost::enterFrightenedMode(std::shared_ptr<Timer> timer) {
-  state_ = State::FRIGHTENED;
-  if (mode_ == Mode::FRIGHTENED) return;
+  mode_= Mode::FRIGHTENED;
   frightened_timer_ = timer;
   reverseDirection();
 }
 
 void Ghost::enterChaseMode() {
   state_ = State::IDLE;
-  if (mode_ == Mode::CHASE) return;
-  mode_ = Mode::CHASE;
+  mode_ = Mode::NORMAL;
   reverseDirection();
 }
 
@@ -197,7 +197,6 @@ void Ghost::updateMode() {
     frightened_timer_ = nullptr;
     enterChaseMode();
   }
-  if (frightened_timer_) mode_ = Mode::FRIGHTENED;
 }
 
 void Ghost::update() {

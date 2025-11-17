@@ -15,6 +15,8 @@ public:
   void setPosition(MyVector pos) override;
 
   void updateState(Entity::State state) override;
+
+  void updateMode(Entity::Mode mode) override{};
 };
 
 

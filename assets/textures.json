@@ -463,6 +463,98 @@
                 ]
             }
         ]
+    },"ghost-frightened": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ]
     },
     "fruit": {
         "idle": [

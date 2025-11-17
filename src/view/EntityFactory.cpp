@@ -42,7 +42,8 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<
        type_str = "ghost-pink";
        break;
    }
-   auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type_str);
+   auto texture_map = TextureParser::getTextureMap({type_str, "ghost-frightened"}, Config::TextureFiles::sprites_json);
+//   auto state_textures = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type_str);
    auto drawable = std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
     std::shared_ptr<EntityView> view = std::make_shared<EntityView>(ghost, std::move(drawable));
 

@@ -24,6 +24,7 @@ void EntityView::setPosition(MyVector &position) {
 
 void EntityView::update() {
   drawable_->updateState(entity_.lock()->getCurrentState());
+  drawable_->updateMode(entity_.lock()->getMode());
   updatePosition();
 }
 

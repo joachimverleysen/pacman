@@ -57,3 +57,7 @@ void Entity::deactivate() {
   is_active_ = false;
   notifyDeactivate();
 }
+
+Entity::Mode Entity::getMode() const {
+  return mode_;
+}

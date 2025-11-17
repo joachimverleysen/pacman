@@ -19,13 +19,15 @@ Character::Character(NodePtr node, float width, float height)
 void Character::update() {
   if (!target_node_)
     stop();
-  else
+  else {
     move();
+    notifyObservers();
+  }
   if (overshotTarget()) {
     takeTarget();
     updateTarget(direction_);
+    notifyObservers();
   }
-  notifyObservers();
 }
 
 Direction Character::getDirection() const {

@@ -16,12 +16,14 @@ public:
   TextureParser() = default;
 
 public:
-  static Texture::TextureMap getTextureMap(const std::string &json_path,
-                                           const std::string &type);
+  static Texture::StateTextures getStateTextures(const std::string &json_path,
+                                                 const std::string &type);
 
   static sf::IntRect parseIntRect(const json &arr);
 
   static Entity::State getEntityState(const std::string &);
+
+  static Texture::TextureMap getTextureMap(Texture::Types types, const std::string &json_path);
 };
 
 #endif // TEXTURE_PARSER_H

@@ -75,14 +75,14 @@ std::shared_ptr<EntityT> createEntityWithView(
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Player>() {
   std::string type = "pacman";
-  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type);
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Ghost>() {
   std::string type = "ghost-pink";
-  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type);
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
@@ -105,7 +105,7 @@ inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Coin>
 
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Fruit>() {
-  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, "fruit");
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, "fruit");
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE * 0.6);
 }
 

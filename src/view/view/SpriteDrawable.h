@@ -9,6 +9,7 @@
 class SpriteDrawable : public DrawableInterface {
   sf::Sprite sprite_;
   Texture::TextureMap texture_map_;
+  Texture::StateTextures state_textures_;
   unsigned int texture_index_{0};
   const sf::Texture *current_texture_;
   float scale_;
@@ -16,6 +17,7 @@ class SpriteDrawable : public DrawableInterface {
   float accumulated_delta_time_{0};
 
 public:
+  SpriteDrawable(Texture::StateTextures state_textures, float scale);
   SpriteDrawable(Texture::TextureMap texture_map, float scale);
   void draw(sf::RenderWindow &window) override;
   void setPosition(MyVector pos) override;
@@ -23,5 +25,9 @@ public:
   void updateState(Entity::State state) override;
 
   void nextTexture();
+
+  void updateMode(Entity::Mode mode) override;
+
+  void update();
 };
 #endif // !SPRITE_DRAWABLE_H
