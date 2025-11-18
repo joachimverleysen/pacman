@@ -61,3 +61,5 @@ void Entity::deactivate() {
 Entity::Mode Entity::getMode() const {
   return mode_;
 }
+
+
