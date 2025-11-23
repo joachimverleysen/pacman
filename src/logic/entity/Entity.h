@@ -51,7 +51,7 @@ public:
   virtual ~Entity() = default;
 
   virtual void update() = 0;
-  virtual void onCollision(Entity *other) = 0;
+  virtual void onCollision(Entity *other){};
   virtual EntityType getType() const = 0;
 
   void setState(State state);

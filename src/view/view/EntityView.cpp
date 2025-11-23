@@ -12,7 +12,11 @@ EntityView::EntityView(std::weak_ptr<Entity> entity,
     position_(Camera::world2Window(entity.lock()->getPosition())) {
   drawable_->setPosition(position_);
 }
-EntityView::~EntityView() {
+
+EntityView::EntityView(std::weak_ptr<Entity> entity)
+    : entity_(entity),
+    position_(Camera::world2Window(entity.lock()->getPosition())) {
+  drawable_ = nullptr;
 }
 
 void EntityView::draw(sf::RenderWindow &window) { drawable_->draw(window); }

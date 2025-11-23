@@ -31,7 +31,7 @@ public:
   EntityView(std::weak_ptr<Entity> entity,
              std::unique_ptr<DrawableInterface> drawable);
 
-  ~EntityView() override;
+  EntityView(std::weak_ptr<Entity> entity);
 
   void update() override;
 

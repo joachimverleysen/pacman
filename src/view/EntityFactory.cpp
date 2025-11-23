@@ -4,6 +4,7 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "view/ShapeDrawable.h"
 #include "view/WallView.h"
+#include "view/TextView.h"
 #include "FontManager.h"
 #include "state/StateManager.h"
 #include "state/StateView.h"
@@ -97,7 +98,7 @@ EntityFactory::createText(MyVector vec, TextConfig &config) {
 text_.setOrigin(rc.width/2, rc.height/2);
   std::unique_ptr<TextDrawable> drawable = std::make_unique<TextDrawable>(text_);
   drawable->setPosition(Camera::world2Window(vec));
-  std::shared_ptr<EntityView> text_view = std::make_shared<EntityView>(text, std::move(drawable));
+  std::shared_ptr<TextView> text_view = std::make_shared<TextView>(text, std::move(drawable));
   text_view->pushToForeground();
   text->addObserver(text_view);
   addView(text_view);

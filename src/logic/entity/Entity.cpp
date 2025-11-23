@@ -48,6 +48,7 @@ const BoundingBox &Entity::getSpawn() const { return spawn_box_; }
 
 void Entity::setState(State state) { state_ = state; }
 
+// todo maybe unused?
 void Entity::notifyDeactivate() {
   for (auto &o : observers_)
     o->onDeactivate();
@@ -58,8 +59,4 @@ void Entity::deactivate() {
   notifyDeactivate();
 }
 
-Entity::Mode Entity::getMode() const {
-  return mode_;
-}
-
-
+Entity::Mode Entity::getMode() const { return mode_; }

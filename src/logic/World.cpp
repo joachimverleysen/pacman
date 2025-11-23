@@ -1,4 +1,5 @@
 #include "World.h"
+#include "observer/Event.h"
 
 #include "../configure/constants.h"
 #include "../view/state/StateManager.h"
@@ -6,9 +7,12 @@
 #include "utils/Stopwatch.h"
 #include <utility>
 
-World::World(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager,
-             unsigned int difficulty)
-    : State(std::move(factory)), state_manager_(state_manager), difficulty_(difficulty) {
+World::World(std::shared_ptr<AbstractFactory> factory,
+             std::weak_ptr<StateManager> state_manager, unsigned int difficulty)
+    : State(std::move(factory)),
+      state_manager_(state_manager),
+      difficulty_(difficulty),
+      score_(nullptr){
   applyDifficulty(difficulty);
 }
 
@@ -34,16 +38,15 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   notifyObservers();
 }
 
-
 void World::placeGhostsFixedType(GhostType type) {
   // To determine types, we simply cycle over the possible types
   int NR_GHOSTS = 4;
   int timeouts[4] = {0, 0, 5, 10};
   int types_index = 0;
-  int timeouts_index= 0;
+  int timeouts_index = 0;
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
     types_index = types_index % NR_GHOSTS;
-    timeouts_index= timeouts_index % 4;
+    timeouts_index = timeouts_index % 4;
     auto ghost = factory_->createGhost(node, player_, type);
     ghost->startTimeOut(timeouts[timeouts_index]);
     addEntity(ghost);
@@ -54,13 +57,14 @@ void World::placeGhostsFixedType(GhostType type) {
 
 void World::placeGhosts() {
   int NR_GHOSTS = 4;
-  GhostType types[4] = {GhostType::Red, GhostType::Orange, GhostType::Pink, GhostType::Pink};
+  GhostType types[4] = {GhostType::Red, GhostType::Orange, GhostType::Pink,
+                        GhostType::Pink};
   int timeouts[4] = {0, 0, 5, 10};
   int types_index = 0;
-  int timeouts_index= 0;
+  int timeouts_index = 0;
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
     types_index = types_index % NR_GHOSTS;
-    timeouts_index= timeouts_index % 4;
+    timeouts_index = timeouts_index % 4;
     auto ghost = factory_->createGhost(node, player_, types[types_index]);
     ghost->startTimeOut(timeouts[timeouts_index]);
     ghost->setSpeed(ghost_speed_);
@@ -90,24 +94,37 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
+void World::createScore() {
+  TextConfig config;
+  config.text = "Score: 0";
+  config.font = MyFont::LIBER;
+
+  score_display_= factory_->createText({0.5, 0.95}, config);
+  score_ = std::make_shared<Score>(score_display_);
+  entities_.push_back(score_);
+}
+
 void World::makeDesign() {
-  // Instruction to enter pause menu
+  // Press SPACE to pause
   TextConfig config;
   config.text = "Press SPACE to pause";
   config.font = MyFont::LIBER;
-  auto text_ = factory_->createText({0, -0.90}, config);
+  auto text_ = factory_->createText({0.0, -0.90}, config);
   entities_.push_back(text_);
 
+  // Level: #
   TextConfig level_config;
-  level_config.text = "Level: " + std::to_string(difficulty_ - 1);
+  level_config.text = "Level: " + std::to_string(difficulty_-1);
   level_config.font = MyFont::LIBER;
-  text_ = factory_->createText({0, 0.95}, level_config);
+  text_ = factory_->createText({-0.5, 0.95}, level_config);
   entities_.push_back(text_);
+
 }
 
 void World::applyDifficulty(int difficulty) {
   ghost_speed_ = Config::Ghost::SPEED + difficulty * (7);
-  freightened_ghosts_duration_ = freightened_ghosts_duration_ - difficulty * 0.5;
+  frightened_ghosts_duration_ =
+    frightened_ghosts_duration_ - difficulty * 0.5;
 }
 void World::initialize() {
   try {
@@ -127,7 +144,9 @@ void World::initialize() {
   placeGhosts();
   placeCoins();
   placeFruits();
+  createScore();
   wall_->update();
+
 }
 
 void World::cleanupEntities() {
@@ -138,6 +157,7 @@ void World::cleanupEntities() {
 }
 
 void World::unfrightenGhosts() {
+  frightened_ghosts_ = false;
   for (auto g : ghosts_)
     g->enterChaseMode();
 }
@@ -155,7 +175,6 @@ void World::checkState() {
   }
 }
 
-
 void World::update() {
   checkState();
   Stopwatch::getInstance()->update();
@@ -164,13 +183,9 @@ void World::update() {
   updateAllEntities();
 }
 
-void World::gameOver() {
-  state_manager_.lock()->onLevelGameOver();
-}
+void World::gameOver() { state_manager_.lock()->onLevelGameOver(); }
 
-void World::victory() {
-  state_manager_.lock()->onVictory();
-}
+void World::victory() { state_manager_.lock()->onVictory(); }
 
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
@@ -184,12 +199,38 @@ void World::checkCollisions() {
         entity->getType() == EntityType::Wall)
       continue;
 
+    // No collision
     if (!CollisionHandler::checkCollision(entity.get(), player_.get()))
       continue;
 
+    // In case of collision
     CollisionHandler::onCollision(entity.get(), player_.get());
-    if (entity.get()->getType() == EntityType::Fruit)
+
+    onPlayerCollision(entity.get()->getType());
+
+  }
+}
+
+void World::onPlayerCollision(EntityType entity_type) {
+  // todo refactor
+  switch (entity_type) {
+    case (EntityType::Fruit): {
       frightenGhosts();
+      auto event = FruitEatenEvent{};
+      score_->handle(event);
+      break;
+    }
+    case (EntityType::Coin): {
+      auto event = CoinEatenEvent{};
+      score_->handle(event);
+      break;
+    }
+    case (EntityType::Ghost): {
+      if (!frightened_ghosts_)
+        break;
+      auto event = GhostEatenEvent{};
+      score_->handle(event);
+    }
   }
 }
 
@@ -204,7 +245,11 @@ World::Status World::getStatus() const { return status_; }
 void World::setStatus(World::Status status) { status_ = status; }
 
 void World::frightenGhosts() {
-  std::shared_ptr<Timer> timer = Stopwatch::getInstance()->getNewTimer(freightened_ghosts_duration_);
+  auto event = FrightenGhostsEvent{};
+  score_->handle(event);
+  frightened_ghosts_ = true;
+  std::shared_ptr<Timer> timer =
+      Stopwatch::getInstance()->getNewTimer(frightened_ghosts_duration_);
   for (std::shared_ptr<Ghost> g : ghosts_)
     g->enterFrightenedMode(timer);
 }
