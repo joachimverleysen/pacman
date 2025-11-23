@@ -7,15 +7,15 @@
 using namespace std;
 
 GameController::GameController(std::shared_ptr<StateManager> state_manager)
-  : state_manager_(std::move(state_manager)), game_state_(state_manager_->getCurrentState()) {
-}
+    : state_manager_(std::move(state_manager)),
+      game_state_(state_manager_->getCurrentState()) {}
 void GameController::handleInput(const sf::Event &event) {
   state_manager_->getAction(event.key.code)();
   if (getAction())
     state_manager_->getCurrentState()->handleAction(getAction().value());
 }
 
- std::optional<GameAction> GameController::getAction() {
+std::optional<GameAction> GameController::getAction() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
     return GameAction::MOVE_LEFT;
   }
@@ -30,5 +30,3 @@ void GameController::handleInput(const sf::Event &event) {
   }
   return std::nullopt;
 }
-
-

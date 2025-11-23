@@ -28,7 +28,8 @@ struct BoundingBox {
 class Entity : public Subject {
 
 public:
-  enum class State { IDLE, LEFT, RIGHT, UP, DOWN, TRIGGERED, NONE };
+  enum class State { IDLE, LEFT, RIGHT, UP, DOWN, NONE };
+  enum class Mode { NORMAL, FRIGHTENED };
 
 protected:
   EntityType type_{EntityType::None};
@@ -39,6 +40,8 @@ protected:
   float scale_{1};
   bool is_active_{true};
   State state_{State::IDLE};
+  Mode mode_{Mode::NORMAL};
+public:
 
 public:
   Entity() = default;
@@ -53,6 +56,8 @@ public:
 
   void setState(State state);
   [[nodiscard]] State getCurrentState() const;
+
+  Mode getMode() const;
 
   virtual void activate() { is_active_ = true; }
   virtual void deactivate();

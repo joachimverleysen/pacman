@@ -4,14 +4,14 @@
 #include <string>
 
 namespace Config {
-inline const std::string MazeFile = "input/maze.txt";
+inline const std::string MazeFile = "input/maze2.txt";
 namespace TextureFiles {
 inline const std::string background = "assets/background/bck@2x.png";
 inline const std::string sprites_json = "assets/textures.json";
 } // namespace TextureFiles
 
 namespace Window {
-inline const unsigned int CELL_WIDTH = 35;
+inline const unsigned int CELL_WIDTH = 40;
 
 } // namespace Window
 
@@ -19,11 +19,11 @@ namespace Player {
 inline const float SCALE = 1;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
-inline const float SPEED = 300;
+inline const float SPEED = 250;
 } // namespace Player
 
 namespace Ghost {
-inline const float SPEED = 300;
+inline const float SPEED = 100;
 inline const float WIDTH = 40;
 inline const float HEIGHT = 40;
 }

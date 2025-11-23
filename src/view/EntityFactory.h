@@ -9,12 +9,14 @@
 #include "../view/TextureParser.h"
 #include "../logic/utils/TextConfig.h"
 #include "view/ShapeDrawable.h"
+#include "../logic/entity/Fruit.h"
 #include <SFML/Window/Window.hpp>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+typedef Ghost::GhostType GhostType;
 class Game;
 using json = nlohmann::json;
 
@@ -26,7 +28,7 @@ public:
   friend class Renderer;
 public:
   EntityFactory() = delete;
-  explicit EntityFactory(Game &game, sf::RenderWindow &window, std::weak_ptr<StateManager> state_manager)
+  explicit EntityFactory(std::weak_ptr<StateManager> state_manager)
       : state_manager_(state_manager) {}
 
   /// LAYOUT ///
@@ -39,15 +41,17 @@ public:
   std::shared_ptr<Wall>
   createWall(std::vector<MazePosition> &positions) override;
 
-  std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player) override;
+  std::shared_ptr<Ghost> createGhost(NodePtr node, std::shared_ptr<Player> player, GhostType type) override;
 
   std::shared_ptr<Coin> createCoin(MazePosition pos) override;
+
+  std::shared_ptr<Fruit> createFruit(MazePosition pos) override;
 
   void addView(const std::shared_ptr<EntityView>& view);
 
   template<typename EntityT, typename ViewT, typename... Args>
 std::shared_ptr<EntityT> createEntityWithView(
-    std::function<void(std::shared_ptr<ViewT>)> postCreate = nullptr,
+    std::function<void(std::shared_ptr<ViewT>)> viewModifier = nullptr,
     Args&&... args)
 {
     std::shared_ptr<EntityT> entity = std::make_shared<EntityT>(std::forward<Args>(args)...);
@@ -57,7 +61,7 @@ std::shared_ptr<EntityT> createEntityWithView(
     entity->addObserver(view);
     addView(view);
 
-    if (postCreate) postCreate(view);
+    if (viewModifier) viewModifier(view);
 
     return entity;
 }
@@ -71,14 +75,14 @@ std::shared_ptr<EntityT> createEntityWithView(
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Player>() {
   std::string type = "pacman";
-  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type);
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Ghost>() {
-  std::string type = "ghost";
-  auto texture_map = TextureParser::getTextureMap(Config::TextureFiles::sprites_json, type);
+  std::string type = "ghost-pink";
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type);
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
@@ -94,10 +98,15 @@ inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Wall>
 template<>
 inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Coin>() {
     using Config::Window::CELL_WIDTH;
-    sf::Vector2f vec{CELL_WIDTH/4, CELL_WIDTH/4};
-    auto rect = std::make_unique<sf::RectangleShape>(vec);
+    auto rect = std::make_unique<sf::CircleShape>(CELL_WIDTH/8);
     rect->setFillColor({255, 255, 0});
     return std::make_unique<ShapeDrawable>(std::move(rect));
+}
+
+template<>
+inline std::unique_ptr<DrawableInterface> EntityFactory::createDrawableFor<Fruit>() {
+  auto texture_map = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, "fruit");
+  return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE * 0.6);
 }
 
 

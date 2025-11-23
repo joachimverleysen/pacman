@@ -4,6 +4,7 @@
 // Type defs
 #include <optional>
 #include <string>
+#include "MyVector.h"
 
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
@@ -14,6 +15,8 @@ enum class GameAction {
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
+  T_key,
+  G_key,
   NONE };
 
 namespace MyFont {
@@ -25,6 +28,26 @@ namespace Utils {
 namespace StateNS {
 enum class Type {WORLD, PAUSE, GAME_OVER, STARTMENU};
 enum class Action {};
+}
+
+inline MyVector positionAfterMove(MyVector pos, Direction direction, float offset) {
+  switch (direction) {
+    case Direction::LEFT:
+      pos.x -= offset;
+      break;
+    case Direction::RIGHT:
+      pos.x += offset;
+      break;
+    case Direction::UP:
+      pos.y += offset;
+      break;
+    case Direction::DOWN:
+      pos.y -= offset;
+      break;
+    case Direction::NONE:
+      break;
+  }
+  return pos;
 }
 
 // Direction

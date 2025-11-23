@@ -69,7 +69,7 @@ void Game::setup() {
 
     state_manager_ = std::make_shared<StateManager>();
     state_manager_->setPtrToThis(state_manager_);
-    factory_ = std::make_unique<EntityFactory>(*this, window_, state_manager_);
+    factory_ = std::make_unique<EntityFactory>(state_manager_);
     state_manager_->setFactory(factory_);
     state_manager_->initialize();
     state_manager_->pushStartMenu(state_manager_);

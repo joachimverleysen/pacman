@@ -1,3 +1,5 @@
+#include <memory>
+#include <algorithm>
 #include "Stopwatch.h"
 Stopwatch *Stopwatch::instance_ = nullptr;
 
@@ -14,9 +16,33 @@ void Stopwatch::capFramerate(float max_fps) {
   }
 }
 
+void Stopwatch::updateTimers() {
+  if (timers_.empty()) return;
+
+  for (auto t : timers_) {
+    t->decrease(delta_time_);
+  }
+
+
+  // Remove timers that are finished
+  timers_.erase(std::remove_if(timers_.begin(), timers_.end(),
+                               [](const std::shared_ptr<Timer> &timer) {
+                                  return timer->seconds <= 0;
+                              }),
+
+                timers_.end()
+                );
+}
 void Stopwatch::update() {
   auto current_time = std::chrono::high_resolution_clock::now();
   std::chrono::duration<float> delta = current_time - last_time_;
   last_time_ = current_time;
   delta_time_ = delta.count();
+  updateTimers();
+}
+
+std::shared_ptr<Timer> Stopwatch::getNewTimer(float seconds) {
+  auto timer = std::make_shared<Timer>(seconds);
+  timers_.push_back(timer);
+  return timer;
 }

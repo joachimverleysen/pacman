@@ -21,6 +21,8 @@ public:
   void onCollision(Entity *other) override;
 
   [[nodiscard]] EntityType getType() const override;
+
+  void move(float offset);
 };
 
 #endif // PLAYER_H

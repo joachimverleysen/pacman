@@ -63,7 +63,7 @@ void StateManager::updateCurrentState() {
 }
 
 void StateManager::loadNewLevel(const std::weak_ptr<StateManager>& ptr_to_this) {
-  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this);
+  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this, 0);
   pushState(world);
 }
 

@@ -19,5 +19,6 @@ public:
   void draw(sf::RenderWindow &window) override;
   void setPosition(MyVector pos) override;
   void updateState(Entity::State) override{};
+  void updateMode(Entity::Mode) override{};
 };
 #endif // !SHAPE_DRAWABLE_H

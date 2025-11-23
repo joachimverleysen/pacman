@@ -18,5 +18,7 @@ add_library(view
 		view/TextDrawable.h
 		controller/GameController.h
 		controller/GameController.cpp
+		view/GhostView.cpp
+		view/GhostView.h
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)

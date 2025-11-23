@@ -184,5 +184,389 @@
                 ]
             }
         ]
+    },
+    "ghost-orange": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    0,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    0,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    50,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    200,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    250,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    300,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    350,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    100,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    800,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
+    },
+    "ghost-red": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    0,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    0,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    50,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    200,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    250,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    300,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    350,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    100,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    650,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
+    },
+    "ghost-pink": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    0,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    0,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    50,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    200,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    250,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    300,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    350,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    100,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    700,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
+    },"ghost-frightened": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "right": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    35
+                ]
+            }
+        ],
+        "left": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "up": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ],
+        "down": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    550,
+                    37,
+                    39
+                ]
+            },
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    0,
+                    600,
+                    37,
+                    39
+                ]
+            }
+        ]
+    },
+    "fruit": {
+        "idle": [
+            {
+                "texture": "assets/sprites.png",
+                "area": [
+                    600,
+                    150,
+                    37,
+                    39
+                ]
+            }
+        ]
     }
 }

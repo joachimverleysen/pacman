@@ -10,6 +10,8 @@
 #include "view/TextDrawable.h"
 #include <memory>
 
+typedef Ghost::GhostType GhostType;
+
 MyVector dimensionsToWorld(float width, float height) {
   MyVector start = Camera::window2World({0, 0});
   MyVector end = Camera::window2World({width, height});
@@ -20,25 +22,48 @@ MyVector dimensionsToWorld(float width, float height) {
 
 
 std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
-      MyVector dims = dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
-      return createEntityWithView<Player, EntityView>(nullptr, node, dims.x, dims.y);
-  }
+  MyVector dims = dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
+  return createEntityWithView<Player, EntityView>(nullptr, node, dims.x, dims.y);
+}
 
-  std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player) {
-      MyVector dims = dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
-      auto ghost = EntityFactory::createEntityWithView<Ghost, EntityView>(
-        [](std::shared_ptr<EntityView> view){ view->pushToForeground(); },
-        node, dims.x, dims.y, player);
-      return ghost;
-  }
+std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player, GhostType type) {
+  MyVector dims = dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
+   std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, dims.x, dims.y, player, type);
 
-  std::shared_ptr<Wall> EntityFactory::createWall(std::vector<MazePosition>& positions) {
-      return EntityFactory::createEntityWithView<Wall, WallView>(nullptr, positions);
-  }
+   std::string type_str{"ghost"};
+   switch (type) {
+     case GhostType::Orange:
+       type_str = "ghost-orange";
+       break;
+     case GhostType::Red:
+       type_str = "ghost-red";
+       break;
+     case GhostType::Pink:
+       type_str = "ghost-pink";
+       break;
+   }
+   auto texture_map = TextureParser::getTextureMap({type_str, "ghost-frightened"}, Config::TextureFiles::sprites_json);
+//   auto state_textures = TextureParser::getStateTextures(Config::TextureFiles::sprites_json, type_str);
+   auto drawable = std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
+    std::shared_ptr<EntityView> view = std::make_shared<EntityView>(ghost, std::move(drawable));
 
-  std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
-      return EntityFactory::createEntityWithView<Coin, EntityView>(nullptr, pos);
-  }
+    ghost->addObserver(view);
+    addView(view);
+    view->pushToForeground();
+  return ghost;
+}
+
+std::shared_ptr<Wall> EntityFactory::createWall(std::vector<MazePosition>& positions) {
+    return EntityFactory::createEntityWithView<Wall, WallView>(nullptr, positions);
+}
+
+std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
+    return EntityFactory::createEntityWithView<Coin, EntityView>(nullptr, pos);
+}
+
+std::shared_ptr<Fruit> EntityFactory::createFruit(MazePosition pos) {
+  return EntityFactory::createEntityWithView<Fruit, EntityView>(nullptr, pos);
+}
 
 void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
   auto &vec = state_manager_.lock()->getCurrentStateView()->views_;

@@ -8,9 +8,9 @@
 #include <map>
 
 namespace Texture {
-using TextureMap = std::map<Entity::State, std::vector<const sf::Texture *>>;
-enum class AnimationState { IDLE, LEFT, RIGHT };
-
+using StateTextures = std::map<Entity::State, std::vector<const sf::Texture *>>;
+using TextureMap = std::map<Entity::Mode, StateTextures>;
+using Types = std::vector<std::string>;
 } // namespace Texture
 
 #endif // VISUALS_H
