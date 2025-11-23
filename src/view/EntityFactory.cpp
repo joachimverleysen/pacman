@@ -20,12 +20,6 @@ MyVector dimensionsToWorld(float width, float height) {
   return {w, h};
 }
 
-
-std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
-  MyVector dims = dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
-  return createEntityWithView<Player, EntityView>(nullptr, node, dims.x, dims.y);
-}
-
 std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player, GhostType type) {
   MyVector dims = dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
    std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, dims.x, dims.y, player, type);
@@ -53,16 +47,21 @@ std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<
   return ghost;
 }
 
+std::shared_ptr<Player> EntityFactory::createPlayer(NodePtr node) {
+  MyVector dims = dimensionsToWorld(Config::Player::WIDTH, Config::Player::HEIGHT);
+  return createEntityWithView<Player, EntityView>(node, dims.x, dims.y);
+}
+
 std::shared_ptr<Wall> EntityFactory::createWall(std::vector<MazePosition>& positions) {
-    return EntityFactory::createEntityWithView<Wall, WallView>(nullptr, positions);
+    return EntityFactory::createEntityWithView<Wall, WallView>(positions);
 }
 
 std::shared_ptr<Coin> EntityFactory::createCoin(MazePosition pos) {
-    return EntityFactory::createEntityWithView<Coin, EntityView>(nullptr, pos);
+    return EntityFactory::createEntityWithView<Coin, EntityView>(pos);
 }
 
 std::shared_ptr<Fruit> EntityFactory::createFruit(MazePosition pos) {
-  return EntityFactory::createEntityWithView<Fruit, EntityView>(nullptr, pos);
+  return EntityFactory::createEntityWithView<Fruit, EntityView>(pos);
 }
 
 void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
@@ -72,7 +71,7 @@ void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
 
 sf::Color getColor(Color color) {
   sf::Color result = {static_cast<sf::Uint8>(color.r),
-                             static_cast<sf::Uint8>(color.b),
+                             static_cast<sf::Uint8>(color.g),
                              static_cast<sf::Uint8>(color.b)
   };
   return result;

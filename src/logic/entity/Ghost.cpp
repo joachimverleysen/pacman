@@ -171,9 +171,10 @@ bool Ghost::findAnyTarget() {
 }
 
 void Ghost::enterFrightenedMode(std::shared_ptr<Timer> timer) {
+  if (mode_ != Mode::FRIGHTENED)
+    reverseDirection();
   mode_= Mode::FRIGHTENED;
   frightened_timer_ = timer;
-  reverseDirection();
 }
 
 void Ghost::enterChaseMode() {
@@ -198,6 +199,8 @@ void Ghost::updateMode() {
     enterChaseMode();
   }
 }
+
+
 
 void Ghost::update() {
   updateMode();

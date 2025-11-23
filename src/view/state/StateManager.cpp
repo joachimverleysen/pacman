@@ -7,6 +7,7 @@
 #include "../../logic/World.h"
 #include "../../logic/StartMenu.h"
 #include "../../logic/PauseMenu.h"
+#include "../../logic/VictoryScreen.h"
 
 void StateManager::initialize() {
   if (ptr_to_this_.lock() == nullptr) {
@@ -18,9 +19,21 @@ void StateManager::initialize() {
     popCurrentState();  // now at World
     popCurrentState();  // now at start menu
   };
-  fsm[StateNS::Type::STARTMENU][sf::Keyboard::S] = [this]() {loadNewLevel(ptr_to_this_);};
+  fsm[StateNS::Type::STARTMENU][sf::Keyboard::S] = [this]() { loadNewLevel(ptr_to_this_);};
   fsm[StateNS::Type::STARTMENU][sf::Keyboard::X] = [this]() {popCurrentState();};  // Will close game
-  fsm[StateNS::Type::GAME_OVER][sf::Keyboard::Q] = [this]() {popCurrentState();};
+  fsm[StateNS::Type::GAME_OVER][sf::Keyboard::Q] = [this]() {
+    popCurrentState();
+    difficulty_ = 0;
+  };
+  fsm[StateNS::Type::VICTORY][sf::Keyboard::Space] = [this]() {
+    popCurrentState();
+    loadNewLevel(ptr_to_this_);
+  };
+
+  fsm[StateNS::Type::VICTORY][sf::Keyboard::Q] = [this]() {
+    popCurrentState();
+    difficulty_ = 0;
+  };
 }
 
 Action StateManager::getAction(sf::Keyboard::Key key) {
@@ -62,9 +75,10 @@ void StateManager::updateCurrentState() {
     state_views_.pop();
 }
 
-void StateManager::loadNewLevel(const std::weak_ptr<StateManager>& ptr_to_this) {
-  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this, 0);
+void StateManager::loadNewLevel(const std::weak_ptr<StateManager> &ptr_to_this) {
+  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this, difficulty_);
   pushState(world);
+  difficulty_++;
 }
 
 void StateManager::pushStartMenu(std::shared_ptr<StateManager> ptr_to_this) {
@@ -76,8 +90,20 @@ void StateManager::onLevelGameOver() {
  pushGameOverState();
 }
 
+void StateManager::onVictory() {
+  state_views_.pop();
+  pushVictoryState();
+}
+
 void StateManager::pushGameOverState() {
   std::shared_ptr<GameOverScreen> state = std::make_shared<GameOverScreen>(factory_);
+  std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
+  state_views_.push(view);
+  getCurrentState()->initialize();
+}
+
+void StateManager::pushVictoryState() {
+  std::shared_ptr<VictoryScreen> state = std::make_shared<VictoryScreen>(factory_);
   std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
   state_views_.push(view);
   getCurrentState()->initialize();

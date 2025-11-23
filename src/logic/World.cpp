@@ -8,7 +8,9 @@
 
 World::World(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager,
              unsigned int difficulty)
-    : State(std::move(factory)), state_manager_(state_manager) {}
+    : State(std::move(factory)), state_manager_(state_manager), difficulty_(difficulty) {
+  applyDifficulty(difficulty);
+}
 
 [[maybe_unused]] const std::vector<std::shared_ptr<Entity>> &
 World::getEntities() const {
@@ -61,6 +63,7 @@ void World::placeGhosts() {
     timeouts_index= timeouts_index % 4;
     auto ghost = factory_->createGhost(node, player_, types[types_index]);
     ghost->startTimeOut(timeouts[timeouts_index]);
+    ghost->setSpeed(ghost_speed_);
     addEntity(ghost);
     types_index++;
     timeouts_index++;
@@ -92,10 +95,20 @@ void World::makeDesign() {
   TextConfig config;
   config.text = "Press SPACE to pause";
   config.font = MyFont::LIBER;
-  auto text_ = factory_->createText({0, -0.95}, config);
+  auto text_ = factory_->createText({0, -0.90}, config);
+  entities_.push_back(text_);
+
+  TextConfig level_config;
+  level_config.text = "Level: " + std::to_string(difficulty_ - 1);
+  level_config.font = MyFont::LIBER;
+  text_ = factory_->createText({0, 0.95}, level_config);
   entities_.push_back(text_);
 }
 
+void World::applyDifficulty(int difficulty) {
+  ghost_speed_ = Config::Ghost::SPEED + difficulty * (7);
+  freightened_ghosts_duration_ = freightened_ghosts_duration_ - difficulty * 0.5;
+}
 void World::initialize() {
   try {
     verifyInit();
@@ -140,9 +153,8 @@ void World::checkState() {
     frightened_ghosts_timer_ = nullptr;
     unfrightenGhosts();
   }
-
-
 }
+
 
 void World::update() {
   checkState();
@@ -157,7 +169,7 @@ void World::gameOver() {
 }
 
 void World::victory() {
-  state_manager_.lock()->onLevelGameOver();
+  state_manager_.lock()->onVictory();
 }
 
 bool World::verifyInit() const {

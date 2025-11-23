@@ -54,6 +54,8 @@ public:
   bool portalCheck();
 
   Direction getDirection() const;
+
+  void setSpeed(float speed);
 };
 
 #endif // !CHARACTER_H

@@ -23,6 +23,8 @@ class StateManager {
   std::map<StateNS::Type, EventMap> fsm;
   std::weak_ptr<StateManager> ptr_to_this_;
 
+  int difficulty_ = 1;
+
 public:
   StateManager();
 
@@ -52,7 +54,7 @@ public:
 
   void pushGameOverState();
 
-  void loadNewLevel(const std::weak_ptr<StateManager>& ptr_to_this);
+  void loadNewLevel(const std::weak_ptr<StateManager> &ptr_to_this);
 
   void pushStartMenu(std::shared_ptr<StateManager> ptr_to_this);
 
@@ -61,6 +63,10 @@ public:
   void initialize();
 
   Action getAction(sf::Keyboard::Key key);
+
+  void pushVictoryState();
+
+  void onVictory();
 };
 
 

@@ -19,6 +19,11 @@ public:
 public:
   enum class Status {GAME_OVER, VICTORY, RUNNING};
 
+  /// Gameplay
+private:
+  float ghost_speed_{150};
+  unsigned int difficulty_;
+
 private:
   Status status_{Status::RUNNING};
   std::weak_ptr<StateManager> state_manager_;
@@ -31,7 +36,7 @@ private:
   std::shared_ptr<Wall> wall_;
 
 private:
-  Seconds freightened_ghosts_duration_{5};
+  Seconds freightened_ghosts_duration_{Config::Ghost::FREIGHTENED_DURATION};
   std::shared_ptr<Timer> frightened_ghosts_timer_{nullptr};
 
 public:
@@ -114,6 +119,8 @@ public:
   void placeGhostsFixedType(GhostType type);
 
   StateNS::Type getType() const override {return StateNS::Type::WORLD;}
+
+  void applyDifficulty(int difficulty);
 
 };
 

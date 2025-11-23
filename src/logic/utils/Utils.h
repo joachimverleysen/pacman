@@ -9,14 +9,11 @@
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-//todo remove this enum class
 enum class GameAction {
   MOVE_LEFT,
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
-  T_key,
-  G_key,
   NONE };
 
 namespace MyFont {
@@ -26,7 +23,7 @@ inline std::string PACFONT= "assets/font/Pacfont.ttf";
 namespace Utils {
 // State
 namespace StateNS {
-enum class Type {WORLD, PAUSE, GAME_OVER, STARTMENU};
+enum class Type {WORLD, PAUSE, GAME_OVER, VICTORY, STARTMENU};
 enum class Action {};
 }
 
