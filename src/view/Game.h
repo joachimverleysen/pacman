@@ -28,6 +28,7 @@ private:
   sf::Texture background_texture_;
   std::unique_ptr<Renderer> renderer_{nullptr};
 
+
 private:
   static void loadMaze(const std::string &);
 

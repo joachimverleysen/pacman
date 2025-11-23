@@ -11,7 +11,7 @@ struct Color {
 
 struct TextConfig {
   std::string text;
-  Color fill_color{255, 255, 255};
+  Color fill_color{255, 255, 0};
   Color outline_color{255, 0, 0};
   float outline_thickness{2};
   int character_size{30};

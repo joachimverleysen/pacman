@@ -78,6 +78,10 @@ void Character::move() {
   position_ = Camera::window2World(new_pos);
 }
 
+void Character::setSpeed(float speed) {
+  speed_ = speed;
+}
+
 bool Character::overshotTarget() const {
   if (!target_node_)
     return false;

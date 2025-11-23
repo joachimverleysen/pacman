@@ -29,6 +29,7 @@ inline void StartMenu::initialize() {
   config.text = "Welcome";
   config.font = MyFont::PACFONT;
   config.character_size = 70;
+  config.fill_color = {255,255,0};
   auto text_ = factory_->createText({0, 0.8}, config);
   entities_.push_back(text_);
 
@@ -36,14 +37,16 @@ inline void StartMenu::initialize() {
   TextConfig sconfig;
   sconfig.text = "Press S to start playing";
   sconfig.font = MyFont::LIBER;
-  text_ = factory_->createText({0, 0.4}, sconfig);
+  text_ = factory_->createText({0, -0.2}, sconfig);
   entities_.push_back(text_);
 
   // Subtext2
   TextConfig sconfig2;
   sconfig2.text = "Press X to exit";
   sconfig2.font = MyFont::LIBER;
-  text_ = factory_->createText({0, 0.3}, sconfig2);
+  sconfig2.character_size = 20;
+  sconfig2.outline_thickness = 1;
+  text_ = factory_->createText({0, -0.6}, sconfig2);
   entities_.push_back(text_);
 }
 

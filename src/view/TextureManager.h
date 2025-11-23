@@ -5,18 +5,18 @@
 #include <map>
 #include <stdexcept>
 
-//using TextureConfig = std::pair<std::string, const sf::IntRect>;
+// using TextureConfig = std::pair<std::string, const sf::IntRect>;
 
 struct TextureConfig {
-    std::string file;
-    sf::IntRect area;
+  std::string file;
+  sf::IntRect area;
 
-    bool operator<(const TextureConfig& other) const {
-        return std::tie(file, area.left, area.top, area.width, area.height) <
-               std::tie(other.file, other.area.left, other.area.top, other.area.width, other.area.height);
-    }
+  bool operator<(const TextureConfig &other) const {
+    return std::tie(file, area.left, area.top, area.width, area.height) <
+           std::tie(other.file, other.area.left, other.area.top,
+                    other.area.width, other.area.height);
+  }
 };
-
 
 class TextureManager {
 public:
