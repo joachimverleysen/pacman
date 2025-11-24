@@ -1,0 +1,69 @@
+\hypertarget{classEntityView}{}\doxysection{Entity\+View Class Reference}
+\label{classEntityView}\index{EntityView@{EntityView}}
+
+
+Inheritance diagram for Entity\+View\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classEntityView__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Entity\+View\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=149pt]{classEntityView__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classEntityView_aca38b124952326216054342f8826a1fd}\label{classEntityView_aca38b124952326216054342f8826a1fd}} 
+const \mbox{\hyperlink{structMyVector}{My\+Vector}} \& {\bfseries get\+Position} () const
+\item 
+\mbox{\Hypertarget{classEntityView_adb7694921432813aefd348b9ae2bb08b}\label{classEntityView_adb7694921432813aefd348b9ae2bb08b}} 
+{\bfseries Entity\+View} (std\+::weak\+\_\+ptr$<$ \mbox{\hyperlink{classEntity}{Entity}} $>$ entity, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classDrawableInterface}{Drawable\+Interface}} $>$ drawable)
+\item 
+\mbox{\Hypertarget{classEntityView_a568793c5cf36cf32365fcd152387ae10}\label{classEntityView_a568793c5cf36cf32365fcd152387ae10}} 
+{\bfseries Entity\+View} (std\+::weak\+\_\+ptr$<$ \mbox{\hyperlink{classEntity}{Entity}} $>$ entity)
+\item 
+\mbox{\Hypertarget{classEntityView_adddf0a8ab758a96d7638dd8a9b6300ce}\label{classEntityView_adddf0a8ab758a96d7638dd8a9b6300ce}} 
+void {\bfseries update} () override
+\item 
+\mbox{\Hypertarget{classEntityView_a98f9ecf1bdab313b2f4a5c90ca760893}\label{classEntityView_a98f9ecf1bdab313b2f4a5c90ca760893}} 
+virtual void {\bfseries draw} (sf\+::\+Render\+Window \&window)
+\item 
+\mbox{\Hypertarget{classEntityView_aec8cff9597a1cf6e5ba320b74140cca7}\label{classEntityView_aec8cff9597a1cf6e5ba320b74140cca7}} 
+void {\bfseries set\+Position} (\mbox{\hyperlink{structMyVector}{My\+Vector}} \&position)
+\item 
+\mbox{\Hypertarget{classEntityView_a95856f6309a77e883a0767de421f0f39}\label{classEntityView_a95856f6309a77e883a0767de421f0f39}} 
+void {\bfseries update\+Position} ()
+\item 
+\mbox{\Hypertarget{classEntityView_a303e248e81a1e7e879985e76371c2fe4}\label{classEntityView_a303e248e81a1e7e879985e76371c2fe4}} 
+void {\bfseries push\+To\+Foreground} ()
+\item 
+\mbox{\Hypertarget{classEntityView_a9a969e8bf1ece3a14ff97e07dba3df47}\label{classEntityView_a9a969e8bf1ece3a14ff97e07dba3df47}} 
+bool {\bfseries is\+Fore\+Ground} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classEntityView_a76d1831884dea83f95a3856c964ad00b}\label{classEntityView_a76d1831884dea83f95a3856c964ad00b}} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classDrawableInterface}{Drawable\+Interface}} $>$ {\bfseries drawable\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 19 of file Entity\+View.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/view/view/Entity\+View.\+h\item 
+src/view/view/Entity\+View.\+cpp\end{DoxyCompactItemize}

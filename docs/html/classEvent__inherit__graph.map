@@ -1,0 +1,7 @@
+<map id="Event" name="Event">
+<area shape="rect" id="node1" title=" " alt="" coords="287,5,345,32"/>
+<area shape="rect" id="node2" href="$classCoinEatenEvent.html" title=" " alt="" coords="5,80,131,107"/>
+<area shape="rect" id="node3" href="$classFrightenGhostsEvent.html" title=" " alt="" coords="155,80,312,107"/>
+<area shape="rect" id="node4" href="$classFruitEatenEvent.html" title=" " alt="" coords="336,80,461,107"/>
+<area shape="rect" id="node5" href="$classGhostEatenEvent.html" title=" " alt="" coords="486,80,621,107"/>
+</map>
