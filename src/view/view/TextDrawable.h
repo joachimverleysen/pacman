@@ -17,6 +17,9 @@ public:
   void updateState(Entity::State state) override;
 
   void updateMode(Entity::Mode mode) override{};
+
+  void setText(const std::string& text);
+
 };
 
 

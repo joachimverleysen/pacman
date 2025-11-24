@@ -7,6 +7,8 @@
 #include <memory>
 #include <vector>
 
+class Event;
+
 class Subject {
 protected:
   std::vector<std::shared_ptr<Observer>> observers_;

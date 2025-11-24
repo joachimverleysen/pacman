@@ -5,6 +5,7 @@ add_library(logic
 				entity/Ghost.cpp
 				entity/Character.cpp
         observer/Observer.cpp
+				observer/Event.h
         utils/JSONParser.cpp
         utils/Utils.h
         entity/Entity.cpp

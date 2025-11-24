@@ -11,7 +11,7 @@ public:
   explicit Text(const std::string &text) : text_(text) {};
 
   void update() override {
-
+    notifyObservers();
   }
 
   void onCollision(Entity *other) override {
@@ -33,6 +33,15 @@ public:
   MyVector getPosition() const override {
     return Entity::getPosition();
   }
+
+  void setText(const std::string& text) {
+    text_ = text;
+    update();
+  }
+
+  const std::string getText() const {
+    return text_;
+  };
 };
 
 
