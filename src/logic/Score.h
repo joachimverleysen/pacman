@@ -8,8 +8,8 @@ class FruitEatenEvent;
 class FrightenGhostsEvent;
 
 class Score : public Entity {
-  std::shared_ptr<Text> display_;
   // todo extract constants to Config
+  static Score* instance_;
   int value{0};
   int coin_eaten_modifier_{7};
   int ghost_eaten_modifier_{300};
@@ -17,10 +17,14 @@ class Score : public Entity {
   float time_since_last_coin_{0};
   float time_since_ghost_eaten_{0};
 
+private:
+  Score() = default;
 public:
-  Score() {};
-  Score(std::shared_ptr<Text> text_entity)
-    : display_(text_entity) {}
+  static Score* getInstance() {
+    if (!instance_)
+      instance_ = new Score{};
+    return instance_;
+  }
 
   void handle(FruitEatenEvent& event);
 

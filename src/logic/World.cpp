@@ -8,11 +8,12 @@
 #include <utility>
 
 World::World(std::shared_ptr<AbstractFactory> factory,
-             std::weak_ptr<StateManager> state_manager, unsigned int difficulty)
+             std::weak_ptr<StateManager> state_manager,
+             unsigned int difficulty)
     : State(std::move(factory)),
       state_manager_(state_manager),
-      difficulty_(difficulty),
-      score_(nullptr){
+      difficulty_(difficulty)
+      {
   applyDifficulty(difficulty);
 }
 
@@ -94,14 +95,13 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
-void World::createScore() {
+void World::createScoreText() {
   TextConfig config;
   config.text = "Score: 0";
   config.font = MyFont::LIBER;
 
   score_display_= factory_->createText({0.5, 0.95}, config);
-  score_ = std::make_shared<Score>(score_display_);
-  entities_.push_back(score_);
+  score_display_->setText("Score: " + std::to_string(Score::getInstance()->getValue()));
 }
 
 void World::makeDesign() {
@@ -144,7 +144,7 @@ void World::initialize() {
   placeGhosts();
   placeCoins();
   placeFruits();
-  createScore();
+  createScoreText();
   wall_->update();
 
 }
@@ -181,6 +181,7 @@ void World::update() {
   checkCollisions();
   cleanupEntities();
   updateAllEntities();
+  score_display_->setText("Score: " + std::to_string(Score::getInstance()->getValue()));
 }
 
 void World::gameOver() { state_manager_.lock()->onLevelGameOver(); }
@@ -217,19 +218,19 @@ void World::onPlayerCollision(EntityType entity_type) {
     case (EntityType::Fruit): {
       frightenGhosts();
       auto event = FruitEatenEvent{};
-      score_->handle(event);
+      Score::getInstance()->handle(event);
       break;
     }
     case (EntityType::Coin): {
       auto event = CoinEatenEvent{};
-      score_->handle(event);
+      Score::getInstance()->handle(event);
       break;
     }
     case (EntityType::Ghost): {
       if (!frightened_ghosts_)
         break;
       auto event = GhostEatenEvent{};
-      score_->handle(event);
+      Score::getInstance()->handle(event);
     }
   }
 }
@@ -246,7 +247,7 @@ void World::setStatus(World::Status status) { status_ = status; }
 
 void World::frightenGhosts() {
   auto event = FrightenGhostsEvent{};
-  score_->handle(event);
+  Score::getInstance()->handle(event);
   frightened_ghosts_ = true;
   std::shared_ptr<Timer> timer =
       Stopwatch::getInstance()->getNewTimer(frightened_ghosts_duration_);

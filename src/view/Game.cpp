@@ -1,7 +1,9 @@
 #include "Game.h"
+#include "../logic/utils/FileWriter.h"
 #include "../configure/constants.h"
 #include "../logic/maze/Maze.h"
 #include "Renderer.h"
+#include "../logic/utils/FileReader.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/WindowStyle.hpp>
 #include <fstream>
@@ -24,8 +26,10 @@ void Game::update() {
   window_.draw(background_sprite_);
   updateState();
   renderer_->render(state_manager_->getCurrentStateView());
-  window_.display();
+  Score::getInstance()->update();
 
+  // End of function
+  window_.display();
   Stopwatch::getInstance()->capFramerate(100);
 }
 

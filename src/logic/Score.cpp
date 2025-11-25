@@ -1,5 +1,5 @@
 #include "Score.h"
-
+Score *Score::instance_ = nullptr;
 void Score::handle(GhostEatenEvent &event) {
   // todo extract constants
   time_since_ghost_eaten_ = 0;
@@ -16,7 +16,6 @@ void Score::handle(CoinEatenEvent &event) {
 void Score::update() {
   time_since_last_coin_ += Stopwatch::getInstance()->getDeltaTime();
   time_since_ghost_eaten_ += Stopwatch::getInstance()->getDeltaTime();
-  display_->setText("Score: " + std::to_string(value));
 }
 
 void Score::handle(FruitEatenEvent &event) {

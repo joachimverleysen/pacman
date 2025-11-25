@@ -16,12 +16,15 @@ using Seconds = float;
 
 class World : public State {
 public:
+  World(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager, unsigned int difficulty);
+
   friend GameController;
 
 public:
+  // todo do i need this
   enum class Status { GAME_OVER, VICTORY, RUNNING };
 
-  /// Gameplay
+  // Gameplay
 private:
   float ghost_speed_{150};
   unsigned int difficulty_;
@@ -37,7 +40,6 @@ private:
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
   std::shared_ptr<Wall> wall_;
-  std::shared_ptr<Score> score_;
   std::shared_ptr<Text> score_display_;
 
 private:
@@ -75,10 +77,8 @@ public:
   void setStatus(Status status);
   Status getStatus() const;
 
-  /// Init  ///
+  // Init
 public:
-  World(std::shared_ptr<AbstractFactory> factory,
-        std::weak_ptr<StateManager> state_manager, unsigned int difficulty);
 
   void initialize() override;
 
@@ -86,7 +86,7 @@ public:
 
   void createPlayer(std::shared_ptr<MazeNode> node);
 
-  void createScore();
+  void createScoreText();
 
   void createWall();
 

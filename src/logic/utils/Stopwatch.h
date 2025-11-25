@@ -6,15 +6,12 @@
 #include <vector>
 
 struct Timer {
-  Timer(float mili) : seconds(mili){
-
-  }
-
+  Timer(float mili) : seconds(mili) {}
   float seconds;
-  void decrease(float mili) { seconds -= mili;}
-  bool done() const {
-    return seconds <= 0;}
+  void decrease(float mili) { seconds -= mili; }
+  bool done() const { return seconds <= 0; }
 };
+
 class Stopwatch {
   static Stopwatch *instance_;
   Stopwatch() : last_time_(std::chrono::high_resolution_clock::now()) {}
