@@ -4,6 +4,7 @@
 #include "State.h"
 #include "utils/Utils.h"
 #include "../view/state/StateManager.h"
+#include "Leaderboard.h"
 #include <utility>
 
 typedef std::shared_ptr<Entity> EntityPtr;
@@ -21,6 +22,8 @@ public:
   [[nodiscard]] StateNS::Type getType() const override {
     return StateNS::Type::STARTMENU;
   }
+
+  void displayLeaderboard();
 };
 
 inline void StartMenu::initialize() {
@@ -37,7 +40,7 @@ inline void StartMenu::initialize() {
   TextConfig sconfig;
   sconfig.text = "Press S to start playing";
   sconfig.font = MyFont::LIBER;
-  text_ = factory_->createText({0, -0.2}, sconfig);
+  text_ = factory_->createText({0, -0.7}, sconfig);
   entities_.push_back(text_);
 
   // Subtext2
@@ -46,10 +49,41 @@ inline void StartMenu::initialize() {
   sconfig2.font = MyFont::LIBER;
   sconfig2.character_size = 20;
   sconfig2.outline_thickness = 1;
-  text_ = factory_->createText({0, -0.6}, sconfig2);
+  text_ = factory_->createText({0, -0.9}, sconfig2);
   entities_.push_back(text_);
+
+  displayLeaderboard();
 }
 
+inline void StartMenu::displayLeaderboard() {
+  float start_y = 0.5;
+  float offset_y = 0.2;
+
+  // Title
+  TextConfig config;
+  config.text = "Leaderboard:";
+  config.font = MyFont::LIBER;
+  config.character_size = 40;
+  config.fill_color = {255, 0, 0};
+  config.outline_thickness = 0.5;
+  auto text = factory_->createText({0, start_y}, config);
+  entities_.push_back(text);
+
+  // Entries:
+  int index = 1;
+  TextConfig entry_config;
+  entry_config.font = MyFont::LIBER;
+  entry_config.fill_color = {255, 0, 0};
+  entry_config.outline_thickness = 0;
+  entry_config.character_size = 20;
+  for (const auto entry : Leaderboard::getInstance()->getScores()) {
+    entry_config.text =
+      std::to_string(index) + ". " + std::to_string(entry);
+    auto text = factory_->createText({0, start_y - index * offset_y}, entry_config);
+    entities_.push_back(text);
+    index++;
+  }
+}
 inline void StartMenu::update() {
   for (auto e : entities_)
     e->update();

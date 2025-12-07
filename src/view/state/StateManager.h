@@ -50,7 +50,7 @@ public:
 
   void popCurrentState();
 
-  void onLevelGameOver();
+  void onGameOver();
 
   void pushGameOverState();
 
@@ -62,7 +62,7 @@ public:
 
   void initialize();
 
-  Action getAction(sf::Keyboard::Key key);
+  Action getAction(sf::Keyboard::Key key) const;
 
   void pushVictoryState();
 

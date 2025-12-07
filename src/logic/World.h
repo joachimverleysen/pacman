@@ -37,7 +37,6 @@ private:
   std::vector<std::vector<char>> arena_grid_;
   std::shared_ptr<MazeNode> init_node_;
   std::shared_ptr<Wall> wall_;
-  std::shared_ptr<Score> score_;
   std::shared_ptr<Text> score_display_;
 
 private:

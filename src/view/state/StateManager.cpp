@@ -23,7 +23,7 @@ void StateManager::initialize() {
   fsm[StateNS::Type::STARTMENU][sf::Keyboard::X] = [this]() {popCurrentState();};  // Will close game
   fsm[StateNS::Type::GAME_OVER][sf::Keyboard::Q] = [this]() {
     popCurrentState();
-    difficulty_ = 0;
+    difficulty_ = 1;
   };
   fsm[StateNS::Type::VICTORY][sf::Keyboard::Space] = [this]() {
     popCurrentState();
@@ -32,11 +32,11 @@ void StateManager::initialize() {
 
   fsm[StateNS::Type::VICTORY][sf::Keyboard::Q] = [this]() {
     popCurrentState();
-    difficulty_ = 0;
+    difficulty_ = 1;
   };
 }
 
-Action StateManager::getAction(sf::Keyboard::Key key) {
+Action StateManager::getAction(sf::Keyboard::Key key) const {
     auto current_state_type = getCurrentState()->getType();
 
     auto it = fsm.find(current_state_type);
@@ -85,9 +85,11 @@ void StateManager::pushStartMenu(std::shared_ptr<StateManager> ptr_to_this) {
   std::shared_ptr<StartMenu> startmenu = std::make_shared<StartMenu>(factory_, ptr_to_this);
   pushState(startmenu);
 }
-void StateManager::onLevelGameOver() {
+void StateManager::onGameOver() {
  state_views_.pop();
  pushGameOverState();
+ difficulty_ = 1;
+ Score::getInstance()->reset();
 }
 
 void StateManager::onVictory() {

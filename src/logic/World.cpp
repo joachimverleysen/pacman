@@ -5,14 +5,15 @@
 #include "../view/state/StateManager.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
+#include "Leaderboard.h"
 #include <utility>
 
 World::World(std::shared_ptr<AbstractFactory> factory,
              std::weak_ptr<StateManager> state_manager, unsigned int difficulty)
     : State(std::move(factory)),
       state_manager_(state_manager),
-      difficulty_(difficulty),
-      score_(nullptr){
+      difficulty_(difficulty)
+      {
   applyDifficulty(difficulty);
 }
 
@@ -22,6 +23,11 @@ World::getEntities() const {
 }
 
 void World::handleAction(GameAction action) {
+  // Debug purposes
+  if (action == GameAction::VICTORY)
+    victory();
+
+  // "action = player movement" case
   std::optional<Direction> direction = Utils::getDirection(action);
   if (action == GameAction::NONE or !direction)
     return;
@@ -94,14 +100,14 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
+// todo: score should be created elsewhere.
+// display should be attached to that score here.
+// Only display belongs to world, not score
 void World::createScore() {
   TextConfig config;
   config.text = "Score: 0";
   config.font = MyFont::LIBER;
-
   score_display_= factory_->createText({0.5, 0.95}, config);
-  score_ = std::make_shared<Score>(score_display_);
-  entities_.push_back(score_);
 }
 
 void World::makeDesign() {
@@ -181,9 +187,17 @@ void World::update() {
   checkCollisions();
   cleanupEntities();
   updateAllEntities();
+  int score = Score::getInstance()->getValue();
+  score_display_->setText(std::to_string(score));
 }
 
-void World::gameOver() { state_manager_.lock()->onLevelGameOver(); }
+void World::gameOver() {
+  Leaderboard::getInstance()->addScore(
+    Score::getInstance()->getValue()
+    );
+  state_manager_.lock()->onGameOver();
+
+}
 
 void World::victory() { state_manager_.lock()->onVictory(); }
 
@@ -213,23 +227,24 @@ void World::checkCollisions() {
 
 void World::onPlayerCollision(EntityType entity_type) {
   // todo refactor
+  auto score = Score::getInstance();
   switch (entity_type) {
     case (EntityType::Fruit): {
       frightenGhosts();
       auto event = FruitEatenEvent{};
-      score_->handle(event);
+      score->handle(event);
       break;
     }
     case (EntityType::Coin): {
       auto event = CoinEatenEvent{};
-      score_->handle(event);
+      score->handle(event);
       break;
     }
     case (EntityType::Ghost): {
       if (!frightened_ghosts_)
         break;
       auto event = GhostEatenEvent{};
-      score_->handle(event);
+      score->handle(event);
     }
   }
 }
@@ -246,10 +261,11 @@ void World::setStatus(World::Status status) { status_ = status; }
 
 void World::frightenGhosts() {
   auto event = FrightenGhostsEvent{};
-  score_->handle(event);
+  Score::getInstance()->handle(event);
   frightened_ghosts_ = true;
   std::shared_ptr<Timer> timer =
       Stopwatch::getInstance()->getNewTimer(frightened_ghosts_duration_);
   for (std::shared_ptr<Ghost> g : ghosts_)
     g->enterFrightenedMode(timer);
+  frightened_ghosts_timer_ = timer;
 }

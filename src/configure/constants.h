@@ -4,6 +4,7 @@
 #include <string>
 
 namespace Config {
+inline const int LEADERBOARD_LIMIT = 5;
 inline const std::string MazeFile = "input/maze2.txt";
 namespace TextureFiles {
 inline const std::string background = "assets/background/bck@2x.png";
