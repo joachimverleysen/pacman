@@ -8,11 +8,7 @@ class FruitEatenEvent;
 class FrightenGhostsEvent;
 
 class Score : public Entity {
-  // todo extract constants to Config
   int value_{0};
-  int coin_eaten_modifier_{7};
-  int ghost_eaten_modifier_{300};
-  int fruit_eaten_modifier_{60};
   float time_since_last_coin_{0};
   float time_since_ghost_eaten_{0};
   static Score* instance_;

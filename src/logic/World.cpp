@@ -3,17 +3,15 @@
 
 #include "../configure/constants.h"
 #include "../view/state/StateManager.h"
+#include "Leaderboard.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
-#include "Leaderboard.h"
 #include <utility>
 
 World::World(std::shared_ptr<AbstractFactory> factory,
              std::weak_ptr<StateManager> state_manager, unsigned int difficulty)
-    : State(std::move(factory)),
-      state_manager_(state_manager),
-      difficulty_(difficulty)
-      {
+    : State(std::move(factory)), state_manager_(state_manager),
+      difficulty_(difficulty) {
   applyDifficulty(difficulty);
 }
 
@@ -100,14 +98,11 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
-// todo: score should be created elsewhere.
-// display should be attached to that score here.
-// Only display belongs to world, not score
-void World::createScore() {
+void World::displayScore() {
   TextConfig config;
   config.text = "Score: 0";
   config.font = MyFont::LIBER;
-  score_display_= factory_->createText({0.5, 0.95}, config);
+  score_display_ = factory_->createText({0.5, 0.95}, config);
 }
 
 void World::makeDesign() {
@@ -120,17 +115,15 @@ void World::makeDesign() {
 
   // Level: #
   TextConfig level_config;
-  level_config.text = "Level: " + std::to_string(difficulty_-1);
+  level_config.text = "Level: " + std::to_string(difficulty_ - 1);
   level_config.font = MyFont::LIBER;
   text_ = factory_->createText({-0.5, 0.95}, level_config);
   entities_.push_back(text_);
-
 }
 
 void World::applyDifficulty(int difficulty) {
   ghost_speed_ = Config::Ghost::SPEED + difficulty * (7);
-  frightened_ghosts_duration_ =
-    frightened_ghosts_duration_ - difficulty * 0.5;
+  frightened_ghosts_duration_ = frightened_ghosts_duration_ - difficulty * 0.5;
 }
 void World::initialize() {
   try {
@@ -150,9 +143,8 @@ void World::initialize() {
   placeGhosts();
   placeCoins();
   placeFruits();
-  createScore();
+  displayScore();
   wall_->update();
-
 }
 
 void World::cleanupEntities() {
@@ -192,11 +184,8 @@ void World::update() {
 }
 
 void World::gameOver() {
-  Leaderboard::getInstance()->addScore(
-    Score::getInstance()->getValue()
-    );
+  Leaderboard::getInstance()->addScore(Score::getInstance()->getValue());
   state_manager_.lock()->onGameOver();
-
 }
 
 void World::victory() { state_manager_.lock()->onVictory(); }
@@ -221,31 +210,29 @@ void World::checkCollisions() {
     CollisionHandler::onCollision(entity.get(), player_.get());
 
     onPlayerCollision(entity.get()->getType());
-
   }
 }
 
 void World::onPlayerCollision(EntityType entity_type) {
-  // todo refactor
   auto score = Score::getInstance();
   switch (entity_type) {
-    case (EntityType::Fruit): {
-      frightenGhosts();
-      auto event = FruitEatenEvent{};
-      score->handle(event);
+  case (EntityType::Fruit): {
+    frightenGhosts();
+    auto event = FruitEatenEvent{};
+    score->handle(event);
+    break;
+  }
+  case (EntityType::Coin): {
+    auto event = CoinEatenEvent{};
+    score->handle(event);
+    break;
+  }
+  case (EntityType::Ghost): {
+    if (!frightened_ghosts_)
       break;
-    }
-    case (EntityType::Coin): {
-      auto event = CoinEatenEvent{};
-      score->handle(event);
-      break;
-    }
-    case (EntityType::Ghost): {
-      if (!frightened_ghosts_)
-        break;
-      auto event = GhostEatenEvent{};
-      score->handle(event);
-    }
+    auto event = GhostEatenEvent{};
+    score->handle(event);
+  }
   }
 }
 
@@ -254,10 +241,6 @@ void World::updateAllEntities() {
     e->update();
   }
 }
-
-World::Status World::getStatus() const { return status_; }
-
-void World::setStatus(World::Status status) { status_ = status; }
 
 void World::frightenGhosts() {
   auto event = FrightenGhostsEvent{};

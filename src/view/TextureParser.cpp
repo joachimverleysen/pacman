@@ -6,10 +6,11 @@ sf::IntRect TextureParser::parseIntRect(const json &arr) {
 }
 
 std::map<std::string, Entity::Mode> MODES = {
-  {"ghost-frightened", Entity::Mode::FRIGHTENED},
+    {"ghost-frightened", Entity::Mode::FRIGHTENED},
 };
 
-Texture::TextureMap TextureParser::getTextureMap(Texture::Types types, const std::string& json_path) {
+Texture::TextureMap TextureParser::getTextureMap(Texture::Types types,
+                                                 const std::string &json_path) {
   Texture::TextureMap map;
   for (auto t : types) {
     auto state_map = getStateTextures(json_path, t);
@@ -21,14 +22,15 @@ Texture::TextureMap TextureParser::getTextureMap(Texture::Types types, const std
   return map;
 }
 
-Texture::StateTextures TextureParser::getStateTextures(const std::string &json_path,
-                                                       const std::string &type) {
+Texture::StateTextures
+TextureParser::getStateTextures(const std::string &json_path,
+                                const std::string &type) {
   Texture::StateTextures map;
   json json;
   loadJSONFile(json_path, json);
 
   if (json[type].items().begin() == json[type].items().end())
-    throw std::runtime_error("Couldn't find type in json: "+ type);
+    throw std::runtime_error("Couldn't find type in json: " + type);
   for (auto &item : json[type].items()) {
     std::string animation_name = item.key();
     Entity::State state = getEntityState(animation_name);
@@ -37,14 +39,13 @@ Texture::StateTextures TextureParser::getStateTextures(const std::string &json_p
     for (auto &texture_config : item.value()) {
       auto area = parseIntRect(texture_config["area"]);
       auto texture = TextureManager::getTexture(
-        texture_config["texture"].get<std::string>(), area);
+          texture_config["texture"].get<std::string>(), area);
       map[state].push_back(texture);
     }
   }
   return map;
 }
 
-// todo: why??
 Entity::State TextureParser::getEntityState(const std::string &state_name) {
   if (state_name == "idle")
     return Entity::State::IDLE;

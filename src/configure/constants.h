@@ -30,6 +30,12 @@ inline const float HEIGHT = 40;
 inline const float FREIGHTENED_DURATION = 10;
 }
 
+namespace Score {
+inline const int COIN_MODIFIER = 7;
+inline const int GHOST_MODIFIER = 300;
+inline const int FRUIT_MODIFIER = 60;
+}
+
 } // namespace Config
 
 #endif // PACMAN_CONSTANTS_H

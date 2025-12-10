@@ -2,13 +2,13 @@
 #define GAME_H
 
 #include "../logic/World.h"
-#include "../view/controller/GameController.h"
 #include "../logic/maze/Maze.h"
 #include "../logic/observer/Observer.h"
 #include "../logic/utils/Stopwatch.h"
-#include "view/EntityView.h"
+#include "../view/controller/GameController.h"
 #include "Renderer.h"
 #include "state/StateManager.h"
+#include "view/EntityView.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -18,7 +18,7 @@ struct MyVector;
 
 class EntityFactory;
 
-class Game : public Observer {
+class Game {
 private:
   std::shared_ptr<StateManager> state_manager_;
   std::shared_ptr<EntityFactory> factory_;
@@ -27,7 +27,6 @@ private:
   sf::Sprite background_sprite_;
   sf::Texture background_texture_;
   std::unique_ptr<Renderer> renderer_{nullptr};
-
 
 private:
   static void loadMaze(const std::string &);
@@ -39,7 +38,7 @@ public:
   void setup();
   void run();
 
-  void update() override;
+  void update();
 
   void handleEvent(const sf::Event &event);
 
