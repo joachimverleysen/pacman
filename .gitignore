@@ -90,3 +90,5 @@ fabric.properties
 .idea
 /notes/diagram.txt
 /notes/
+output/
+docs/

@@ -14,7 +14,6 @@ add_library(logic
         utils/Random.cpp
 				utils/Vector.cpp
 				utils/Camera.cpp
-				utils/FileWriter.h
 				maze/MazeNode.cpp
 				maze/Maze.cpp
 				maze/Wall.cpp
@@ -27,6 +26,9 @@ add_library(logic
 		entity/layout/Text.h
 		../view/FontManager.h
 		utils/TextConfig.h
+		utils/FileReader.h
+		utils/FileWriter.h
 		Leaderboard.cpp
+		Leaderboard.h
 )
 

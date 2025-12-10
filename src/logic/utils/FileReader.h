@@ -1,6 +1,7 @@
+#ifndef PACMAN_FILEREADER_H
+#define PACMAN_FILEREADER_H
 #include <iostream>
 #include <optional>
-#ifndef FILEREADER_H
 #include <fstream>
 #include <string>
 
@@ -20,4 +21,4 @@ public:
   void close() { in_stream_.close(); }
 };
 
-#endif // !FILEREADER_H
+#endif //PACMAN_FILEREADER_H

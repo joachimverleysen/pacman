@@ -14,7 +14,8 @@ enum class GameAction {
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
-  NONE };
+  NONE, VICTORY
+};
 
 namespace MyFont {
 inline std::string LIBER = "assets/font/liber.ttf";

@@ -1,4 +1,5 @@
-#ifndef FILEWRITER_H
+#ifndef PACMAN_FILEWRITER_H
+#define PACMAN_FILEWRITER_H
 #include <fstream>
 
 class FileWriter {
@@ -15,8 +16,10 @@ public:
   void close() { out_stream_.close(); }
 
   void clear() {
+    out_stream_.clear();
+    out_stream_.close();
     out_stream_.open(filename_, std::ofstream::out | std::ofstream::trunc);
   }
 };
 
-#endif // !FILEWRITER_H
+#endif //PACMAN_FILEWRITER_H

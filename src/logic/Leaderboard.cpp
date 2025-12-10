@@ -1,21 +1,42 @@
 #include "Leaderboard.h"
+#include "../configure/constants.h"
 
-std::vector<int> Leaderboard::getScores() const {
+Leaderboard* Leaderboard::instance_ = nullptr;
+void Leaderboard::updateScores() {
+  FileReader fr{scoreboard_};
   std::vector<int> result;
   std::string text;
-  while (filereader_.getLine(text))
+  while (fr.getLine(text))
     result.push_back(std::stoi(text));
-  return result;
+  fr.close();
+  scores_ = result;
 }
 
 void Leaderboard::writeScores(std::vector<int> &scores) {
+  FileWriter fw{scoreboard_};
+  fw.clear();
   for (const auto num : scores)
-    filewriter_.write(std::to_string(num));
+    fw.write(std::to_string(num));
+  fw.close();
 }
 
+void Leaderboard::limitScores(std::vector<int> &scores) {
+  if (scores.size() <= 5) return;
+  std::vector<int> final_scores{scores.begin(), scores.begin() + Config::LEADERBOARD_LIMIT};
+  scores = final_scores;
+}
 void Leaderboard::addScore(int score) {
-  std::vector<int> scores = getScores();
-  scores.push_back(score);
-  std::sort(scores.begin(), scores.end());
-  writeScores(scores);
+  scores_.push_back(score);
+  std::sort(scores_.begin(), scores_.end());
+  std::reverse(scores_.begin(), scores_.end());  // Highest score on top
+  limitScores(scores_);
+  writeScores(scores_);
+}
+
+const std::vector<int> &Leaderboard::getScores() const {
+  return scores_;
+}
+
+Leaderboard::Leaderboard() {
+  updateScores();
 }
