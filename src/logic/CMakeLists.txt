@@ -26,5 +26,9 @@ add_library(logic
 		entity/layout/Text.h
 		../view/FontManager.h
 		utils/TextConfig.h
+		utils/FileReader.h
+		utils/FileWriter.h
+		Leaderboard.cpp
+		Leaderboard.h
 )
 

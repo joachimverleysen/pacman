@@ -10,7 +10,8 @@ GameController::GameController(std::shared_ptr<StateManager> state_manager)
     : state_manager_(std::move(state_manager)),
       game_state_(state_manager_->getCurrentState()) {}
 void GameController::handleInput(const sf::Event &event) {
-  state_manager_->getAction(event.key.code)();
+  auto func = state_manager_->getAction(event.key.code);
+  func();
   if (getAction())
     state_manager_->getCurrentState()->handleAction(getAction().value());
 }
@@ -27,6 +28,9 @@ std::optional<GameAction> GameController::getAction() {
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
     return GameAction::MOVE_DOWN;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+    return GameAction::VICTORY;
   }
   return std::nullopt;
 }
