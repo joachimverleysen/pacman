@@ -4,6 +4,7 @@
 #include <string>
 #include "../Entity.h"
 
+// todo Text should not be Entity
 class Text : public Entity{
 
   std::string text_;
@@ -42,6 +43,10 @@ public:
   const std::string getText() const {
     return text_;
   };
+
+  CollisionBehavior getCollisionBehavior(EntityType type) const override {
+    return CollisionBehavior::NONE;
+  }
 };
 
 

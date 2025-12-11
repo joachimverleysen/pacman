@@ -23,7 +23,8 @@ class StateManager {
   std::map<StateNS::Type, EventMap> fsm;
   std::weak_ptr<StateManager> ptr_to_this_;
 
-  int difficulty_ = 1;
+  unsigned int difficulty_ = 1;
+  unsigned int lives_remaining_ = 3;
 
 public:
   StateManager();
@@ -67,6 +68,8 @@ public:
   void pushVictoryState();
 
   void onVictory();
+
+  void onPacmanDeath();
 };
 
 

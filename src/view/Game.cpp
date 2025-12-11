@@ -102,7 +102,6 @@ void Game::handleEvent(const sf::Event &event) {
 }
 
 void Game::close() {
-  std::cout << "End of program\n";
   window_.close();
   exit(0);
 }

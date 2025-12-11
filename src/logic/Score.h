@@ -3,11 +3,13 @@
 #include <algorithm>
 #include "entity/layout/Text.h"
 #include "utils/Stopwatch.h"
+#include "utils/Visitor.h"
 
 class FruitEatenEvent;
 class FrightenGhostsEvent;
 
-class Score : public Entity {
+// todo: score should not be Entity
+class Score: public Visitor {
   int value_{0};
   float time_since_last_coin_{0};
   float time_since_ghost_eaten_{0};
@@ -25,19 +27,22 @@ public:
 
   void reset();
 
-  void update() override;
+  void update();
 
-  void handle(CoinEatenEvent& event);
+  void visit(CoinEatenEvent &event) override;
 
-  void handle(GhostEatenEvent& event);
+  void visit(FruitEatenEvent &event) override;
 
-  void handle(FrightenGhostsEvent& event);
+  void visit(GhostEatenEvent &event) override;
+
+  void visit(PacmanDiesEvent &event) override;
+
+  void visit(FrightenGhostsEvent &event) override;
 
   const int getValue() const {return value_;}
 
-  EntityType getType() const override {return EntityType::None;};
-
   void writeScoreToLeaderboard() const;
+
 };
 
 #endif // !SCORE_H

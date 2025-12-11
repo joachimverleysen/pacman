@@ -5,19 +5,20 @@
 #include <cmath>
 #include <utility>
 
-Ghost::Ghost(NodePtr node, float width, float height, std::shared_ptr<Player> player, GhostType type)
-    : Character(std::move(node), width, height), player_(player), ghost_type_(type) {
+Ghost::Ghost(NodePtr node, float width, float height,
+             std::shared_ptr<Player> player, GhostType type)
+    : Character(std::move(node), width, height), player_(player),
+      ghost_type_(type) {
   speed_ = Config::Ghost::SPEED;
   startMove();
 }
 
-
-float Ghost::getDistance2Player(Direction direction, float predictive_offset=0) const {
+float Ghost::getDistance2Player(Direction direction,
+                                float predictive_offset = 0) const {
   // Returns Manhattan distance
   // if ghost would take 1 step to <direction>
-  MyVector prediction_pos = Utils::positionAfterMove(player_->getPosition(),
-                                                     player_->getDirection(),
-                                                     predictive_offset);
+  MyVector prediction_pos = Utils::positionAfterMove(
+      player_->getPosition(), player_->getDirection(), predictive_offset);
   float step_size{0.1};
   MyVector vec{0, 0};
   switch (direction) {
@@ -43,14 +44,9 @@ float Ghost::getDistance2Player(Direction direction, float predictive_offset=0) 
   return x + y;
 }
 
-void Ghost::killPlayer() const {
-  player_->deactivate();
-}
-
 void Ghost::onCollision(Entity *other) {
-  if (mode_ == Mode::NORMAL)
-    killPlayer();
-  else deactivate();
+  if (mode_ == Mode::FRIGHTENED)
+    deactivate();
 }
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
@@ -66,26 +62,25 @@ bool Ghost::updateTarget(const std::vector<Direction> &options) {
 Direction Ghost::chooseLockingDirection() {
   if (Random::getInstance()->decide(0.5)) {
     return direction_;
-  }
-  else
+  } else
     return chooseRandomDirection(true);
 }
 Direction Ghost::chooseDirection() {
   if (mode_ == Mode::FRIGHTENED)
     return chooseFleeDirection();
-  else  { // Chase Mode
+  else { // Chase Mode
     if (ghost_type_ == GhostType::Orange)
       return chooseLockingDirection();
     if (ghost_type_ == GhostType::Red)
-      return chooseChaseDirection(0.1);   // With predictive offset 0.1
+      return chooseChaseDirection(0.1); // With predictive offset 0.1
     if (ghost_type_ == GhostType::Pink)
-      return chooseChaseDirection(0.0);   // No predictive offset
+      return chooseChaseDirection(0.0); // No predictive offset
   }
 
-    return chooseRandomDirection(false);
+  return chooseRandomDirection(false);
 }
 
-Direction Ghost::chooseRandomDirection(bool should_change=false) {
+Direction Ghost::chooseRandomDirection(bool should_change = false) {
   bool disable_reversing{true};
   std::vector<Direction> options =
       Maze::getInstance()->getPossibleDirections(current_node_);
@@ -94,15 +89,14 @@ Direction Ghost::chooseRandomDirection(bool should_change=false) {
                               Utils::getReverseDirection(direction_)),
                   options.end());
   if (should_change)
-    options.erase(std::remove(options.begin(), options.end(),
-                    direction_),
+    options.erase(std::remove(options.begin(), options.end(), direction_),
                   options.end());
 
   Random::getInstance()->shuffle(options);
   return options[0];
 }
 
-Direction Ghost::chooseChaseDirection(float predictive_offset=0) {
+Direction Ghost::chooseChaseDirection(float predictive_offset = 0) {
   std::vector<Direction> options =
       Maze::getInstance()->getPossibleDirections(current_node_);
   if (reverse_count_ >= max_reversing_) {
@@ -125,7 +119,7 @@ Direction Ghost::chooseChaseDirection(float predictive_offset=0) {
 
 Direction Ghost::chooseFleeDirection() {
   std::vector<Direction> options =
-    Maze::getInstance()->getPossibleDirections(current_node_);
+      Maze::getInstance()->getPossibleDirections(current_node_);
   if (reverse_count_ >= max_reversing_) {
 
     options.erase(std::remove(options.begin(), options.end(),
@@ -144,36 +138,40 @@ Direction Ghost::chooseFleeDirection() {
   return chosen;
 }
 
-
 void Player::move(float offset) {
   switch (direction_) {
-    case Direction::LEFT:
-      position_.x -= offset;
-      break;
-    case Direction::RIGHT:
-      position_.x += offset;
-      break;
-    case Direction::UP:
-      position_.y -= offset;
-      break;
-    case Direction::DOWN:
-      position_.y += offset;
-      break;
-    case Direction::NONE:
-      break;
+  case Direction::LEFT:
+    position_.x -= offset;
+    break;
+  case Direction::RIGHT:
+    position_.x += offset;
+    break;
+  case Direction::UP:
+    position_.y -= offset;
+    break;
+  case Direction::DOWN:
+    position_.y += offset;
+    break;
+  case Direction::NONE:
+    break;
   }
 }
-
 
 bool Ghost::findAnyTarget() {
   auto direction = chooseRandomDirection();
   return updateTarget(direction);
 }
 
+CollisionBehavior Ghost::getCollisionBehavior(EntityType type) const {
+  if (mode_ == Mode::NORMAL)
+    return CollisionBehavior::KILLING;
+  return CollisionBehavior::CONSUMABLE;
+}
+
 void Ghost::enterFrightenedMode(std::shared_ptr<Timer> timer) {
   if (mode_ != Mode::FRIGHTENED)
     reverseDirection();
-  mode_= Mode::FRIGHTENED;
+  mode_ = Mode::FRIGHTENED;
   frightened_timer_ = timer;
 }
 
@@ -188,8 +186,10 @@ void Ghost::startTimeOut(float seconds) {
 }
 
 bool Ghost::timeout() const {
-  if (!timeout_timer_.lock()) return false;
-  if (timeout_timer_.lock()->done()) return false;
+  if (!timeout_timer_.lock())
+    return false;
+  if (timeout_timer_.lock()->done())
+    return false;
   return true;
 }
 
@@ -199,8 +199,6 @@ void Ghost::updateMode() {
     enterChaseMode();
   }
 }
-
-
 
 void Ghost::update() {
   updateMode();
@@ -223,5 +221,4 @@ void Ghost::update() {
     reverse_count_ = 0;
   }
   notifyObservers();
-
 }

@@ -9,6 +9,8 @@
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
+enum class CollisionBehavior { KILLING, CONSUMABLE, NONE };
+
 enum class GameAction {
   MOVE_LEFT,
   MOVE_RIGHT,

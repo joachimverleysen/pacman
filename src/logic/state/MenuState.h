@@ -2,19 +2,19 @@
 #define PACMAN_STARTMENU_H
 
 #include "State.h"
-#include "utils/Utils.h"
-#include "../view/state/StateManager.h"
-#include "Leaderboard.h"
+#include "../utils/Utils.h"
+#include "../../view/state/StateManager.h"
+#include "../Leaderboard.h"
 #include <utility>
 
 typedef std::shared_ptr<Entity> EntityPtr;
 
-class StartMenu : public State {
+class MenuState : public State {
   std::vector<EntityPtr> entities_;
   std::weak_ptr<StateManager> state_manager_;
 
 public:
-  StartMenu(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager)
+  MenuState(std::shared_ptr<AbstractFactory> factory, std::weak_ptr<StateManager> state_manager)
   : State(factory), state_manager_(state_manager) {};
   void initialize() override;
   void update() override;
@@ -26,7 +26,7 @@ public:
   void displayLeaderboard();
 };
 
-inline void StartMenu::initialize() {
+inline void MenuState::initialize() {
   TextConfig config;
   // Title
   config.text = "Welcome";
@@ -55,7 +55,7 @@ inline void StartMenu::initialize() {
   displayLeaderboard();
 }
 
-inline void StartMenu::displayLeaderboard() {
+inline void MenuState::displayLeaderboard() {
   float start_y = 0.5;
   float offset_y = 0.2;
 
@@ -84,7 +84,7 @@ inline void StartMenu::displayLeaderboard() {
     index++;
   }
 }
-inline void StartMenu::update() {
+inline void MenuState::update() {
   for (auto e : entities_)
     e->update();
 }

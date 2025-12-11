@@ -5,19 +5,21 @@
 #include "../view/EntityFactory.h"
 #include "../view/view/EntityView.h"
 #include "Score.h"
-#include "State.h"
+#include "state/State.h"
 #include "entity/Player.h"
 #include "maze/Maze.h"
 #include "utils/Utils.h"
 #include <memory>
 #include <string>
 
+#include "utils/Visitor.h"
+
 using Seconds = float;
 
-class World : public State {
+class World : public State, public Visitor {
 public:
   World(std::shared_ptr<AbstractFactory> factory,
-        std::weak_ptr<StateManager> state_manager, unsigned int difficulty);
+        std::weak_ptr<StateManager> state_manager, unsigned int difficulty, unsigned int &lives_remaining);
 
   friend GameController;
 
@@ -26,7 +28,9 @@ public:
 private:
   float ghost_speed_{150};
   unsigned int difficulty_;
+  unsigned int &lives_remaining_;
   bool frightened_ghosts_{false};
+  bool freeze_{false};
 
 private:
   std::weak_ptr<StateManager> state_manager_;
@@ -35,13 +39,14 @@ private:
   std::vector<std::shared_ptr<Coin>> coins_;
   std::vector<std::shared_ptr<Fruit>> fruits_;
   std::vector<std::vector<char>> arena_grid_;
-  std::shared_ptr<MazeNode> init_node_;
+  std::shared_ptr<MazeNode> player_start_node_;
   std::shared_ptr<Wall> wall_;
   std::shared_ptr<Text> score_display_;
 
 private:
   Seconds frightened_ghosts_duration_{Config::Ghost::FREIGHTENED_DURATION};
   std::shared_ptr<Timer> frightened_ghosts_timer_{nullptr};
+  std::shared_ptr<Timer> freeze_timer_{nullptr};
 
 public:
   template <typename EntityT>
@@ -96,11 +101,22 @@ public:
 
   void frightenGhosts();
 
+
   void unfrightenGhosts();
 
   void handleAction(GameAction action) override;
 
+  void visit(FruitEatenEvent &event) override;
+  void visit(CoinEatenEvent &event) override;
+  void visit(GhostEatenEvent &event) override;
+  void visit(FrightenGhostsEvent &event) override;
+  void visit(PacmanDiesEvent &event) override;
+
   void cleanupEntities();
+
+  void removeGhosts();
+
+  void removePlayer();
 
   void gameOver();
 
@@ -113,6 +129,12 @@ public:
   void updateAllEntities();
 
   void update() override;
+
+  void freeze(int seconds);
+
+  void continueLevel();
+
+  void onPacmanDeath();
 
   void victory();
 

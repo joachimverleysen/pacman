@@ -12,7 +12,6 @@ class MazeNode;
 typedef std::shared_ptr<MazeNode> NodePtr;
 
 class Player : public Character {
-
 public:
   Player() = delete;
 
@@ -20,9 +19,14 @@ public:
 
   void onCollision(Entity *other) override;
 
+  void onDeath();
+
   [[nodiscard]] EntityType getType() const override;
 
   void move(float offset);
+
+  CollisionBehavior getCollisionBehavior(EntityType type) const override;
+
 };
 
 #endif // PLAYER_H

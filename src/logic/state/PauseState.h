@@ -2,16 +2,16 @@
 #define PACMAN_PAUSEMENU_H
 
 #include "State.h"
-#include "utils/Utils.h"
-#include "utils/TextConfig.h"
+#include "../utils/Utils.h"
+#include "../utils/TextConfig.h"
 #include <utility>
 
 typedef std::shared_ptr<Entity> EntityPtr;
-class PauseMenu : public State {
+class PauseState : public State {
   std::vector<EntityPtr> entities_;
 
 public:
-  PauseMenu(std::shared_ptr<AbstractFactory> factory) : State(factory) {};
+  PauseState(std::shared_ptr<AbstractFactory> factory) : State(factory) {};
   void initialize() override;
   void update() override;
   void handleAction(GameAction action) override {}
@@ -20,7 +20,7 @@ public:
   }
 };
 
-inline void PauseMenu::initialize() {
+inline void PauseState::initialize() {
 
   TextConfig config;
   // Title
@@ -45,7 +45,7 @@ inline void PauseMenu::initialize() {
   entities_.push_back(text_);
 }
 
-inline void PauseMenu::update() {
+inline void PauseState::update() {
   for (auto e : entities_)
     e->update();
 }

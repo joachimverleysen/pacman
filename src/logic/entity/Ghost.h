@@ -16,7 +16,6 @@ public:
     Pink,  // Chases Pacman directly
   };
   using Character::updateTarget;
-  enum class GhostMode { FRIGHTENED, CHASE, RANDOM };
 
   GhostType ghost_type_{GhostType::Orange};
   std::shared_ptr<Player> player_;
@@ -57,6 +56,8 @@ public:
   Direction chooseLockingDirection();
 
   bool findAnyTarget();
+
+  CollisionBehavior getCollisionBehavior(EntityType type) const override;
 
   void startTimeOut(float seconds);
 

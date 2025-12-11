@@ -1,4 +1,5 @@
 #include "CollisionHandler.h"
+#include "Event.h"
 #include <iostream>
 
 bool CollisionHandler::onCollision(Entity *first, Entity *second) {
@@ -8,9 +9,29 @@ bool CollisionHandler::onCollision(Entity *first, Entity *second) {
   return false;
 }
 
-bool CollisionHandler::checkCollision(const Entity *first,
-                                      const Entity *second) {
-  return checkCollision(first->getBoundingBox(), second->getBoundingBox());
+std::shared_ptr<Event> CollisionHandler::checkCollision(const Entity *first,
+                                                        const Entity *second) {
+  if (!checkCollision(first->getBoundingBox(), second->getBoundingBox(), -0.02))
+    return nullptr;
+
+  if (second->getType() == EntityType::Player)
+    std::swap(first, second);
+  if (first->getType() != EntityType::Player)
+    return nullptr;
+
+  if (second->getType() == EntityType::Ghost &&
+    second->getCollisionBehavior(EntityType::Player) == CollisionBehavior::KILLING)
+    return std::make_shared<PacmanDiesEvent>();
+
+  if (second->getType() == EntityType::Ghost &&
+    second->getCollisionBehavior(EntityType::Player) == CollisionBehavior::CONSUMABLE)
+    return std::make_shared<GhostEatenEvent>();
+
+  if (second->getType() == EntityType::Coin)
+    return std::make_shared<CoinEatenEvent>();
+
+  if (second->getType() == EntityType::Fruit)
+    return std::make_shared<FruitEatenEvent>();
 }
 
 bool CollisionHandler::checkCollision(const Entity *first,
@@ -26,6 +47,7 @@ bool CollisionHandler::checkCollision(const BoundingBox &first,
   }
   return false;
 }
+
 
 bool CollisionHandler::checkCollision(const BoundingBox &first,
                                       const BoundingBox &second, float margin) {

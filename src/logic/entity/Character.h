@@ -43,6 +43,8 @@ public:
 
   void setDirection(Direction direction);
 
+  void goTo(std::shared_ptr<MazeNode> node);
+
   void takeTarget();
 
   void setTarget(NodePtr target);

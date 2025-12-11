@@ -5,7 +5,7 @@
 
 class CollisionHandler {
 public:
-  static bool checkCollision(const Entity *first, const Entity *second);
+  static std::shared_ptr<Event> checkCollision(const Entity *first, const Entity *second);
 
   static bool checkCollision(const BoundingBox &first,
                              const BoundingBox &second);

@@ -1,7 +1,7 @@
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
 
-#include "entity/AbstractFactory.h"
+#include "../entity/AbstractFactory.h"
 
 using namespace Utils;
 class State : public Subject {

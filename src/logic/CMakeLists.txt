@@ -5,7 +5,7 @@ add_library(logic
 				entity/Ghost.cpp
 				entity/Character.cpp
         observer/Observer.cpp
-				observer/Event.h
+		utils/Event.h
         utils/JSONParser.cpp
         utils/Utils.h
         entity/Entity.cpp
@@ -17,11 +17,11 @@ add_library(logic
 				maze/MazeNode.cpp
 				maze/Maze.cpp
 				maze/Wall.cpp
-		State.cpp
+		state/State.cpp
 		entity/Coin.h
 		entity/Coin.cpp
 		entity/Fruit.cpp
-		PauseMenu.h
+		state/PauseState.h
 		entity/layout/Text.cpp
 		entity/layout/Text.h
 		../view/FontManager.h
@@ -30,5 +30,8 @@ add_library(logic
 		utils/FileWriter.h
 		Leaderboard.cpp
 		Leaderboard.h
+		utils/Visitor.h
+		utils/Event.cpp
+		state/GameOverState.cpp
 )
 

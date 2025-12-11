@@ -180,6 +180,11 @@ void Character::setDirection(Direction direction) {
   direction_ = direction;
 }
 
+void Character::goTo(std::shared_ptr<MazeNode> node) {
+  current_node_ = node;
+  updateTarget(direction_);
+}
+
 std::vector<Direction> Character::getPossibleDirections(NodePtr *node) const {
 
   std::vector<Direction> result = {};

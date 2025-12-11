@@ -16,6 +16,9 @@ public:
   void update() override {}
   void onCollision(Entity *other) override;
   EntityType getType() const override {return EntityType::Coin;}
+  CollisionBehavior getCollisionBehavior(EntityType type) const override {
+    return CollisionBehavior::CONSUMABLE;
+  };
 
 };
 
