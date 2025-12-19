@@ -9,7 +9,8 @@
 #include <utility>
 
 World::World(std::shared_ptr<AbstractFactory> factory,
-             std::weak_ptr<StateManager> state_manager, const unsigned int difficulty, unsigned int &lives_remaining)
+             std::weak_ptr<StateManager> state_manager,
+             const unsigned int difficulty, unsigned int &lives_remaining)
     : State(std::move(factory)), state_manager_(state_manager),
       difficulty_(difficulty), lives_remaining_(lives_remaining) {
   applyDifficulty(difficulty);
@@ -40,23 +41,6 @@ void World::createPlayer(std::shared_ptr<MazeNode> node) {
   player_ = factory_->createPlayer(std::move(node));
   entities_.push_back(player_);
   notifyObservers();
-}
-
-void World::placeGhostsFixedType(GhostType type) {
-  // To determine types, we simply cycle over the possible types
-  int NR_GHOSTS = 4;
-  int timeouts[4] = {0, 0, 5, 10};
-  int types_index = 0;
-  int timeouts_index = 0;
-  for (auto &node : Maze::getInstance()->ghost_nodes_) {
-    types_index = types_index % NR_GHOSTS;
-    timeouts_index = timeouts_index % 4;
-    auto ghost = factory_->createGhost(node, player_, type);
-    ghost->startTimeOut(timeouts[timeouts_index]);
-    addEntity(ghost);
-    types_index++;
-    timeouts_index++;
-  }
 }
 
 void World::placeGhosts() {
@@ -105,6 +89,7 @@ void World::displayScore() {
   score_display_ = factory_->createText({0.6, 0.95}, config);
 }
 
+// todo: single resp
 void World::makeDesign() {
   // Press SPACE to pause
   TextConfig config;
@@ -132,6 +117,7 @@ void World::applyDifficulty(int difficulty) {
   ghost_speed_ = Config::Ghost::SPEED + difficulty * (7);
   frightened_ghosts_duration_ = frightened_ghosts_duration_ - difficulty * 0.5;
 }
+
 void World::initialize() {
   try {
     verifyInit();
@@ -162,26 +148,23 @@ void World::cleanupEntities() {
 }
 
 void World::removeGhosts() {
-  for (const auto &entity: entities_) {
+  for (const auto &entity : entities_) {
     if (entity->getType() == EntityType::Ghost)
       entity->deactivate();
   }
-  for (const auto &entity: ghosts_) {
+  for (const auto &entity : ghosts_) {
     entity->deactivate();
   }
-
 }
 
 void World::removePlayer() {
   player_ = nullptr;
-  entities_.erase(
-    std::remove_if(entities_.begin(), entities_.end(),
-      [](const std::shared_ptr<Entity> &entity) {
-        return entity->getType() == EntityType::Player;
-      }),
-      entities_.end()
-      );
-
+  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
+                                 [](const std::shared_ptr<Entity> &entity) {
+                                   return entity->getType() ==
+                                          EntityType::Player;
+                                 }),
+                  entities_.end());
 }
 
 void World::unfrightenGhosts() {
@@ -201,7 +184,7 @@ void World::checkState() {
     frightened_ghosts_timer_ = nullptr;
     unfrightenGhosts();
   }
-  if (freeze_timer_  && freeze_timer_->done()) {
+  if (freeze_timer_ && freeze_timer_->done()) {
     freeze_timer_ = nullptr;
     freeze_ = false;
     continueLevel();
@@ -212,7 +195,8 @@ void World::checkState() {
 void World::update() {
   checkState();
   Stopwatch::getInstance()->update();
-  if (freeze_) return;
+  if (freeze_)
+    return;
   checkCollisions();
   cleanupEntities();
   updateAllEntities();
@@ -234,15 +218,10 @@ void World::continueLevel() {
   player_->deactivate();
   removePlayer();
   createPlayer(Maze::getInstance()->start_node_);
-  lives_remaining_ --;
+  lives_remaining_--;
 
   removeGhosts();
   placeGhosts();
-
-}
-void World::onPacmanDeath() {
-  // Reset ghosts
-  freeze(2);
 }
 
 void World::gameOver() {
@@ -252,6 +231,7 @@ void World::gameOver() {
 
 void World::victory() { state_manager_.lock()->onVictory(); }
 
+// todo refactor
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");
@@ -265,8 +245,8 @@ void World::checkCollisions() {
       continue;
 
     // No collision
-    auto collision_event= CollisionHandler::checkCollision(
-      entity.get(), player_.get());
+    auto collision_event =
+        CollisionHandler::checkCollision(entity.get(), player_.get());
     if (!collision_event)
       continue;
 
@@ -277,7 +257,6 @@ void World::checkCollisions() {
     collision_event->accept(*this);
   }
 }
-
 
 void World::updateAllEntities() {
   for (auto &e : entities_) {
@@ -296,21 +275,17 @@ void World::frightenGhosts() {
   frightened_ghosts_timer_ = timer;
 }
 
-// Visitor code
+/// Visitor function
+void World::visit(FruitEatenEvent &event) { frightenGhosts(); }
 
-void World::visit(FruitEatenEvent &event) {
-  frightenGhosts();
-}
+/// Visitor function
+void World::visit(CoinEatenEvent &event) {}
 
-void World::visit(CoinEatenEvent &event) {
-}
+/// Visitor function
+void World::visit(GhostEatenEvent &event) {}
 
-void World::visit(GhostEatenEvent &event) {
-}
+/// Visitor function
+void World::visit(FrightenGhostsEvent &event) {}
 
-void World::visit(FrightenGhostsEvent &event) {
-}
-
-void World::visit(PacmanDiesEvent &event) {
-  onPacmanDeath();
-}
+/// Visitor function
+void World::visit(PacmanDiesEvent &event) { freeze(2); }

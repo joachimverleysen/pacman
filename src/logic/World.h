@@ -5,9 +5,9 @@
 #include "../view/EntityFactory.h"
 #include "../view/view/EntityView.h"
 #include "Score.h"
-#include "state/State.h"
 #include "entity/Player.h"
 #include "maze/Maze.h"
+#include "state/State.h"
 #include "utils/Utils.h"
 #include <memory>
 #include <string>
@@ -19,7 +19,8 @@ using Seconds = float;
 class World : public State, public Visitor {
 public:
   World(std::shared_ptr<AbstractFactory> factory,
-        std::weak_ptr<StateManager> state_manager, unsigned int difficulty, unsigned int &lives_remaining);
+        std::weak_ptr<StateManager> state_manager, unsigned int difficulty,
+        unsigned int &lives_remaining);
 
   friend GameController;
 
@@ -49,6 +50,7 @@ private:
   std::shared_ptr<Timer> freeze_timer_{nullptr};
 
 public:
+  /// Removes inactive entities
   template <typename EntityT>
   void
   cleanUpEntities(std::vector<std::shared_ptr<EntityT>> &entity_container) {
@@ -74,6 +76,7 @@ public:
   }
 
 public:
+  /// Returns all active entities
   [[maybe_unused]] [[nodiscard]] const std::vector<std::shared_ptr<Entity>> &
   getEntities() const;
 
@@ -81,29 +84,34 @@ public:
 public:
   void initialize() override;
 
+  /// Makes the design (text, score etc.)
   void makeDesign();
 
+  /// Creates player at given node
   void createPlayer(std::shared_ptr<MazeNode> node);
 
-  void createScoreText();
-
+  /// Creates all wall units
   void createWall();
 
+  /// Displays the score
   void displayScore();
 
+  /// Places the ghosts according to the maze layout
   void placeGhosts();
 
+  /// Checks if world is properly initialized
   [[nodiscard]] bool verifyInit() const;
 
+  /// Places the coins according to the maze layout
   void placeCoins();
 
-  /// Update ///
-
+  /// Puts ghosts in frightened mode and starts timer
   void frightenGhosts();
 
-
+  /// Unfrightens ghosts (back to chase mode)
   void unfrightenGhosts();
 
+  /// Handles an action
   void handleAction(GameAction action) override;
 
   void visit(FruitEatenEvent &event) override;
@@ -114,39 +122,42 @@ public:
 
   void cleanupEntities();
 
+  /// Removes all ghosts from world
   void removeGhosts();
 
+  /// Removes player
   void removePlayer();
 
+  /// On game over
   void gameOver();
 
+  /// Checks if current state results in victory/gameover/death/end of
+  /// frightened
   void checkState();
 
+  /// Checks all entity collisions and handles them
   void checkCollisions();
-
-  void onPlayerCollision(EntityType entity_type);
 
   void updateAllEntities();
 
   void update() override;
 
+  /// Freezes the screen
   void freeze(int seconds);
 
+  /// Continues the level by resetting player's and ghost's positions
   void continueLevel();
 
-  void onPacmanDeath();
-
+  /// On victory
   void victory();
 
+  /// Places fruits according to the maze layout
   void placeFruits();
-
-  void placeGhostsFixedType(GhostType type);
 
   StateNS::Type getType() const override { return StateNS::Type::WORLD; }
 
+  /// Applies difficulty to world settings
   void applyDifficulty(int difficulty);
-
-  void updateScoreDisplay();
 };
 
 #endif // WORLD_H

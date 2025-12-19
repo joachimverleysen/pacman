@@ -17,16 +17,18 @@ public:
 
   Player(NodePtr node, float width, float height);
 
+  /// On collision
   void onCollision(Entity *other) override;
 
+  /// When I die
   void onDeath();
 
   [[nodiscard]] EntityType getType() const override;
 
   void move(float offset);
 
+  /// Returns behavior on collision
   CollisionBehavior getCollisionBehavior(EntityType type) const override;
-
 };
 
 #endif // PLAYER_H

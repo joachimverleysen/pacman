@@ -1,6 +1,0 @@
-<map id="EntityView" name="EntityView">
-<area shape="rect" id="node1" title=" " alt="" coords="53,80,145,107"/>
-<area shape="rect" id="node3" href="$classTextView.html" title=" " alt="" coords="5,155,87,181"/>
-<area shape="rect" id="node4" href="$classWallView.html" title=" " alt="" coords="111,155,194,181"/>
-<area shape="rect" id="node2" href="$classObserver.html" title=" " alt="" coords="59,5,140,32"/>
-</map>

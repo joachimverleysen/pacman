@@ -1,12 +1,12 @@
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
 
-#include <stack>
-#include <memory>
-#include <functional>
-#include <SFML/Window/Event.hpp>
-#include <map>
 #include "../../logic/utils/Utils.h"
+#include <SFML/Window/Event.hpp>
+#include <functional>
+#include <map>
+#include <memory>
+#include <stack>
 
 class StateView;
 class State;
@@ -16,6 +16,8 @@ using Action = std::function<void()>;
 using EventMap = std::map<sf::Keyboard::Key, Action>;
 using namespace Utils;
 
+// todo single resp
+// todo more documentation
 class StateManager {
 
   std::stack<std::shared_ptr<StateView>> state_views_;
@@ -34,13 +36,13 @@ public:
   [[nodiscard]] std::shared_ptr<StateView> getCurrentStateView() const;
   void updateCurrentState();
 
-  void pushState(const std::shared_ptr<State>& state);
+  void pushState(const std::shared_ptr<State> &state);
 
   bool empty() const;
 
   std::shared_ptr<State> getCurrentState() const;
 
-
+  /// Workaround to get a weak pointer to <this>
   void setPtrToThis(const std::weak_ptr<StateManager> &ptrToThis);
 
   void setFactory(const std::shared_ptr<EntityFactory> &factory);
@@ -72,5 +74,4 @@ public:
   void onPacmanDeath();
 };
 
-
-#endif //PACMAN_STATEMANAGER_H
+#endif // PACMAN_STATEMANAGER_H

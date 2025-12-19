@@ -24,8 +24,9 @@ public:
 
   void removeView(std::weak_ptr<EntityView>);
 
-  void render(const std::weak_ptr<StateView>& weakPtr);
+  void render(const std::weak_ptr<StateView> &weakPtr);
 
-  void updateViews(const std::weak_ptr<StateView>& state_view);
+  /// Removes inactive views
+  void updateViews(const std::weak_ptr<StateView> &state_view);
 };
 #endif // !RENDERER_H

@@ -21,7 +21,6 @@ protected:
 
   bool overshotTarget() const;
 
-
   void updateDirection(Direction direction);
 
 public:
@@ -29,30 +28,41 @@ public:
   ~Character() override = default;
 
 public:
+  /// Updates target node
   bool updateTarget(Direction direction);
 
   void update() override;
 
+  /// Stops moving
   void stop();
 
+  /// Starts moving
   void startMove();
 
   void reverseDirection();
 
+  /// Returns direction towards current target
   [[nodiscard]] Direction getTargetDirection() const;
 
+  /// Sets direction
   void setDirection(Direction direction);
 
+  /// takes some node as current
   void goTo(std::shared_ptr<MazeNode> node);
 
+  /// Takes target as current
   void takeTarget();
 
+  /// Sets target node
   void setTarget(NodePtr target);
 
+  /// Finds any target node
   bool findAnyTarget();
 
+  /// Returns all viable directions
   std::vector<Direction> getPossibleDirections(NodePtr *node) const;
 
+  /// True if I can teleport
   bool portalCheck();
 
   Direction getDirection() const;

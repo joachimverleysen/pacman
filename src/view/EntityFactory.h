@@ -33,7 +33,7 @@ public:
       : state_manager_(state_manager) {}
 
   // Layout
-  std::shared_ptr<Text> createText(MyVector vec, TextConfig &config);
+  std::shared_ptr<Text> createText(MyVector vec, TextConfig &config) override;
 
   // Entity
   std::shared_ptr<Player> createPlayer(NodePtr) override;
@@ -51,6 +51,7 @@ public:
 
   void addView(const std::shared_ptr<EntityView> &view);
 
+  /// Creates entity and attaches appropriate view as observer
   template <typename EntityT, typename ViewT, typename... Args>
   std::shared_ptr<EntityT> createEntityWithView(Args &&...args) {
     std::shared_ptr<EntityT> entity =

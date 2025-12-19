@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <memory>
 
 struct Timer {
   Timer(float mili) : seconds(mili) {}
@@ -22,6 +23,7 @@ public:
   Stopwatch(const Stopwatch &) = delete;
   Stopwatch &operator=(const Stopwatch &) = delete;
 
+  /// Singleton
   static Stopwatch *getInstance() {
     if (!instance_) {
       instance_ = new Stopwatch();
@@ -29,11 +31,14 @@ public:
     return instance_;
   }
 
+  /// Returns delta time (time between last time and now)
   float getDeltaTime();
 
+  /// Creates a timer
   std::shared_ptr<Timer> getNewTimer(float seconds);
   void update();
 
+  /// Caps the framerate
   void capFramerate(float max_fps);
 
 private:

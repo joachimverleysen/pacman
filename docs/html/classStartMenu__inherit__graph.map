@@ -1,5 +1,0 @@
-<map id="StartMenu" name="StartMenu">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,95,181"/>
-<area shape="rect" id="node2" href="$classState.html" title=" " alt="" coords="22,80,78,107"/>
-<area shape="rect" id="node3" href="$classSubject.html" title=" " alt="" coords="15,5,85,32"/>
-</map>

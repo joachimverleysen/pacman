@@ -21,7 +21,8 @@ private:
 
 public:
   std::vector<MazePosition> wall_positions_{};
-  std::vector<std::pair<Portal, Portal>> portal_pairs_{};  // maps the index to the 2 locations
+  std::vector<std::pair<Portal, Portal>>
+      portal_pairs_{}; // maps the index to the 2 locations
   Maze(const Maze &) = delete;
   Maze &operator=(const Maze &) = delete;
 
@@ -48,23 +49,40 @@ public:
   float getCellWidth() const;
   float getCellHeight() const;
   NodePtr addNode(unsigned int row, unsigned int column);
-  Neighbours findAllNeighbors(unsigned int row, unsigned int column, EntityType etype);
 
+  /// Returns list of neighbour nodes wrt the given position
+  Neighbours findAllNeighbors(unsigned int row, unsigned int column,
+                              EntityType etype);
+
+  /// Returns the char at position
   char at(unsigned int row, unsigned int column) const;
+
+  /// Nullptr if there's no node there
   NodePtr getNode(unsigned int row, unsigned int column) const;
 
+  /// Converter: maze pos to world pos
   MyVector
   getWorldPosition(unsigned int row,
                    unsigned int column) const; // Returns center of the 'square'
+                                               //
+                                               /// True if row/column in range
   bool inGridRange(unsigned int row, unsigned int column) const;
 
-
+  /// Adds a portal
   void addPortal(unsigned int row, unsigned int col, int index);
 
-  std::optional<MazePosition> findPortal(unsigned int row, unsigned int col) const;
+  /// NULLOPT if there's no portal there
+  std::optional<MazePosition> findPortal(unsigned int row,
+                                         unsigned int col) const;
 
-  NodePtr findNeighbor(unsigned int row, unsigned int column, Direction direction, EntityType etype=EntityType::Ghost) const;
+  /// Finds neighbour in direction wrt the position row/column
+  NodePtr findNeighbor(unsigned int row, unsigned int column,
+                       Direction direction,
+                       EntityType etype = EntityType::Ghost) const;
 
-  std::vector<Direction> getPossibleDirections(NodePtr node, EntityType etype=EntityType::Ghost) const;
+  /// Returns all viable directions
+  std::vector<Direction>
+  getPossibleDirections(NodePtr node,
+                        EntityType etype = EntityType::Ghost) const;
 };
 #endif // !MAZE_H

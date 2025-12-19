@@ -20,6 +20,7 @@ struct TextureConfig {
 
 class TextureManager {
 public:
+  /// Returns existing or newly loaded texture
   static const sf::Texture *getTexture(const std::string &textureFile,
                                        const sf::IntRect &area) {
     static std::map<TextureConfig, sf::Texture> textures;

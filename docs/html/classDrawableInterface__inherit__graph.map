@@ -1,6 +1,0 @@
-<map id="DrawableInterface" name="DrawableInterface">
-<area shape="rect" id="node1" title=" " alt="" coords="144,5,287,32"/>
-<area shape="rect" id="node2" href="$classShapeDrawable.html" title=" " alt="" coords="5,80,129,107"/>
-<area shape="rect" id="node3" href="$classSpriteDrawable.html" title=" " alt="" coords="154,80,277,107"/>
-<area shape="rect" id="node4" href="$classTextDrawable.html" title=" " alt="" coords="301,80,412,107"/>
-</map>

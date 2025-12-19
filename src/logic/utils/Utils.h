@@ -2,9 +2,9 @@
 #define PACMAN_UTILS_H
 
 // Type defs
+#include "MyVector.h"
 #include <optional>
 #include <string>
-#include "MyVector.h"
 
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
@@ -16,36 +16,39 @@ enum class GameAction {
   MOVE_RIGHT,
   MOVE_UP,
   MOVE_DOWN,
-  NONE, VICTORY
+  NONE,
+  VICTORY
 };
 
 namespace MyFont {
 inline std::string LIBER = "assets/font/liber.ttf";
-inline std::string PACFONT= "assets/font/Pacfont.ttf";
-}
+inline std::string PACFONT = "assets/font/Pacfont.ttf";
+} // namespace MyFont
 namespace Utils {
 // State
 namespace StateNS {
-enum class Type {WORLD, PAUSE, GAME_OVER, VICTORY, STARTMENU};
+enum class Type { WORLD, PAUSE, GAME_OVER, VICTORY, STARTMENU };
 enum class Action {};
-}
+} // namespace StateNS
 
-inline MyVector positionAfterMove(MyVector pos, Direction direction, float offset) {
+/// Returns the positoin after moving with <offset>
+inline MyVector positionAfterMove(MyVector pos, Direction direction,
+                                  float offset) {
   switch (direction) {
-    case Direction::LEFT:
-      pos.x -= offset;
-      break;
-    case Direction::RIGHT:
-      pos.x += offset;
-      break;
-    case Direction::UP:
-      pos.y += offset;
-      break;
-    case Direction::DOWN:
-      pos.y -= offset;
-      break;
-    case Direction::NONE:
-      break;
+  case Direction::LEFT:
+    pos.x -= offset;
+    break;
+  case Direction::RIGHT:
+    pos.x += offset;
+    break;
+  case Direction::UP:
+    pos.y += offset;
+    break;
+  case Direction::DOWN:
+    pos.y -= offset;
+    break;
+  case Direction::NONE:
+    break;
   }
   return pos;
 }
@@ -68,16 +71,16 @@ inline Direction getReverseDirection(Direction direction) {
 } // namespace Utils
 inline Direction getDirection(int num) {
   switch (num) {
-    case 0:
-      return Direction::LEFT;
-    case 1:
-      return Direction::RIGHT;
-    case 2:
-      return Direction::UP;
-    case 3:
-      return Direction::DOWN;
-    case 4:
-      return Direction::NONE;
+  case 0:
+    return Direction::LEFT;
+  case 1:
+    return Direction::RIGHT;
+  case 2:
+    return Direction::UP;
+  case 3:
+    return Direction::DOWN;
+  case 4:
+    return Direction::NONE;
   }
   return Direction::LEFT;
 }

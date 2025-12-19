@@ -3,9 +3,9 @@
 
 #include "../../logic/entity/Entity.h"
 #include "../../logic/observer/Observer.h"
-#include "SpriteDrawable.h"
 #include "../TextureManager.h"
 #include "../Visuals.h"
+#include "SpriteDrawable.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Window.hpp>
 #include <iostream>
@@ -39,8 +39,10 @@ public:
 
   void setPosition(MyVector &position);
 
+  /// Fetches position from corresponding entity
   void updatePosition();
 
+  /// Pushes this view to the foreground of the scene
   void pushToForeground();
 
   [[nodiscard]] bool isForeGround() const;

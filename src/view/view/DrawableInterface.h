@@ -11,6 +11,7 @@ protected:
   Entity::Mode mode_{Entity::Mode::NORMAL};
 
 public:
+  // todo docs
   virtual void draw(sf::RenderWindow &window) = 0;
   virtual void setPosition(MyVector pos) = 0;
   virtual void updateState(Entity::State state) = 0;

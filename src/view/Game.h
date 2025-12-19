@@ -35,7 +35,9 @@ private:
 public:
   Game();
 
+  /// Makes everything ready
   void setup();
+
   void run();
 
   void update();
