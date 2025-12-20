@@ -76,7 +76,7 @@ inline void MenuState::displayLeaderboard() {
   entry_config.fill_color = {255, 0, 0};
   entry_config.outline_thickness = 0;
   entry_config.character_size = 20;
-  for (const auto entry : Leaderboard::getInstance()->getScores()) {
+  for (const auto entry : Leaderboard::getInstance()->getEntries()) {
     entry_config.text =
       std::to_string(index) + ". " + std::to_string(entry);
     auto text = factory_->createText({0, start_y - index * offset_y}, entry_config);
