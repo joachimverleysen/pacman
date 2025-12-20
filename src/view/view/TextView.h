@@ -18,7 +18,7 @@ public:
 
   void setText(const std::string &text) { text_drawable_->setText(text); }
 
-  void update() override { setText(text_entity_.lock()->getText()); }
+  void update() override { setText(text_entity_.lock()->getString()); }
 
   void draw(sf::RenderWindow& window) override { text_drawable_->draw(window);}
 

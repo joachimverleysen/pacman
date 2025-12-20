@@ -33,10 +33,13 @@ public:
 
   EntityView(std::weak_ptr<Entity> entity);
 
+  /// General update
   void update() override;
 
+  /// Draws view on window
   virtual void draw(sf::RenderWindow &window);
 
+  /// Sets position
   void setPosition(MyVector &position);
 
   /// Fetches position from corresponding entity
@@ -45,6 +48,7 @@ public:
   /// Pushes this view to the foreground of the scene
   void pushToForeground();
 
+  /// True if this view is on the foreground of the 'scene'
   [[nodiscard]] bool isForeGround() const;
 };
 

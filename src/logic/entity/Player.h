@@ -1,14 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../../configure/constants.h"
 #include "../utils/Utils.h"
 #include "Character.h"
-#include "iostream"
 #include <future>
 
 class GameController;
-class MazeNode;
+struct MazeNode;
+
 typedef std::shared_ptr<MazeNode> NodePtr;
 
 class Player : public Character {
@@ -20,12 +19,7 @@ public:
   /// On collision
   void onCollision(Entity *other) override;
 
-  /// When I die
-  void onDeath();
-
   [[nodiscard]] EntityType getType() const override;
-
-  void move(float offset);
 
   /// Returns behavior on collision
   CollisionBehavior getCollisionBehavior(EntityType type) const override;

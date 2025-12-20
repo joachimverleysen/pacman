@@ -13,7 +13,6 @@ public:
   friend Maze;
 
 public:
-  // Wall(unsigned int row, unsigned int column);
   Wall(std::vector<MazePosition> &positions);
 
   std::vector<MazePosition> getPositions() const;

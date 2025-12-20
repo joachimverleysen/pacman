@@ -19,8 +19,10 @@ protected:
 protected:
   void move();
 
+  /// True if Pacman crossed his target node
   bool overshotTarget() const;
 
+  /// Sets a new direction and updates the state accordingly
   void updateDirection(Direction direction);
 
 public:
@@ -31,6 +33,7 @@ public:
   /// Updates target node
   bool updateTarget(Direction direction);
 
+  /// General update
   void update() override;
 
   /// Stops moving
@@ -57,7 +60,7 @@ public:
   void setTarget(NodePtr target);
 
   /// Finds any target node
-  bool findAnyTarget();
+  virtual bool findAnyTarget();
 
   /// Returns all viable directions
   std::vector<Direction> getPossibleDirections(NodePtr *node) const;
@@ -65,8 +68,10 @@ public:
   /// True if I can teleport
   bool portalCheck();
 
+  /// Returns current direction
   Direction getDirection() const;
 
+  /// Sets new speed
   void setSpeed(float speed);
 };
 

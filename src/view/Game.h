@@ -2,14 +2,9 @@
 #define GAME_H
 
 #include "../logic/World.h"
-#include "../logic/maze/Maze.h"
-#include "../logic/observer/Observer.h"
-#include "../logic/utils/Stopwatch.h"
 #include "../view/controller/GameController.h"
 #include "Renderer.h"
 #include "state/StateManager.h"
-#include "view/EntityView.h"
-#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
@@ -38,16 +33,22 @@ public:
   /// Makes everything ready
   void setup();
 
+  /// General run
   void run();
 
+  /// General update
   void update();
 
+  /// Handles specific event, e.g. Victory, Game Over etc.
   void handleEvent(const sf::Event &event);
 
+  /// Handles user input
   void handleInput();
 
+  /// Closes the game/window
   void close();
 
+  /// Updates current state, e.g. VictoryState, GameOverState etc.
   void updateState();
 };
 

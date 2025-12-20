@@ -1,5 +1,6 @@
 #include "Random.h"
-#include <initializer_list>
+
+#include <chrono>
 #include <iostream>
 #include <stdexcept>
 

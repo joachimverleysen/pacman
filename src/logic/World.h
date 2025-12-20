@@ -45,7 +45,7 @@ private:
   std::shared_ptr<Text> score_display_;
 
 private:
-  Seconds frightened_ghosts_duration_{Config::Ghost::FREIGHTENED_DURATION};
+  Seconds frightened_ghosts_duration_{Config::Ghost::FRIGHTENED_DURATION};
   std::shared_ptr<Timer> frightened_ghosts_timer_{nullptr};
   std::shared_ptr<Timer> freeze_timer_{nullptr};
 

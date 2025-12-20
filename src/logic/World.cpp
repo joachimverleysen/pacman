@@ -201,7 +201,7 @@ void World::update() {
   cleanupEntities();
   updateAllEntities();
   int score = Score::getInstance()->getValue();
-  score_display_->setText("Score: " + std::to_string(score));
+  score_display_->setString("Score: " + std::to_string(score));
 }
 
 void World::freeze(int seconds) {
@@ -275,17 +275,12 @@ void World::frightenGhosts() {
   frightened_ghosts_timer_ = timer;
 }
 
-/// Visitor function
 void World::visit(FruitEatenEvent &event) { frightenGhosts(); }
 
-/// Visitor function
 void World::visit(CoinEatenEvent &event) {}
 
-/// Visitor function
 void World::visit(GhostEatenEvent &event) {}
 
-/// Visitor function
 void World::visit(FrightenGhostsEvent &event) {}
 
-/// Visitor function
 void World::visit(PacmanDiesEvent &event) { freeze(2); }

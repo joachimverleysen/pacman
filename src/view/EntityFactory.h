@@ -32,24 +32,29 @@ public:
   explicit EntityFactory(std::weak_ptr<StateManager> state_manager)
       : state_manager_(state_manager) {}
 
-  // Layout
+  /// Creates text object
   std::shared_ptr<Text> createText(MyVector vec, TextConfig &config) override;
 
-  // Entity
+  /// Creates player
   std::shared_ptr<Player> createPlayer(NodePtr) override;
 
+  /// Creates wall
   std::shared_ptr<Wall>
   createWall(std::vector<MazePosition> &positions) override;
 
+  /// Creates ghost
   std::shared_ptr<Ghost> createGhost(NodePtr node,
                                      std::shared_ptr<Player> player,
                                      GhostType type) override;
 
+  /// Creates coin
   std::shared_ptr<Coin> createCoin(MazePosition pos) override;
 
+  /// Creates fruit
   std::shared_ptr<Fruit> createFruit(MazePosition pos) override;
 
-  void addView(const std::shared_ptr<EntityView> &view);
+  /// Creates adds a view to the state manager
+  void addView(const std::shared_ptr<EntityView> &view) const;
 
   /// Creates entity and attaches appropriate view as observer
   template <typename EntityT, typename ViewT, typename... Args>
@@ -70,6 +75,7 @@ public:
   std::unique_ptr<DrawableInterface> createDrawableFor();
 };
 
+/// Creates drawable for Pacman
 template <>
 inline std::unique_ptr<DrawableInterface>
 EntityFactory::createDrawableFor<Player>() {
@@ -79,6 +85,7 @@ EntityFactory::createDrawableFor<Player>() {
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
+/// Creates drawable for ghost
 template <>
 inline std::unique_ptr<DrawableInterface>
 EntityFactory::createDrawableFor<Ghost>() {
@@ -88,6 +95,7 @@ EntityFactory::createDrawableFor<Ghost>() {
   return std::make_unique<SpriteDrawable>(texture_map, Config::Player::SCALE);
 }
 
+/// Creates drawable for wall
 template <>
 inline std::unique_ptr<DrawableInterface>
 EntityFactory::createDrawableFor<Wall>() {
@@ -98,6 +106,7 @@ EntityFactory::createDrawableFor<Wall>() {
   return std::make_unique<ShapeDrawable>(std::move(rect));
 }
 
+/// Creates drawable for coin
 template <>
 inline std::unique_ptr<DrawableInterface>
 EntityFactory::createDrawableFor<Coin>() {
@@ -107,6 +116,7 @@ EntityFactory::createDrawableFor<Coin>() {
   return std::make_unique<ShapeDrawable>(std::move(rect));
 }
 
+/// Creates drawable for fruit
 template <>
 inline std::unique_ptr<DrawableInterface>
 EntityFactory::createDrawableFor<Fruit>() {

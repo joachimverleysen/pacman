@@ -1,9 +1,7 @@
 #include "Game.h"
-#include "../logic/utils/FileWriter.h"
 #include "../configure/constants.h"
 #include "../logic/maze/Maze.h"
 #include "Renderer.h"
-#include "../logic/utils/FileReader.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/WindowStyle.hpp>
 #include <fstream>

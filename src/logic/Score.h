@@ -25,14 +25,14 @@ public:
     return instance_;
   }
 
-  /// Handles event
-  void handle(FruitEatenEvent &event);
-
   /// Resets score value
   void reset();
 
+  /// General update
   void update();
 
+  /// Visitor function to modify score based on payload in event object
+  /// idem for the other 'visit' functions
   void visit(CoinEatenEvent &event) override;
 
   void visit(FruitEatenEvent &event) override;
@@ -43,7 +43,8 @@ public:
 
   void visit(FrightenGhostsEvent &event) override;
 
-  const int getValue() const { return value_; }
+  /// Returns current score value
+  int getValue() const { return value_; }
 
   /// Writes score to leaderboard
   void writeScoreToLeaderboard() const;

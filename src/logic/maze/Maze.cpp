@@ -9,9 +9,23 @@
 
 Maze *Maze::instance_ = nullptr;
 
+/// Load the grid to initialize the Maze.
+/// The grid is the literal representation of the input file, that is, a map of chars
 void Maze::loadGrid(Grid &grid) {
   // Numbers are for portals
-  // Corresponding number pairs are corresponding portals
+  // A pair of identical numbers represents a portal pair
+
+  // W (wall)
+  // . (path)
+  // + (regular node)
+  // S (player start node)
+  // G (ghost start node)
+  // c (coin)
+  // C (coin AND node)
+  // f (fruit)
+  // F (fruit AND node)
+  // 1 (portal node)
+  // h ('ghost home' node)
   std::set<char> chars = {'+', 'S', '.', 'W', 'G', 'c',
                           'C', '1', 'h', 'f', 'F'};
   grid_ = grid;
@@ -19,6 +33,7 @@ void Maze::loadGrid(Grid &grid) {
   node_map_ = std::vector<std::vector<NodePtr>>(
       grid.size(), std::vector<NodePtr>(grid[0].size(), nullptr));
   // Add nodes to node map
+
   std::set<char> node_chars = {'+', 'S', 'G', 'C', 'F', '1', 'h'};
   for (int i = 0; i < grid.size(); i++) {
     const auto &vec = grid_[i];
@@ -173,16 +188,19 @@ std::vector<Direction> Maze::getPossibleDirections(NodePtr node,
   return result;
 }
 
+/// Returns the char at the given position in the input file of the maze
 char Maze::at(unsigned int row, unsigned int column) const {
   if (inGridRange(row, column))
     return grid_[row][column];
   return '0';
 }
 
+/// Returns the node pointer at the given position or nullptr
 NodePtr Maze::getNode(unsigned int row, unsigned int column) const {
   return node_map_[row][column];
 }
 
+/// Converts a discrete maze position to a continuous world position
 MyVector Maze::getWorldPosition(unsigned int row, unsigned int column) const {
   // World is bounded between -1 and +1, so width = 2.0
   float cell_width = 2.0 / getXunits();
@@ -192,10 +210,13 @@ MyVector Maze::getWorldPosition(unsigned int row, unsigned int column) const {
   return MyVector{x_center, y_center};
 }
 
+/// Returns the height off a grid cell/maze cell
 float Maze::getCellHeight() const { return 2.0 / getYunits(); }
 
+/// Returns the width off a grid cell/maze cell
 float Maze::getCellWidth() const { return 2.0 / getXunits(); }
 
+/// Places a portal at the given position (only works if it has a friend portal)
 void Maze::addPortal(unsigned int row, unsigned int col, int index) {
   for (auto &p : portal_pairs_) {
     if (p.first.index == index && p.second.index == index)

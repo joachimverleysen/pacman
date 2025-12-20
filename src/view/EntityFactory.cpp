@@ -1,7 +1,6 @@
 #include "EntityFactory.h"
 #include "../logic/utils/Camera.h"
 #include "view/EntityView.h"
-#include "SFML/Graphics/RectangleShape.hpp"
 #include "view/ShapeDrawable.h"
 #include "view/WallView.h"
 #include "view/TextView.h"
@@ -65,7 +64,7 @@ std::shared_ptr<Fruit> EntityFactory::createFruit(MazePosition pos) {
   return EntityFactory::createEntityWithView<Fruit, EntityView>(pos);
 }
 
-void EntityFactory::addView(const std::shared_ptr<EntityView>& view) {
+void EntityFactory::addView(const std::shared_ptr<EntityView>& view) const {
   auto &vec = state_manager_.lock()->getCurrentStateView()->views_;
   vec.push_back(view);
 }
