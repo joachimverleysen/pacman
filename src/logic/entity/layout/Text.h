@@ -6,18 +6,21 @@
 
 class Text : public Entity{
 
-  std::string text_;
+  std::string string_;
 public:
-  explicit Text(const std::string &text) : text_(text) {};
+  explicit Text(const std::string &text) : string_(text) {};
 
+  /// General update
   void update() override {
     notifyObservers();
   }
 
+  /// Handles entity collision (unused)
   void onCollision(Entity *other) override {
 
   }
 
+  /// Returns entity type
   EntityType getType() const override {
     return EntityType::Ghost;
   }
@@ -30,19 +33,26 @@ public:
     Entity::deactivate();
   }
 
+  /// Returns position
   MyVector getPosition() const override {
     return Entity::getPosition();
   }
 
-  void setText(const std::string& text) {
-    text_ = text;
+  /// sets string
+  void setString(const std::string& text) {
+    string_ = text;
     update();
   }
 
-  const std::string getText() const {
-    return text_;
+  /// sets string
+  const std::string getString() const {
+    return string_;
   };
-};
 
+  /// returns collision behavior (unused)
+  CollisionBehavior getCollisionBehavior(EntityType type) const override {
+    return CollisionBehavior::NONE;
+  }
+};
 
 #endif //PACMAN_TEXT_H

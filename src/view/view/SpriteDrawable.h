@@ -1,6 +1,6 @@
 #ifndef SPRITE_DRAWABLE_H
 #include "../../logic/utils/MyVector.h"
-#include "../Visuals.h"
+#include "../graphics/Visuals.h"
 #include "DrawableInterface.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

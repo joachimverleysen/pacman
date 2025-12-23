@@ -27,7 +27,7 @@ void Stopwatch::updateTimers() {
   // Remove timers that are finished
   timers_.erase(std::remove_if(timers_.begin(), timers_.end(),
                                [](const std::shared_ptr<Timer> &timer) {
-                                  return timer->seconds <= 0;
+                                  return timer->miliseconds <= 0;
                               }),
 
                 timers_.end()

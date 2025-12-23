@@ -3,12 +3,13 @@
 #include <utility>
 #include "StateView.h"
 #include "../EntityFactory.h"
-#include "../../logic/GameOverScreen.h"
+#include "../../logic/state/GameOverState.h"
 #include "../../logic/World.h"
-#include "../../logic/StartMenu.h"
-#include "../../logic/PauseMenu.h"
-#include "../../logic/VictoryScreen.h"
+#include "../../logic/state/MenuState.h"
+#include "../../logic/state/PauseState.h"
+#include "../../logic/state/VictoryState.h"
 
+// todo state manager is not responsible for difficulty and lives?
 void StateManager::initialize() {
   if (ptr_to_this_.lock() == nullptr) {
     throw std::runtime_error("State manager in invalid state");
@@ -62,7 +63,7 @@ std::shared_ptr<State> StateManager::getCurrentState() const {
 }
 
 void StateManager::pushPauseState() {
-  auto state = std::make_shared<PauseMenu>(factory_);
+  auto state = std::make_shared<PauseState>(factory_);
   pushState(state);
 }
 
@@ -76,19 +77,20 @@ void StateManager::updateCurrentState() {
 }
 
 void StateManager::loadNewLevel(const std::weak_ptr<StateManager> &ptr_to_this) {
-  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this, difficulty_);
+  std::shared_ptr<World> world = std::make_shared<World>(factory_, dispatcher_, ptr_to_this, difficulty_, lives_remaining_);
   pushState(world);
   difficulty_++;
 }
 
 void StateManager::pushStartMenu(std::shared_ptr<StateManager> ptr_to_this) {
-  std::shared_ptr<StartMenu> startmenu = std::make_shared<StartMenu>(factory_, ptr_to_this);
+  std::shared_ptr<MenuState> startmenu = std::make_shared<MenuState>(factory_, ptr_to_this);
   pushState(startmenu);
 }
 void StateManager::onGameOver() {
  state_views_.pop();
  pushGameOverState();
  difficulty_ = 1;
+  lives_remaining_ = 3;
  Score::getInstance()->reset();
 }
 
@@ -97,15 +99,18 @@ void StateManager::onVictory() {
   pushVictoryState();
 }
 
+void StateManager::onPacmanDeath() {
+}
+
 void StateManager::pushGameOverState() {
-  std::shared_ptr<GameOverScreen> state = std::make_shared<GameOverScreen>(factory_);
+  std::shared_ptr<GameOverState> state = std::make_shared<GameOverState>(factory_);
   std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
   state_views_.push(view);
   getCurrentState()->initialize();
 }
 
 void StateManager::pushVictoryState() {
-  std::shared_ptr<VictoryScreen> state = std::make_shared<VictoryScreen>(factory_);
+  std::shared_ptr<VictoryState> state = std::make_shared<VictoryState>(factory_);
   std::shared_ptr<StateView> view = std::make_shared<StateView>(state);
   state_views_.push(view);
   getCurrentState()->initialize();
@@ -128,6 +133,10 @@ StateManager::StateManager() {
 
 void StateManager::setFactory(const std::shared_ptr<EntityFactory> &factory) {
   factory_ = factory;
+}
+
+void StateManager::setDispatcher(const std::shared_ptr<AbstractDispatcher> &dispatcher) {
+  dispatcher_ = dispatcher;
 }
 
 std::shared_ptr<EntityFactory> StateManager::getFactory() const {

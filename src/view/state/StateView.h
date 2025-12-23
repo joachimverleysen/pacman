@@ -1,7 +1,7 @@
 #ifndef PACMAN_STATEVIEW_H
 #define PACMAN_STATEVIEW_H
 
-#include "../../logic/State.h"
+#include "../../logic/state/State.h"
 #include <memory>
 
 class EntityView;

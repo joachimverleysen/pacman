@@ -90,6 +90,8 @@ public:
 
   [[nodiscard]] float getCenterX() const;
   float getCenterY() const;
+
+  virtual CollisionBehavior getCollisionBehavior(EntityType type) const = 0;
 };
 
 #endif // ENTITY_H

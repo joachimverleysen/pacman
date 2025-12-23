@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "EntityFactory.h"
-#include "view/EntityView.h"
+#include "../EntityFactory.h"
+#include "../view/EntityView.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 #include <vector>
@@ -24,8 +24,9 @@ public:
 
   void removeView(std::weak_ptr<EntityView>);
 
-  void render(const std::weak_ptr<StateView>& weakPtr);
+  void render(const std::weak_ptr<StateView> &weakPtr);
 
-  void updateViews(const std::weak_ptr<StateView>& state_view);
+  /// Removes inactive views
+  void updateViews(const std::weak_ptr<StateView> &state_view);
 };
 #endif // !RENDERER_H

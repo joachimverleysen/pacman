@@ -1,10 +1,9 @@
 #include "Renderer.h"
-#include "state/StateView.h"
+#include "../state/StateView.h"
 #include <memory>
 #include <stdexcept>
 
 // Renderer is a friend of EntityFactory.
-
 
 void Renderer::updateViews(const std::weak_ptr<StateView>& state_view) {
   for (auto &v : state_view.lock()->views_) {

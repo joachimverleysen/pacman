@@ -1,19 +1,24 @@
 #include "World.h"
-#include "observer/Event.h"
+#include "utils/Event.h"
 
 #include "../configure/constants.h"
 #include "../view/state/StateManager.h"
+#include "Leaderboard.h"
 #include "utils/CollisionHandler.h"
 #include "utils/Stopwatch.h"
-#include "Leaderboard.h"
 #include <utility>
 
+#include "utils/AbstractDispatcher.h"
+
+
+// todo refactor IDE recommendations
+
 World::World(std::shared_ptr<AbstractFactory> factory,
-             std::weak_ptr<StateManager> state_manager, unsigned int difficulty)
-    : State(std::move(factory)),
-      state_manager_(state_manager),
-      difficulty_(difficulty)
-      {
+             std::shared_ptr<AbstractDispatcher> dispatcher,
+             std::weak_ptr<StateManager> state_manager,
+             const unsigned int difficulty, unsigned int &lives_remaining)
+    : State(std::move(factory), std::move(dispatcher)), state_manager_(state_manager),
+      difficulty_(difficulty), lives_remaining_(lives_remaining) {
   applyDifficulty(difficulty);
 }
 
@@ -41,24 +46,6 @@ void World::handleAction(GameAction action) {
 void World::createPlayer(std::shared_ptr<MazeNode> node) {
   player_ = factory_->createPlayer(std::move(node));
   entities_.push_back(player_);
-  notifyObservers();
-}
-
-void World::placeGhostsFixedType(GhostType type) {
-  // To determine types, we simply cycle over the possible types
-  int NR_GHOSTS = 4;
-  int timeouts[4] = {0, 0, 5, 10};
-  int types_index = 0;
-  int timeouts_index = 0;
-  for (auto &node : Maze::getInstance()->ghost_nodes_) {
-    types_index = types_index % NR_GHOSTS;
-    timeouts_index = timeouts_index % 4;
-    auto ghost = factory_->createGhost(node, player_, type);
-    ghost->startTimeOut(timeouts[timeouts_index]);
-    addEntity(ghost);
-    types_index++;
-    timeouts_index++;
-  }
 }
 
 void World::placeGhosts() {
@@ -100,16 +87,14 @@ void World::createWall() {
   entities_.push_back(wall_);
 }
 
-// todo: score should be created elsewhere.
-// display should be attached to that score here.
-// Only display belongs to world, not score
-void World::createScore() {
+void World::displayScore() {
   TextConfig config;
   config.text = "Score: 0";
   config.font = MyFont::LIBER;
-  score_display_= factory_->createText({0.5, 0.95}, config);
+  score_display_ = factory_->createText({0.6, 0.95}, config);
 }
 
+// todo: single resp
 void World::makeDesign() {
   // Press SPACE to pause
   TextConfig config;
@@ -120,18 +105,24 @@ void World::makeDesign() {
 
   // Level: #
   TextConfig level_config;
-  level_config.text = "Level: " + std::to_string(difficulty_-1);
+  level_config.text = "Level: " + std::to_string(difficulty_);
   level_config.font = MyFont::LIBER;
-  text_ = factory_->createText({-0.5, 0.95}, level_config);
+  text_ = factory_->createText({-0.6, 0.95}, level_config);
   entities_.push_back(text_);
 
+  // Lives remaining: #
+  TextConfig lives_config;
+  lives_config.text = "Lives remaining: " + std::to_string(lives_remaining_);
+  lives_config.font = MyFont::LIBER;
+  text_ = factory_->createText({0.0, 0.95}, lives_config);
+  entities_.push_back(text_);
 }
 
 void World::applyDifficulty(int difficulty) {
   ghost_speed_ = Config::Ghost::SPEED + difficulty * (7);
-  frightened_ghosts_duration_ =
-    frightened_ghosts_duration_ - difficulty * 0.5;
+  frightened_ghosts_duration_ = frightened_ghosts_duration_ - difficulty * 0.5;
 }
+
 void World::initialize() {
   try {
     verifyInit();
@@ -142,17 +133,19 @@ void World::initialize() {
   }
   cleanupEntities();
 
+  auto event = NewLevelEvent{};
+  event.accept(*dispatcher_);
+
   // makeWall();
-  makeDesign();
   createWall();
   createPlayer(Maze::getInstance()->start_node_);
   player_->setDirection(Direction::LEFT);
+  makeDesign();
   placeGhosts();
   placeCoins();
   placeFruits();
-  createScore();
+  displayScore();
   wall_->update();
-
 }
 
 void World::cleanupEntities() {
@@ -160,6 +153,26 @@ void World::cleanupEntities() {
   cleanUpEntities(coins_);
   cleanUpEntities(fruits_);
   cleanUpEntities(ghosts_);
+}
+
+void World::removeGhosts() {
+  for (const auto &entity : entities_) {
+    if (entity->getType() == EntityType::Ghost)
+      entity->deactivate();
+  }
+  for (const auto &entity : ghosts_) {
+    entity->deactivate();
+  }
+}
+
+void World::removePlayer() {
+  player_ = nullptr;
+  entities_.erase(std::remove_if(entities_.begin(), entities_.end(),
+                                 [](const std::shared_ptr<Entity> &entity) {
+                                   return entity->getType() ==
+                                          EntityType::Player;
+                                 }),
+                  entities_.end());
 }
 
 void World::unfrightenGhosts() {
@@ -179,28 +192,54 @@ void World::checkState() {
     frightened_ghosts_timer_ = nullptr;
     unfrightenGhosts();
   }
+  if (freeze_timer_ && freeze_timer_->done()) {
+    freeze_timer_ = nullptr;
+    freeze_ = false;
+    continueLevel();
+    makeDesign();
+  }
 }
 
 void World::update() {
   checkState();
   Stopwatch::getInstance()->update();
+  if (freeze_)
+    return;
   checkCollisions();
   cleanupEntities();
   updateAllEntities();
   int score = Score::getInstance()->getValue();
-  score_display_->setText(std::to_string(score));
+  score_display_->setString("Score: " + std::to_string(score));
+}
+
+void World::freeze(int seconds) {
+  freeze_timer_ = Stopwatch::getInstance()->getNewTimer(seconds);
+  freeze_ = true;
+  makeDesign();
+}
+
+void World::continueLevel() {
+  if (lives_remaining_ <= 1) {
+    gameOver();
+    return;
+  }
+  player_->deactivate();
+  removePlayer();
+  createPlayer(Maze::getInstance()->start_node_);
+  lives_remaining_--;
+
+  removeGhosts();
+  placeGhosts();
 }
 
 void World::gameOver() {
-  Leaderboard::getInstance()->addScore(
-    Score::getInstance()->getValue()
-    );
+  Leaderboard::getInstance()->addScore(Score::getInstance()->getValue());
   state_manager_.lock()->onGameOver();
-
 }
 
 void World::victory() { state_manager_.lock()->onVictory(); }
 
+// todo refactor
 bool World::verifyInit() const {
   if (!Maze::getInstance()->start_node_)
     throw std::logic_error("No start node in maze");
@@ -214,38 +253,16 @@ void World::checkCollisions() {
       continue;
 
     // No collision
-    if (!CollisionHandler::checkCollision(entity.get(), player_.get()))
+    auto collision_event =
+        CollisionHandler::checkCollision(entity.get(), player_.get());
+    if (!collision_event)
       continue;
 
     // In case of collision
     CollisionHandler::onCollision(entity.get(), player_.get());
 
-    onPlayerCollision(entity.get()->getType());
-
-  }
-}
-
-void World::onPlayerCollision(EntityType entity_type) {
-  // todo refactor
-  auto score = Score::getInstance();
-  switch (entity_type) {
-    case (EntityType::Fruit): {
-      frightenGhosts();
-      auto event = FruitEatenEvent{};
-      score->handle(event);
-      break;
-    }
-    case (EntityType::Coin): {
-      auto event = CoinEatenEvent{};
-      score->handle(event);
-      break;
-    }
-    case (EntityType::Ghost): {
-      if (!frightened_ghosts_)
-        break;
-      auto event = GhostEatenEvent{};
-      score->handle(event);
-    }
+      collision_event->accept(*dispatcher_);
+    collision_event->accept(*this);
   }
 }
 
@@ -255,17 +272,26 @@ void World::updateAllEntities() {
   }
 }
 
-World::Status World::getStatus() const { return status_; }
-
-void World::setStatus(World::Status status) { status_ = status; }
-
 void World::frightenGhosts() {
   auto event = FrightenGhostsEvent{};
-  Score::getInstance()->handle(event);
+  Score::getInstance()->visit(event);
   frightened_ghosts_ = true;
   std::shared_ptr<Timer> timer =
       Stopwatch::getInstance()->getNewTimer(frightened_ghosts_duration_);
   for (std::shared_ptr<Ghost> g : ghosts_)
     g->enterFrightenedMode(timer);
   frightened_ghosts_timer_ = timer;
+}
+
+void World::visit(FruitEatenEvent &event) { frightenGhosts(); }
+
+void World::visit(CoinEatenEvent &event) {}
+
+void World::visit(GhostEatenEvent &event) {}
+
+void World::visit(FrightenGhostsEvent &event) {}
+
+void World::visit(PacmanDiesEvent &event) { freeze(2); }
+
+void World::visit(NewLevelEvent &event) {
 }

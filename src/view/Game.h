@@ -3,22 +3,19 @@
 
 #include "../logic/World.h"
 #include "../view/controller/GameController.h"
-#include "../logic/maze/Maze.h"
-#include "../logic/observer/Observer.h"
-#include "../logic/utils/Stopwatch.h"
-#include "view/EntityView.h"
-#include "Renderer.h"
+#include "graphics/Renderer.h"
 #include "state/StateManager.h"
-#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
+
+#include "Dispatcher.h"
 
 struct MyVector;
 
 class EntityFactory;
 
-class Game : public Observer {
+class Game {
 private:
   std::shared_ptr<StateManager> state_manager_;
   std::shared_ptr<EntityFactory> factory_;
@@ -36,17 +33,25 @@ private:
 public:
   Game();
 
+  /// Makes everything ready
   void setup();
+
+  /// General run
   void run();
 
-  void update() override;
+  /// General update
+  void update();
 
+  /// Handles specific event, e.g. Victory, Game Over etc.
   void handleEvent(const sf::Event &event);
 
+  /// Handles user input
   void handleInput();
 
+  /// Closes the game/window
   void close();
 
+  /// Updates current state, e.g. VictoryState, GameOverState etc.
   void updateState();
 };
 

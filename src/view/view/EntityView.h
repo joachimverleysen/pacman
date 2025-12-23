@@ -3,14 +3,10 @@
 
 #include "../../logic/entity/Entity.h"
 #include "../../logic/observer/Observer.h"
+#include "../graphics/Visuals.h"
 #include "SpriteDrawable.h"
-#include "../TextureManager.h"
-#include "../Visuals.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/Window.hpp>
-#include <iostream>
 #include <memory>
-#include <optional>
 #include <string>
 
 using FilePath = std::string;
@@ -33,16 +29,22 @@ public:
 
   EntityView(std::weak_ptr<Entity> entity);
 
+  /// General update
   void update() override;
 
+  /// Draws view on window
   virtual void draw(sf::RenderWindow &window);
 
+  /// Sets position
   void setPosition(MyVector &position);
 
+  /// Fetches position from corresponding entity
   void updatePosition();
 
+  /// Pushes this view to the foreground of the scene
   void pushToForeground();
 
+  /// True if this view is on the foreground of the 'scene'
   [[nodiscard]] bool isForeGround() const;
 };
 

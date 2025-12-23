@@ -22,7 +22,7 @@ add_subdirectory(src/logic)
 add_subdirectory(src/view)
 
 add_executable(main src/main.cpp
-        src/logic/State.h)
+        src/logic/state/State.h)
 target_link_libraries(main PRIVATE logic view )
 
 target_compile_features(main PRIVATE cxx_std_17)

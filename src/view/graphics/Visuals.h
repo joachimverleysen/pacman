@@ -2,8 +2,8 @@
 #define VISUALS_H
 #include <list>
 
-#include "../logic/entity/Entity.h"
-#include "../logic/utils/MyVector.h"
+#include "../../logic/entity/Entity.h"
+#include "../../logic/utils/MyVector.h"
 #include <SFML/Graphics/Texture.hpp>
 #include <map>
 

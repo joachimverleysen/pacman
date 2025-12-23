@@ -1,17 +1,24 @@
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
 
-#include "entity/AbstractFactory.h"
+#include "../entity/AbstractFactory.h"
 
+class AbstractDispatcher;
 using namespace Utils;
-class State : public Subject {
+class State {
 public:
+  virtual ~State() = default;
+
 protected:
   std::vector<std::shared_ptr<Entity>> entities_;
   bool active_{true};
   std::shared_ptr<AbstractFactory> factory_;
+  std::shared_ptr<AbstractDispatcher> dispatcher_;
 public:
-  explicit State(std::shared_ptr<AbstractFactory> factory);
+  State(std::shared_ptr<AbstractFactory> factory,
+      std::shared_ptr<AbstractDispatcher> dispatcher);
+  State(std::shared_ptr<AbstractFactory> factory);
+
   virtual void initialize() = 0;
   virtual void update() = 0;
   [[nodiscard]] virtual StateNS::Type getType() const = 0;

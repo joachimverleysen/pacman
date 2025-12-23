@@ -1,46 +1,54 @@
 #ifndef SCORE_H
-#include <iostream>
-#include <algorithm>
 #include "entity/layout/Text.h"
 #include "utils/Stopwatch.h"
+#include "utils/Visitor.h"
+#include <algorithm>
+#include <iostream>
 
 class FruitEatenEvent;
 class FrightenGhostsEvent;
 
-class Score : public Entity {
-  // todo extract constants to Config
+// todo: score should not be Entity
+class Score : public Visitor {
   int value_{0};
-  int coin_eaten_modifier_{7};
-  int ghost_eaten_modifier_{300};
-  int fruit_eaten_modifier_{60};
   float time_since_last_coin_{0};
   float time_since_ghost_eaten_{0};
-  static Score* instance_;
+  static Score *instance_;
 
 private:
   Score() {};
+
 public:
-  static Score* getInstance() {
+  static Score *getInstance() {
     if (!instance_)
       instance_ = new Score{};
     return instance_;
   }
-  void handle(FruitEatenEvent& event);
 
+  /// Resets score value
   void reset();
 
-  void update() override;
+  /// General update
+  void update();
 
-  void handle(CoinEatenEvent& event);
+  /// Visitor function to modify score based on payload in event object
+  /// idem for the other 'visit' functions
+  void visit(CoinEatenEvent &event) override;
 
-  void handle(GhostEatenEvent& event);
+  void visit(FruitEatenEvent &event) override;
 
-  void handle(FrightenGhostsEvent& event);
+  void visit(GhostEatenEvent &event) override;
 
-  const int getValue() const {return value_;}
+  void visit(PacmanDiesEvent &event) override;
 
-  EntityType getType() const override {return EntityType::None;};
+  void visit(FrightenGhostsEvent &event) override;
 
+  void visit(NewLevelEvent &event) override;
+
+  /// Returns current score value
+  int getValue() const { return value_; }
+
+  /// Writes score to leaderboard
   void writeScoreToLeaderboard() const;
 };
 
