@@ -11,7 +11,7 @@ bool CollisionHandler::onCollision(Entity *first, Entity *second) {
 
 std::shared_ptr<Event> CollisionHandler::checkCollision(const Entity *first,
                                                         const Entity *second) {
-  if (!checkCollision(first->getBoundingBox(), second->getBoundingBox(), -0.02))
+  if (!checkCollision(first->getBoundingBox(), second->getBoundingBox(), -0.03))
     return nullptr;
 
   if (second->getType() == EntityType::Player)
