@@ -62,7 +62,7 @@ bool Ghost::updateTarget(const std::vector<Direction> &options) {
 Direction Ghost::chooseLockingDirection() const {
   if (Random::getInstance()->decide(0.5)) {
     return direction_;
-  } else
+  }
     return chooseRandomDirection(true);
 }
 
@@ -97,6 +97,7 @@ Direction Ghost::chooseRandomDirection(bool should_change = false) const {
   return options[0];
 }
 
+// todo: improve this for pink ghost, avoid reversing
 Direction Ghost::chooseChaseDirection(float predictive_offset = 0) const {
   std::vector<Direction> options =
       Maze::getInstance()->getPossibleDirections(current_node_);

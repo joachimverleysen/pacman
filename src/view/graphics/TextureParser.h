@@ -1,9 +1,9 @@
 #ifndef TEXTURE_PARSER_H
 #define TEXTURE_PARSER_H
 
-#include "../logic/utils/JSONParser.h"
-#include "../logic/utils/json.hpp"
-#include "view/EntityView.h"
+#include "../../logic/utils/JSONParser.h"
+#include "../../logic/utils/json.hpp"
+#include "../view/EntityView.h"
 
 using json = nlohmann::json;
 

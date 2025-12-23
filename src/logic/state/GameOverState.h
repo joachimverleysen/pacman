@@ -12,7 +12,7 @@ class GameOverState : public State {
   std::vector<EntityPtr> entities_;
 
 public:
-  GameOverState(std::shared_ptr<AbstractFactory> factory) : State(factory) {};
+  GameOverState(std::shared_ptr<AbstractFactory> factory) : State(std::move(factory)) {};
   void initialize() override;
   void update() override;
   void handleAction(GameAction action) override {}

@@ -1,5 +1,7 @@
 #include "TextureParser.h"
+#include "TextureParser.h"
 #include "TextureManager.h"
+#include "SFML/Graphics/Rect.hpp"
 
 sf::IntRect TextureParser::parseIntRect(const json &arr) {
   return sf::IntRect(arr[0], arr[1], arr[2], arr[3]);

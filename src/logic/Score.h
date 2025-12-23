@@ -43,6 +43,8 @@ public:
 
   void visit(FrightenGhostsEvent &event) override;
 
+  void visit(NewLevelEvent &event) override;
+
   /// Returns current score value
   int getValue() const { return value_; }
 

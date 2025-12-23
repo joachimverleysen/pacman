@@ -4,7 +4,7 @@
 #include "view/ShapeDrawable.h"
 #include "view/WallView.h"
 #include "view/TextView.h"
-#include "FontManager.h"
+#include "graphics/FontManager.h"
 #include "state/StateManager.h"
 #include "state/StateView.h"
 #include "view/TextDrawable.h"

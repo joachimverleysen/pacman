@@ -12,13 +12,16 @@
 #include <memory>
 #include <string>
 
+#include "utils/AbstractDispatcher.h"
 #include "utils/Visitor.h"
 
+class AbstractDispatcher;
 using Seconds = float;
 
 class World : public State, public Visitor {
 public:
   World(std::shared_ptr<AbstractFactory> factory,
+        std::shared_ptr<AbstractDispatcher> dispatcher,
         std::weak_ptr<StateManager> state_manager, unsigned int difficulty,
         unsigned int &lives_remaining);
 
@@ -57,9 +60,6 @@ public:
     entity_container.erase(
         std::remove_if(entity_container.begin(), entity_container.end(),
                        [this](const std::shared_ptr<EntityT> &entity) {
-                         bool active = entity->isActive();
-                         if (!active)
-                           notifyObservers();
                          return !entity->isActive();
                        }),
         entity_container.end());
@@ -119,6 +119,7 @@ public:
   void visit(GhostEatenEvent &event) override;
   void visit(FrightenGhostsEvent &event) override;
   void visit(PacmanDiesEvent &event) override;
+  void visit(NewLevelEvent &event) override;
 
   void cleanupEntities();
 

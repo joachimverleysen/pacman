@@ -1,13 +1,16 @@
 #include "Game.h"
 #include "../configure/constants.h"
 #include "../logic/maze/Maze.h"
-#include "Renderer.h"
+#include "graphics/Renderer.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/WindowStyle.hpp>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <string>
+
+#include "Dispatcher.h"
+#include "audio/SoundPlayer.h"
 
 Game::Game()
     : window_(sf::RenderWindow({100, 100}, "Pacman", sf::Style::Close)) {
@@ -69,15 +72,21 @@ void Game::setup() {
   }
   try {
 
+    // todo static variables instead of member variables?
     state_manager_ = std::make_shared<StateManager>();
     state_manager_->setPtrToThis(state_manager_);
     factory_ = std::make_unique<EntityFactory>(state_manager_);
+    const std::shared_ptr static dispatcher = std::make_unique<Dispatcher>();
     state_manager_->setFactory(factory_);
+    state_manager_->setDispatcher(dispatcher);
     state_manager_->initialize();
+
     state_manager_->pushStartMenu(state_manager_);
 
     controller_ = std::make_unique<GameController>(state_manager_);
     renderer_ = std::make_unique<Renderer>(window_, factory_);
+
+
   } catch (std::runtime_error &e) {
     std::cout << "Failed to initialize game: " << e.what() << std::endl;
     exit(1);
@@ -100,6 +109,7 @@ void Game::handleEvent(const sf::Event &event) {
 }
 
 void Game::close() {
+  SoundPlayer::getInstance()->shutDown();
   window_.close();
   exit(0);
 }

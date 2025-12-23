@@ -8,10 +8,16 @@
 #include "utils/Stopwatch.h"
 #include <utility>
 
+#include "utils/AbstractDispatcher.h"
+
+
+// todo refactor IDE recommendations
+
 World::World(std::shared_ptr<AbstractFactory> factory,
+             std::shared_ptr<AbstractDispatcher> dispatcher,
              std::weak_ptr<StateManager> state_manager,
              const unsigned int difficulty, unsigned int &lives_remaining)
-    : State(std::move(factory)), state_manager_(state_manager),
+    : State(std::move(factory), std::move(dispatcher)), state_manager_(state_manager),
       difficulty_(difficulty), lives_remaining_(lives_remaining) {
   applyDifficulty(difficulty);
 }
@@ -40,7 +46,6 @@ void World::handleAction(GameAction action) {
 void World::createPlayer(std::shared_ptr<MazeNode> node) {
   player_ = factory_->createPlayer(std::move(node));
   entities_.push_back(player_);
-  notifyObservers();
 }
 
 void World::placeGhosts() {
@@ -127,6 +132,9 @@ void World::initialize() {
     exit(1);
   }
   cleanupEntities();
+
+  auto event = NewLevelEvent{};
+  event.accept(*dispatcher_);
 
   // makeWall();
   createWall();
@@ -253,7 +261,7 @@ void World::checkCollisions() {
     // In case of collision
     CollisionHandler::onCollision(entity.get(), player_.get());
 
-    collision_event->accept(*Score::getInstance());
+      collision_event->accept(*dispatcher_);
     collision_event->accept(*this);
   }
 }
@@ -284,3 +292,6 @@ void World::visit(GhostEatenEvent &event) {}
 void World::visit(FrightenGhostsEvent &event) {}
 
 void World::visit(PacmanDiesEvent &event) { freeze(2); }
+
+void World::visit(NewLevelEvent &event) {
+}

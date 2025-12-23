@@ -7,7 +7,7 @@
 #include "../logic/utils/JSONParser.h"
 #include "../logic/utils/TextConfig.h"
 #include "../logic/utils/json.hpp"
-#include "../view/TextureParser.h"
+#include "graphics/TextureParser.h"
 #include "view/EntityView.h"
 #include "view/ShapeDrawable.h"
 #include <SFML/Window/Window.hpp>

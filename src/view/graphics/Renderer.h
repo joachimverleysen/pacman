@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "EntityFactory.h"
-#include "view/EntityView.h"
+#include "../EntityFactory.h"
+#include "../view/EntityView.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 #include <vector>

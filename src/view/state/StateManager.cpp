@@ -77,7 +77,7 @@ void StateManager::updateCurrentState() {
 }
 
 void StateManager::loadNewLevel(const std::weak_ptr<StateManager> &ptr_to_this) {
-  std::shared_ptr<World> world = std::make_shared<World>(factory_, ptr_to_this, difficulty_, lives_remaining_);
+  std::shared_ptr<World> world = std::make_shared<World>(factory_, dispatcher_, ptr_to_this, difficulty_, lives_remaining_);
   pushState(world);
   difficulty_++;
 }
@@ -133,6 +133,10 @@ StateManager::StateManager() {
 
 void StateManager::setFactory(const std::shared_ptr<EntityFactory> &factory) {
   factory_ = factory;
+}
+
+void StateManager::setDispatcher(const std::shared_ptr<AbstractDispatcher> &dispatcher) {
+  dispatcher_ = dispatcher;
 }
 
 std::shared_ptr<EntityFactory> StateManager::getFactory() const {

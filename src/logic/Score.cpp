@@ -31,6 +31,9 @@ void Score::visit(PacmanDiesEvent &event) {
 void Score::visit(FrightenGhostsEvent &event) {
 }
 
+void Score::visit(NewLevelEvent &event) {
+}
+
 void Score::writeScoreToLeaderboard() const {
   FileWriter fw("output/score.txt");
   fw.write(std::to_string(value_));

@@ -8,6 +8,7 @@
 #include <memory>
 #include <stack>
 
+class Dispatcher;
 class StateView;
 class State;
 class EntityFactory;
@@ -22,6 +23,7 @@ class StateManager {
 
   std::stack<std::shared_ptr<StateView>> state_views_;
   std::shared_ptr<EntityFactory> factory_;
+  std::shared_ptr<AbstractDispatcher> dispatcher_;
   std::map<StateNS::Type, EventMap> fsm;
   std::weak_ptr<StateManager> ptr_to_this_;
 
@@ -46,6 +48,8 @@ public:
   void setPtrToThis(const std::weak_ptr<StateManager> &ptrToThis);
 
   void setFactory(const std::shared_ptr<EntityFactory> &factory);
+
+  void setDispatcher(const std::shared_ptr<AbstractDispatcher> &dispatcher);
 
   Utils::StateNS::Type getCurrentType() const;
 

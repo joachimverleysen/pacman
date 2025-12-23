@@ -1,5 +1,7 @@
 #include "Leaderboard.h"
 #include "../configure/constants.h"
+#include "utils/FileReader.h"
+#include "utils/FileWriter.h"
 
 Leaderboard* Leaderboard::instance_ = nullptr;
 void Leaderboard::updateEntries() {

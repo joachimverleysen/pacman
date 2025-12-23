@@ -3,11 +3,13 @@
 
 #include "../logic/World.h"
 #include "../view/controller/GameController.h"
-#include "Renderer.h"
+#include "graphics/Renderer.h"
 #include "state/StateManager.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <memory>
+
+#include "Dispatcher.h"
 
 struct MyVector;
 
@@ -22,6 +24,7 @@ private:
   sf::Sprite background_sprite_;
   sf::Texture background_texture_;
   std::unique_ptr<Renderer> renderer_{nullptr};
+
 
 private:
   static void loadMaze(const std::string &);

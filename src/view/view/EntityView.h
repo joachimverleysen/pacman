@@ -3,14 +3,10 @@
 
 #include "../../logic/entity/Entity.h"
 #include "../../logic/observer/Observer.h"
-#include "../TextureManager.h"
-#include "../Visuals.h"
+#include "../graphics/Visuals.h"
 #include "SpriteDrawable.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/Window.hpp>
-#include <iostream>
 #include <memory>
-#include <optional>
 #include <string>
 
 using FilePath = std::string;

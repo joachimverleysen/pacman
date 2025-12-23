@@ -16,6 +16,7 @@ public:
   virtual void visit(GhostEatenEvent &event) = 0;
   virtual void visit(FrightenGhostsEvent &event) = 0;
   virtual void visit(PacmanDiesEvent &event) = 0;
+  virtual void visit(NewLevelEvent &event) = 0;
 };
 
 #endif //PACMAN_VISITOR_H

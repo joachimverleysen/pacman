@@ -6,6 +6,8 @@
 #include <optional>
 #include <string>
 
+#include "Event.h"
+
 class Entity;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 

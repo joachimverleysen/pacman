@@ -24,7 +24,7 @@ add_library(logic
 		state/PauseState.h
 		entity/layout/Text.cpp
 		entity/layout/Text.h
-		../view/FontManager.h
+		../view/graphics/FontManager.h
 		utils/TextConfig.h
 		utils/FileReader.h
 		utils/FileWriter.h
@@ -33,5 +33,6 @@ add_library(logic
 		utils/Visitor.h
 		utils/Event.cpp
 		state/GameOverState.cpp
+		utils/AbstractDispatcher.h
 )
 

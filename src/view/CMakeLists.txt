@@ -6,10 +6,10 @@ add_library(view
         view/SpriteDrawable.cpp
         view/ShapeDrawable.cpp
 				EntityFactory.cpp
-        TextureParser.cpp
-				Visuals.cpp
-				Renderer.cpp
-				TextureManager.h
+		graphics/TextureParser.cpp
+		graphics/Visuals.cpp
+		graphics/Renderer.cpp
+		graphics/TextureManager.h
 		state/StateView.h
 		state/StateManager.h
 		state/StateManager.cpp
@@ -18,5 +18,8 @@ add_library(view
 		view/TextDrawable.h
 		controller/GameController.h
 		controller/GameController.cpp
+		audio/SoundPlayer.h
+		Dispatcher.h
+		Dispatcher.cpp
 )
-target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system)
+target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system sfml-audio)
