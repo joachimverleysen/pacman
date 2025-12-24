@@ -11,7 +11,6 @@ protected:
   Entity::Mode mode_{Entity::Mode::NORMAL};
 
 public:
-  // todo docs
 
   /// Draws drawable on the window
   virtual void draw(sf::RenderWindow &window) = 0;

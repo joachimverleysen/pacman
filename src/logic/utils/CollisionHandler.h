@@ -16,6 +16,8 @@ public:
   /// true if collision with margin
   static bool checkCollision(const BoundingBox &first,
                              const BoundingBox &second, float margin);
+
+  /// called when collision happens
   static bool onCollision(Entity *first, Entity *second);
 
   /// true if collision with margin

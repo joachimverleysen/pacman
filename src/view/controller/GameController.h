@@ -16,11 +16,11 @@ public:
   friend World;
   explicit GameController(std::shared_ptr<StateManager> state_manager);
 
+  /// handles an event
   void handleInput(const sf::Event &event);
 
+  /// fetches an action
   [[maybe_unused]] static std::optional<GameAction> getAction();
-
-  static GameAction getAction(const sf::Event &event);
 
 };
 

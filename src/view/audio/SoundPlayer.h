@@ -19,8 +19,14 @@ class SoundPlayer : public Visitor {
   std::shared_ptr<Sound> eatghost_ = nullptr;
   std::shared_ptr<Sound> interruptable_ = nullptr;
 
+  // Private constructor
 private:
   SoundPlayer() {};
+
+public:
+  SoundPlayer(SoundPlayer& other) = delete;
+  SoundPlayer& operator=(SoundPlayer& other) = delete;
+
 public:
   static SoundPlayer* getInstance() {
     if (!instance_)
@@ -32,7 +38,7 @@ public:
   void update();
 
   /// Plays a sound
-  void play(const char* file);;
+  void play(const char* file);
 
   /// Plays a sound that will be interrupted by the next sound
   void playInterruptable(const char* file);;

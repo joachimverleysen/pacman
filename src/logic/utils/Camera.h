@@ -1,4 +1,5 @@
-#ifndef CAMERA_h
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include "../../configure/constants.h"
 #include "../../logic/utils/MyVector.h"

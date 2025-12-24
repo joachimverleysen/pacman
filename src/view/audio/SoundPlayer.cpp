@@ -1,4 +1,5 @@
 #include "SoundPlayer.h"
+#include "../../configure/constants.h"
 
 
 SoundPlayer *SoundPlayer::instance_ = nullptr;
@@ -20,7 +21,7 @@ void SoundPlayer::play(const char *file) {
   auto sound = std::make_shared<sf::Sound>(*buffer);
   auto sound_struct = std::make_shared<Sound>(buffer, sound);
   sounds_.push_back(sound_struct);
-  sound->setVolume(50.f);
+  sound->setVolume(Config::Sound::VOLUME);
   sound->play();
   update();
 }
@@ -31,7 +32,7 @@ void SoundPlayer::playInterruptable(const char *file) {
     throw(std::invalid_argument("Invalid sound file"));
   auto sound = std::make_shared<sf::Sound>(*buffer);
   interruptable_ = std::make_shared<Sound>(buffer, sound);
-  sound->setVolume(50.f);
+  sound->setVolume(Config::Sound::VOLUME);
   sound->play();
 }
 
@@ -44,7 +45,7 @@ void SoundPlayer::playEatghost() {
   auto sound = std::make_shared<sf::Sound>(*buffer);
   auto sound_struct = std::make_shared<Sound>(buffer, sound);
   eatghost_ = sound_struct;
-  sound->setVolume(50.f);
+  sound->setVolume(Config::Sound::VOLUME);
   sound->play();
 }
 

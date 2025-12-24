@@ -97,16 +97,19 @@ Direction Ghost::chooseRandomDirection(bool should_change = false) const {
   return options[0];
 }
 
-// todo: improve this for pink ghost, avoid reversing
 Direction Ghost::chooseChaseDirection(float predictive_offset = 0) const {
   std::vector<Direction> options =
       Maze::getInstance()->getPossibleDirections(current_node_);
+
+  // Avoid loops so the ghost doesn't get trapped
   if (reverse_count_ >= max_reversing_) {
 
     options.erase(std::remove(options.begin(), options.end(),
                               Utils::getReverseDirection(direction_)),
                   options.end());
   }
+
+  // Use randomness to break ties between equivalent actions
   Random::getInstance()->shuffle(options);
   Direction chosen = options[0];
   float min = getDistance2Player(chosen, 0);
@@ -122,6 +125,7 @@ Direction Ghost::chooseChaseDirection(float predictive_offset = 0) const {
 Direction Ghost::chooseFleeDirection() const {
   std::vector<Direction> options =
       Maze::getInstance()->getPossibleDirections(current_node_);
+  // Avoid loops so the ghost doesn't get trapped
   if (reverse_count_ >= max_reversing_) {
 
     options.erase(std::remove(options.begin(), options.end(),

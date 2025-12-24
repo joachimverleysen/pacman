@@ -19,12 +19,14 @@ struct Timer {
 
 class Stopwatch {
   static Stopwatch *instance_;
-  Stopwatch() : last_time_(std::chrono::high_resolution_clock::now()) {}
   float delta_time_{0};
 
   /// We keep track of all used timers in the game, since Stopwatch is responsible for decreasing their
   /// remaining times
   std::vector<std::shared_ptr<Timer>> timers_{};
+
+private:
+  Stopwatch() : last_time_(std::chrono::high_resolution_clock::now()) {}
 
 public:
   Stopwatch(const Stopwatch &) = delete;
