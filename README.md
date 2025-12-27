@@ -29,6 +29,11 @@ student nr: s0231444
 
 ### Documentation (10 points)
 
+To generate Doxygen documentation: 
+
+- Inside root folder, run "doxygen Doxyfile"
+- Open /docs/html/index.html
+
 ### Bonus features
 
 - [x] sound/music
