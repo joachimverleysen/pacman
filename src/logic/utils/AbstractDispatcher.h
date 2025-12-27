@@ -13,6 +13,7 @@ public:
   virtual ~AbstractDispatcher() = default;
 
 public:
+  /// Handles an event
   virtual void handle(PacmanDiesEvent& event) = 0;
   virtual void handle(FruitEatenEvent& event) = 0;
   virtual void handle(GhostEatenEvent& event) = 0;

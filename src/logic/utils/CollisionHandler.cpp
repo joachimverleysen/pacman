@@ -1,17 +1,15 @@
 #include "CollisionHandler.h"
 #include "Event.h"
-#include <iostream>
 
 bool CollisionHandler::onCollision(Entity *first, Entity *second) {
   first->onCollision(second);
   second->onCollision(first);
   return true;
-  return false;
 }
 
 std::shared_ptr<Event> CollisionHandler::checkCollision(const Entity *first,
                                                         const Entity *second) {
-  if (!checkCollision(first->getBoundingBox(), second->getBoundingBox(), -0.02))
+  if (!checkCollision(first->getBoundingBox(), second->getBoundingBox(), -0.03))
     return nullptr;
 
   if (second->getType() == EntityType::Player)
@@ -32,6 +30,7 @@ std::shared_ptr<Event> CollisionHandler::checkCollision(const Entity *first,
 
   if (second->getType() == EntityType::Fruit)
     return std::make_shared<FruitEatenEvent>();
+  return nullptr;
 }
 
 bool CollisionHandler::checkCollision(const Entity *first,

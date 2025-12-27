@@ -6,6 +6,7 @@ class GhostEatenEvent;
 class FruitEatenEvent;
 class CoinEatenEvent;
 class FrightenGhostsEvent;
+class NewLevelEvent;
 
 class Visitor {
 public:

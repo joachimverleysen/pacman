@@ -19,8 +19,14 @@ class SoundPlayer : public Visitor {
   std::shared_ptr<Sound> eatghost_ = nullptr;
   std::shared_ptr<Sound> interruptable_ = nullptr;
 
+  // Private constructor
 private:
   SoundPlayer() {};
+
+public:
+  SoundPlayer(SoundPlayer& other) = delete;
+  SoundPlayer& operator=(SoundPlayer& other) = delete;
+
 public:
   static SoundPlayer* getInstance() {
     if (!instance_)
@@ -28,93 +34,35 @@ public:
     return instance_;
   }
 
+  /// Cleans up sounds
   void update();
 
-  void play(const char* file) {
-    update();
-    auto buffer = std::make_shared<sf::SoundBuffer>();
-    if (!buffer->loadFromFile(file))
-      throw(std::invalid_argument("Invalid sound file"));
-    auto sound = std::make_shared<sf::Sound>(*buffer);
-    auto sound_struct = std::make_shared<Sound>(buffer, sound);
-    sounds_.push_back(sound_struct);
-    sound->setVolume(50.f);
-    sound->play();
-    update();
-  };
+  /// Plays a sound
+  void play(const char* file);
 
-  void playInterruptable(const char* file) {
-    auto buffer = std::make_shared<sf::SoundBuffer>();
-    if (!buffer->loadFromFile(file))
-      throw(std::invalid_argument("Invalid sound file"));
-    auto sound = std::make_shared<sf::Sound>(*buffer);
-    interruptable_ = std::make_shared<Sound>(buffer, sound);
-    sound->setVolume(50.f);
-    sound->play();
-  };
+  /// Plays a sound that will be interrupted by the next sound
+  void playInterruptable(const char* file);;
 
-  void playEatghost() {
-    if (eatghost_) eatghost_ = nullptr;
-    update();
-    auto buffer = std::make_shared<sf::SoundBuffer>();
-    if (!buffer->loadFromFile("assets/audio/pacman-eatghost.wav"))
-      throw(std::invalid_argument("Invalid sound file"));
-    auto sound = std::make_shared<sf::Sound>(*buffer);
-    auto sound_struct = std::make_shared<Sound>(buffer, sound);
-    eatghost_ = sound_struct;
-    sound->setVolume(50.f);
-    sound->play();
-  }
+  /// Plays the eathost sound
+  void playEatghost();
 
-  void shutDown() {
-    for (auto &s : sounds_)
-      s->sound_->stop();
+  /// Properly handles destruction
+  void shutDown();
 
-    if (interruptable_)
-      interruptable_->sound_->stop();
-    if (eatghost_)
-      eatghost_->sound_->stop();
+  /// Visits an event
+  void visit(CoinEatenEvent &event) override;;
 
-    sounds_.clear();
-    interruptable_ = nullptr;
-    eatghost_ = nullptr;
+  void visit(FruitEatenEvent &event) override;
 
-  }
+  void visit(GhostEatenEvent &event) override;
 
-  void visit(CoinEatenEvent &event) override {
-    playInterruptable("assets/audio/pacman-munch.wav");
-  };
+  void visit(FrightenGhostsEvent &event) override;
 
-  void visit(FruitEatenEvent &event) override {
-    play("assets/audio/pacman-eatfruit.wav");
-  }
+  void visit(PacmanDiesEvent &event) override;
 
-  void visit(GhostEatenEvent &event) override {
-    playEatghost();
-  }
-
-  void visit(FrightenGhostsEvent &event) override {
-  }
-
-  void visit(PacmanDiesEvent &event) override {
-    play("assets/audio/pacman-death.wav");
-  }
-
-  void visit(NewLevelEvent &event) override {
-    play("assets/audio/beginning.wav");
-  }
+  void visit(NewLevelEvent &event) override;
 };
 
-inline SoundPlayer *SoundPlayer::instance_ = nullptr;
-
-inline void SoundPlayer::update() {
-  sounds_.erase(
-    std::remove_if(sounds_.begin(), sounds_.end(),
-      [](const std::shared_ptr<Sound> &sound) {
-        return sound->sound_->getStatus() == sf::SoundSource::Status::Stopped;
-      }),
-      sounds_.end());
-}
 
 
 #endif //PACMAN_SOUNDPLAYER_H

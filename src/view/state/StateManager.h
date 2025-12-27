@@ -35,46 +35,67 @@ public:
 
   explicit StateManager(std::shared_ptr<EntityFactory> factory);
 
+  /// Returns current state view
   [[nodiscard]] std::shared_ptr<StateView> getCurrentStateView() const;
+
+  /// Calls update on current state
   void updateCurrentState();
 
+  /// Pushes a state on the stack
   void pushState(const std::shared_ptr<State> &state);
 
+  /// True if stack is empty
   bool empty() const;
 
+  /// Returns pointer to current state
   std::shared_ptr<State> getCurrentState() const;
 
   /// Workaround to get a weak pointer to <this>
   void setPtrToThis(const std::weak_ptr<StateManager> &ptrToThis);
 
+  /// Sets the entity factory
   void setFactory(const std::shared_ptr<EntityFactory> &factory);
 
+  /// Sets the dispatcher
   void setDispatcher(const std::shared_ptr<AbstractDispatcher> &dispatcher);
 
+  /// Returns type of current state
   Utils::StateNS::Type getCurrentType() const;
 
+  /// Returns pointer to factory
   std::shared_ptr<EntityFactory> getFactory() const;
 
+  /// Pops current state from stack
   void popCurrentState();
 
+  /// on game over
   void onGameOver();
 
+  /// pushes game over state
   void pushGameOverState();
 
+  /// Loads new level
   void loadNewLevel(const std::weak_ptr<StateManager> &ptr_to_this);
 
+  /// Pushes start menu
   void pushStartMenu(std::shared_ptr<StateManager> ptr_to_this);
 
+  /// Pushes pause state
   void pushPauseState();
 
+  /// Initializes
   void initialize();
 
+  /// Converts a key (user input) to an action
   Action getAction(sf::Keyboard::Key key) const;
 
+  /// Pushes victory state
   void pushVictoryState();
 
+  /// on victory
   void onVictory();
 
+  /// on pacman death
   void onPacmanDeath();
 };
 

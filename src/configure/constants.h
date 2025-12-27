@@ -16,6 +16,10 @@ inline constexpr unsigned int CELL_WIDTH = 40;
 
 } // namespace Window
 
+namespace Sound {
+inline float VOLUME = 50.f;
+}
+
 namespace Player {
 inline constexpr float SCALE = 1;
 inline constexpr float WIDTH = 40;

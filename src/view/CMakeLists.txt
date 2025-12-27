@@ -21,5 +21,6 @@ add_library(view
 		audio/SoundPlayer.h
 		Dispatcher.h
 		Dispatcher.cpp
+		audio/SoundPlayer.cpp
 )
 target_link_libraries(view PRIVATE logic sfml-graphics sfml-window sfml-system sfml-audio)

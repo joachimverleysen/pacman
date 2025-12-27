@@ -8,15 +8,20 @@
 class FruitEatenEvent;
 class FrightenGhostsEvent;
 
-// todo: score should not be Entity
 class Score : public Visitor {
   int value_{0};
   float time_since_last_coin_{0};
   float time_since_ghost_eaten_{0};
   static Score *instance_;
 
+  // Private constructor
 private:
   Score() {};
+
+  // Deleted copy constr. and assignment operator
+public:
+  Score(Score& other) = delete;
+  Score& operator=(Score& other) = delete;
 
 public:
   static Score *getInstance() {

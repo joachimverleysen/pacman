@@ -9,7 +9,6 @@
 #include "../../logic/state/PauseState.h"
 #include "../../logic/state/VictoryState.h"
 
-// todo state manager is not responsible for difficulty and lives?
 void StateManager::initialize() {
   if (ptr_to_this_.lock() == nullptr) {
     throw std::runtime_error("State manager in invalid state");
