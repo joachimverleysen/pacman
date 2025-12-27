@@ -34,6 +34,8 @@ To generate Doxygen documentation:
 - Inside root folder, run "doxygen Doxyfile"
 - Open /docs/html/index.html
 
+Alternatively, download the docs.zip under Releases > First release > Assets
+
 ### Bonus features
 
 - [x] sound/music
