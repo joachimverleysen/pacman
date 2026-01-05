@@ -4,6 +4,14 @@ name: Joachim Verleysen
 
 student nr: s0231444
 
+## Recent changes
+
+- Ghosts now immediately respawn after they're eaten
+- Fix: double 'death' sound at GameOverScreen
+
+>[!NOTE]
+>In the video, ghosts don't respawn immediately yet. It is now implemented.
+
 ## Evaluation
 
 ### Core Game requirements (40 points)
@@ -26,6 +34,9 @@ student nr: s0231444
 - [x] Good polymorphism & extensibility
 
 ### Project defense video (10 points)
+
+>[!NOTE]
+>In the video, ghosts don't respawn immediately yet. It is now implemented.
 
 ### Documentation (10 points)
 
