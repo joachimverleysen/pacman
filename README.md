@@ -29,6 +29,17 @@ student nr: s0231444
 
 ### Documentation (10 points)
 
+To access Doxygen documentation:
+
+#### Generate manually
+
+- Inside root folder, run "doxygen Doxyfile"
+- Open /docs/html/index.html
+
+#### Download zip file
+
+Alternatively, download the docs.zip under Releases > First release > Assets
+
 ### Bonus features
 
 - [x] sound/music
