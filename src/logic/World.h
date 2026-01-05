@@ -99,6 +99,8 @@ public:
   /// Places the ghosts according to the maze layout
   void placeGhosts();
 
+  void placeGhost(GhostType type, const NodePtr &node, int timeout);
+
   /// Checks if world is properly initialized
   [[nodiscard]] bool verifyInit() const;
 

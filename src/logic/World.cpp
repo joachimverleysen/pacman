@@ -58,13 +58,17 @@ void World::placeGhosts() {
   for (auto &node : Maze::getInstance()->ghost_nodes_) {
     types_index = types_index % NR_GHOSTS;
     timeouts_index = timeouts_index % 4;
-    auto ghost = factory_->createGhost(node, player_, types[types_index]);
-    ghost->startTimeOut(timeouts[timeouts_index]);
-    ghost->setSpeed(ghost_speed_);
-    addEntity(ghost);
+    placeGhost(types[types_index], node, timeouts[timeouts_index]);
     types_index++;
     timeouts_index++;
   }
+}
+
+void World::placeGhost(GhostType type, const NodePtr &node, int timeout) {
+  auto ghost = factory_->createGhost(node, player_, type);
+  ghost->startTimeOut(timeout);
+  ghost->setSpeed(ghost_speed_);
+  addEntity(ghost);
 }
 
 void World::placeCoins() {
@@ -178,7 +182,7 @@ void World::removePlayer() {
 void World::unfrightenGhosts() {
   frightened_ghosts_ = false;
   for (auto g : ghosts_)
-    g->enterChaseMode();
+    g->undoFrightenMode();
 }
 
 void World::checkState() {

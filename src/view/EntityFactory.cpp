@@ -22,7 +22,7 @@ MyVector dimensionsToWorld(float width, float height) {
 
 std::shared_ptr<Ghost> EntityFactory::createGhost(NodePtr node, std::shared_ptr<Player> player, GhostType type) {
   MyVector dims = dimensionsToWorld(Config::Ghost::WIDTH, Config::Ghost::HEIGHT);
-   std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, dims.x, dims.y, player, type);
+   std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>(node, dims.x, dims.y, player, type, node);
 
    std::string type_str{"ghost"};
    switch (type) {

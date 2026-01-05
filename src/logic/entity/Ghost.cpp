@@ -6,9 +6,11 @@
 #include <utility>
 
 Ghost::Ghost(NodePtr node, float width, float height,
-             std::shared_ptr<Player> player, GhostType type)
-    : Character(std::move(node), width, height), player_(std::move(player)),
-      ghost_type_(type) {
+             std::shared_ptr<Player> player, GhostType type, NodePtr start_node)
+    : Character(std::move(node), width, height),
+     player_(std::move(player)),
+      ghost_type_(type),
+      start_node_(std::move(start_node)){
   speed_ = Config::Ghost::SPEED;
   startMove();
 }
@@ -45,8 +47,13 @@ float Ghost::getDistance2Player(Direction direction,
 }
 
 void Ghost::onCollision(Entity *other) {
-  if (mode_ == Mode::FRIGHTENED)
-    deactivate();
+  if (mode_ != Mode::FRIGHTENED) return;
+  if (other->getType() != EntityType::Player) return;
+  undoFrightenMode();
+  setTarget(start_node_);
+  takeTarget();
+  updateTarget(direction_);
+    // deactivate();
 }
 
 EntityType Ghost::getType() const { return EntityType::Ghost; }
@@ -162,7 +169,7 @@ void Ghost::enterFrightenedMode(std::shared_ptr<Timer> timer) {
   frightened_timer_ = std::move(timer);
 }
 
-void Ghost::enterChaseMode() {
+void Ghost::undoFrightenMode() {
   state_ = State::IDLE;
   mode_ = Mode::NORMAL;
   reverseDirection();
@@ -183,7 +190,7 @@ bool Ghost::timeout() const {
 void Ghost::updateMode() {
   if (frightened_timer_ && frightened_timer_->done()) {
     frightened_timer_ = nullptr;
-    enterChaseMode();
+    undoFrightenMode();
   }
 }
 
