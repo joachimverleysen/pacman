@@ -23,7 +23,7 @@ void Dispatcher::handle(FrightenGhostsEvent &event) {
 }
 
 void Dispatcher::handle(PacmanDiesEvent &event) {
-  event.accept(*SoundPlayer::getInstance());
+ event.accept(*SoundPlayer::getInstance());
 }
 
 void Dispatcher::handle(NewLevelEvent &event) {

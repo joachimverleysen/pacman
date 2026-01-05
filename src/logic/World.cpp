@@ -205,7 +205,7 @@ void World::update() {
   Stopwatch::getInstance()->update();
   if (freeze_)
     return;
-  checkCollisions();
+  checkPlayerCollisions();
   cleanupEntities();
   updateAllEntities();
   int score = Score::getInstance()->getValue();
@@ -235,6 +235,7 @@ void World::continueLevel() {
 void World::gameOver() {
   Leaderboard::getInstance()->addScore(Score::getInstance()->getValue());
   state_manager_.lock()->onGameOver();
+  player_ = nullptr;
 }
 
 void World::victory() { state_manager_.lock()->onVictory(); }
@@ -246,7 +247,9 @@ bool World::verifyInit() const {
   return true;
 }
 
-void World::checkCollisions() {
+void World::checkPlayerCollisions() {
+  if (!player_)
+    return;
   for (auto &entity : entities_) {
     if (entity->getType() == EntityType::Player ||
         entity->getType() == EntityType::Wall)

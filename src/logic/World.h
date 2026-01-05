@@ -137,7 +137,7 @@ public:
   void checkState();
 
   /// Checks all entity collisions and handles them
-  void checkCollisions();
+  void checkPlayerCollisions();
 
   void updateAllEntities();
 
